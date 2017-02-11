@@ -21,11 +21,13 @@ public class LoginController extends Activity {
     }
 
     public void attemptLogin(View view) {
-        Log.d("login", "login attempted." + " username: " + ((EditText) findViewById(R.id.usernameTextbox)).getText() + " password: " + ((EditText) findViewById(R.id.passwordTextbox)).getText());
+        Log.d("login", "login attempted." +
+                " username: " + ((EditText) findViewById(R.id.usernameTextbox)).getText() +
+                " password: " + ((EditText) findViewById(R.id.passwordTextbox)).getText());
     }
 
     public void goToRegistration(View view) {
-        Log.d("here", "bug");
+        Log.d("login", "go to registration");
         startActivity(new Intent(LoginController.this, RegistrationController.class));
     }
 
