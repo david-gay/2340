@@ -29,6 +29,7 @@ public class LoginController extends Activity {
     public void goToRegistration(View view) {
         Log.d("login", "go to registration");
         startActivity(new Intent(LoginController.this, RegistrationController.class));
+
     }
 
 }
