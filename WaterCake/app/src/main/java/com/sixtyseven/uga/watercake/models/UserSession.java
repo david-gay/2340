@@ -26,6 +26,11 @@ public class UserSession {
         currentUser = null;
     }
 
+    public String getCurrentUser() {
+        return currentUser;
+    }
+
+
     public boolean tryLogin(String username, String password) {
         if (!users.containsKey(username)) {
             Log.d("login", "unknown username");

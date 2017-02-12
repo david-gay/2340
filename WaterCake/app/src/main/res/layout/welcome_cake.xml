@@ -20,13 +20,13 @@
             android:text="Logout" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/welcomeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="96dp"
-            android:text="Welcome!" />
+            android:text="Welcome" />
 
         <TextView
             android:id="@+id/textView7"

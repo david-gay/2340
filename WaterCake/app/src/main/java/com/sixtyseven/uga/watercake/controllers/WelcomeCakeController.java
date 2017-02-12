@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
@@ -21,6 +22,8 @@ public class WelcomeCakeController extends Activity {
         ImageView mImageView;
         mImageView = (ImageView) findViewById(R.id.imageView);
         mImageView.setImageResource(R.mipmap.water_cat_cake);
+        ((TextView) findViewById(R.id.welcomeText)).setText("Welcome, "
+                + UserSession.currentSession().getCurrentUser() + "!");
 
     }
 
