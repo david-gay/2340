@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".controllers.RegistrationController"></activity>
+        <activity android:name=".controllers.WelcomeCakeController"></activity>
     </application>
 
 </manifest>

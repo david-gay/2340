@@ -26,40 +26,43 @@ public class UserSession {
         currentUser = null;
     }
 
-    public void tryLogin(String username, String password) {
+    public boolean tryLogin(String username, String password) {
         if (!users.containsKey(username)) {
             Log.d("login", "unknown username");
-            return;
+            return false;
         }
-        if (users.get(username) != password) {
+        if (!users.get(username).equals(password)) {
             Log.d("login", "wrong password");
-            return;
+            return false;
         }
 
         currentUser = username;
-        Log.d("login", "wrong successful");
+        Log.d("login", "login successful");
+        return true;
     }
 
-    public void logout() {
+    public boolean logout() {
         currentUser = null;
+        return true;
     }
 
-    public void registerUser(String username, String password, String passwordRepeat) {
+    public boolean registerUser(String username, String password, String passwordRepeat) {
         if (users.containsKey(username)) {
             Log.d("register", "username taken");
-            return;
+            return false;
         }
-        if (password != passwordRepeat) {
+        if (!password.equals(passwordRepeat)) {
             Log.d("register", "passwords don't match");
-            return;
+            return false;
         }
         if (password.length() < 6) {
             Log.d("register", "passwords too short");
-            return;
+            return false;
         }
 
         users.put(username, password);
         Log.d("register", "registration successful");
+        return true;
     }
 
 
