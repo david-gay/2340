@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.transition.TransitionManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -65,10 +66,7 @@ public class LoginController extends Activity {
             } else if (response.reason.equals("User does not exist")) {
                 usernameInput.setError(response.reason);
                 usernameEditText.requestFocus();
-                //usernameInput.getEditText().selectAll();
             }
-            //Toast.makeText(getBaseContext(), "Login failed!", Toast.LENGTH_SHORT).show();
-            //((EditText) findViewById(R.id.passwordTextbox)).setText("");
         }
     }
 
