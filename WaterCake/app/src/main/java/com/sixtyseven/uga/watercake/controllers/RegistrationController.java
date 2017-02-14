@@ -35,7 +35,7 @@ public class RegistrationController extends Activity {
                 " password: " + password +
                 " password repeat: " + passwordRepeat);
 
-        if (UserSession.currentSession().registerUser(username, password, passwordRepeat)) {
+        if (UserSession.currentSession().registerUser(username, password, passwordRepeat).condition) {
             Toast.makeText(getBaseContext(), "Registration successful!", Toast.LENGTH_LONG).show();
             startActivity(new Intent(RegistrationController.this, LoginController.class));
         } else {

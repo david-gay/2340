@@ -2,6 +2,10 @@ package com.sixtyseven.uga.watercake.models;
 
 import android.util.Log;
 
+import com.sixtyseven.uga.watercake.models.response.LoginResponse;
+import com.sixtyseven.uga.watercake.models.response.RegisterResponse;
+import com.sixtyseven.uga.watercake.models.response.Response;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,19 +35,19 @@ public class UserSession {
     }
 
 
-    public boolean tryLogin(String username, String password) {
+    public LoginResponse tryLogin(String username, String password) {
         if (!users.containsKey(username)) {
-            Log.d("login", "unknown username");
-            return false;
+            Log.d("login", "User does not exist");
+            return new LoginResponse(false, "User does not exist");
         }
         if (!users.get(username).equals(password)) {
             Log.d("login", "wrong password");
-            return false;
+            return new LoginResponse(false, "Wrong password");
         }
 
         currentUser = username;
         Log.d("login", "login successful");
-        return true;
+        return new LoginResponse(true, "Login successful!");
     }
 
     public boolean logout() {
@@ -51,23 +55,23 @@ public class UserSession {
         return true;
     }
 
-    public boolean registerUser(String username, String password, String passwordRepeat) {
+    public RegisterResponse registerUser(String username, String password, String passwordRepeat) {
         if (users.containsKey(username)) {
             Log.d("register", "username taken");
-            return false;
+            return new RegisterResponse(false, "Username already exists");
         }
         if (!password.equals(passwordRepeat)) {
             Log.d("register", "passwords don't match");
-            return false;
+            return new RegisterResponse(false, "Passwords don't match");
         }
         if (password.length() < 6) {
             Log.d("register", "passwords too short");
-            return false;
+            return new RegisterResponse(false, "Passwords too short");
         }
 
         users.put(username, password);
         Log.d("register", "registration successful");
-        return true;
+        return new RegisterResponse(true, "Registration successful");
     }
 
 
