@@ -10,7 +10,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.R;
+import com.sixtyseven.uga.watercake.models.Registration.RegistrationField;
 import com.sixtyseven.uga.watercake.models.UserSession;
+import com.sixtyseven.uga.watercake.models.Registration.RegistrationError;
+
+import java.util.EnumSet;
 
 /**
  * Created by Dimitar on 2/11/2017.
@@ -35,16 +39,44 @@ public class RegistrationController extends Activity {
                 " password: " + password +
                 " password repeat: " + passwordRepeat);
 
-        if (UserSession.currentSession().registerUser(username, password, passwordRepeat).condition) {
+        EnumSet<RegistrationError> errors = UserSession.currentSession().registerUser(username, password, passwordRepeat);
+
+        if (errors.isEmpty()) { //No errors = success
             Toast.makeText(getBaseContext(), "Registration successful!", Toast.LENGTH_LONG).show();
             startActivity(new Intent(RegistrationController.this, LoginController.class));
         } else {
             Toast.makeText(getBaseContext(), "Registration failed!", Toast.LENGTH_SHORT).show();
-            ((EditText) findViewById(R.id.registerUsernameTextbox)).setText("");
-            ((EditText) findViewById(R.id.registerPasswordBox)).setText("");
-            ((EditText) findViewById(R.id.registerRepeatPasswordBox)).setText("");
+
+            EditText usernameBox = (EditText) findViewById(R.id.registerUsernameTextbox);
+            EditText passwordBox = (EditText) findViewById(R.id.registerPasswordBox);
+            EditText repeatPasswordBox = (EditText) findViewById(R.id.registerRepeatPasswordBox);
+
+            boolean focusSet = false;
+
+            for (RegistrationError error : errors) {
+                EditText target = null;
+                if (error.getField() == RegistrationField.USERNAME) {
+                    target = usernameBox;
+                } else if (error.getField() == RegistrationField.PASSWORD) {
+                    target = passwordBox;
+                } else if (error.getField() == RegistrationField.REPEAT_PASSWORD) {
+                    target = repeatPasswordBox;
+                }
+
+                setError(target, error, !focusSet);
+                focusSet = true;
+            }
         }
 
+    }
+
+    private void setError(EditText target, RegistrationError error, boolean shouldFocus) {
+        if (target != null) {
+            target.setError(error.getMessage());
+            if (shouldFocus) {
+                target.requestFocus();
+            }
+        }
     }
 
     public void cancelRegistration(View view) {

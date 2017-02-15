@@ -4,18 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.support.transition.TransitionManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
-import com.sixtyseven.uga.watercake.models.response.LoginResponse;
+import com.sixtyseven.uga.watercake.models.response.LoginResult;
 
 /**
  * Created by Dimitar on 2/10/2017.
@@ -52,20 +50,20 @@ public class LoginController extends Activity {
                 " username: " + usernameEditText.getText() +
                 " password: " + passwordEditText.getText());
 
-        LoginResponse response = UserSession.currentSession().tryLogin(
+        LoginResult response = UserSession.currentSession().tryLogin(
                 usernameEditText.getText().toString(),
                 passwordEditText.getText().toString());
 
-        if (response.condition) {
+        if (response.equals(LoginResult.SUCCESS)) {
             startActivity(new Intent(LoginController.this, WelcomeCakeController.class));
         } else {
-            if (response.reason.equals("Wrong password")) {
-                passwordInput.setError(response.reason);
+            if (response == LoginResult.USER_DOES_NOT_EXIST) {
+                usernameInput.setError(response.getMessage());
+                usernameEditText.requestFocus();
+            } else if (response == LoginResult.WRONG_PASSWORD) {
+                passwordInput.setError(response.getMessage());
                 passwordEditText.requestFocus();
                 passwordInput.getEditText().setText("");
-            } else if (response.reason.equals("User does not exist")) {
-                usernameInput.setError(response.reason);
-                usernameEditText.requestFocus();
             }
         }
     }

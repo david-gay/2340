@@ -2,10 +2,10 @@ package com.sixtyseven.uga.watercake.models;
 
 import android.util.Log;
 
-import com.sixtyseven.uga.watercake.models.response.LoginResponse;
-import com.sixtyseven.uga.watercake.models.response.RegisterResponse;
-import com.sixtyseven.uga.watercake.models.response.Response;
+import com.sixtyseven.uga.watercake.models.response.LoginResult;
+import com.sixtyseven.uga.watercake.models.Registration.RegistrationError;
 
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,19 +35,19 @@ public class UserSession {
     }
 
 
-    public LoginResponse tryLogin(String username, String password) {
-        if (!users.containsKey(username)) {
-            Log.d("login", "User does not exist");
-            return new LoginResponse(false, "User does not exist");
-        }
-        if (!users.get(username).equals(password)) {
-            Log.d("login", "wrong password");
-            return new LoginResponse(false, "Wrong password");
-        }
+    public LoginResult tryLogin(String username, String password) {
+        LoginResult result;
 
-        currentUser = username;
-        Log.d("login", "login successful");
-        return new LoginResponse(true, "Login successful!");
+        if (!users.containsKey(username)) {
+            result = LoginResult.USER_DOES_NOT_EXIST;
+        } else if (!users.get(username).equals(password)) {
+            result = LoginResult.WRONG_PASSWORD;
+        } else {
+            currentUser = username;
+            result = LoginResult.SUCCESS;
+        }
+        Log.d("login", result.getMessage());
+        return result;
     }
 
     public boolean logout() {
@@ -55,23 +55,47 @@ public class UserSession {
         return true;
     }
 
-    public RegisterResponse registerUser(String username, String password, String passwordRepeat) {
+    /**
+     * Attempts to register a user and returns an EnumSet of all registration errors present.
+     *
+     * @param username       the username to register
+     * @param password       the password to register
+     * @param passwordRepeat the repeat password
+     * @return an EnumSet of every error encountered in registration. Empty if registration was successful.
+     */
+    public EnumSet<RegistrationError> registerUser(String username, String password, String passwordRepeat) {
+        EnumSet<RegistrationError> results = EnumSet.noneOf(RegistrationError.class);
+
+        if (username.equals("")) {
+            results.add(RegistrationError.INVALID_USERNAME);
+        }
         if (users.containsKey(username)) {
-            Log.d("register", "username taken");
-            return new RegisterResponse(false, "Username already exists");
+            results.add(RegistrationError.USERNAME_TAKEN);
         }
         if (!password.equals(passwordRepeat)) {
-            Log.d("register", "passwords don't match");
-            return new RegisterResponse(false, "Passwords don't match");
+            results.add(RegistrationError.PASSWORD_MISMATCH);
         }
         if (password.length() < 6) {
-            Log.d("register", "passwords too short");
-            return new RegisterResponse(false, "Passwords too short");
+            results.add(RegistrationError.PASSWORD_TOO_SHORT);
         }
 
-        users.put(username, password);
-        Log.d("register", "registration successful");
-        return new RegisterResponse(true, "Registration successful");
+        if (results.isEmpty()) { // if we had no problems, then go ahead and register
+            users.put(username, password);
+        }
+
+        StringBuilder logOutput = new StringBuilder();
+        boolean first = true;
+        for (RegistrationError result : results) {
+            if (!first) {
+                logOutput.append(", ");
+            } else {
+                first = false;
+            }
+            logOutput.append(result.getMessage());
+        }
+
+        Log.d("register", logOutput.toString());
+        return results;
     }
 
 
