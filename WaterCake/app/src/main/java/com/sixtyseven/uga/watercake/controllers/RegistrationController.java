@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -22,17 +23,26 @@ import java.util.EnumSet;
 
 public class RegistrationController extends Activity {
 
+    EditText usernameBox;
+    EditText passwordBox;
+    EditText repeatPasswordBox;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.register);
+
+        usernameBox = (EditText) findViewById(R.id.registerUsernameTextbox);
+        passwordBox = (EditText) findViewById(R.id.registerPasswordBox);
+        repeatPasswordBox = (EditText) findViewById(R.id.registerRepeatPasswordBox);
     }
 
 
     public void attemptRegistration(View view) {
-        String username = ((EditText) findViewById(R.id.registerUsernameTextbox)).getText().toString();
-        String password = ((EditText) findViewById(R.id.registerPasswordBox)).getText().toString();
-        String passwordRepeat = ((EditText) findViewById(R.id.registerRepeatPasswordBox)).getText().toString();
+
+        String username = usernameBox.getText().toString();
+        String password = passwordBox.getText().toString();
+        String passwordRepeat = repeatPasswordBox.getText().toString();
 
         Log.d("registration", "registration attempted." +
                 " username: " + username +
@@ -46,10 +56,6 @@ public class RegistrationController extends Activity {
             startActivity(new Intent(RegistrationController.this, LoginController.class));
         } else {
             Toast.makeText(getBaseContext(), "Registration failed!", Toast.LENGTH_SHORT).show();
-
-            EditText usernameBox = (EditText) findViewById(R.id.registerUsernameTextbox);
-            EditText passwordBox = (EditText) findViewById(R.id.registerPasswordBox);
-            EditText repeatPasswordBox = (EditText) findViewById(R.id.registerRepeatPasswordBox);
 
             boolean focusSet = false;
 
