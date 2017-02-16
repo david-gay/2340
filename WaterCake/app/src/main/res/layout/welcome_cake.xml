@@ -15,7 +15,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="45dp"
         android:onClick="logout"
-        android:text="@string/logout" />
+        android:text="@string/logout"
+        style="@style/Widget.AppCompat.Button.Colored" />
 
     <TextView
         android:id="@+id/welcomeText"

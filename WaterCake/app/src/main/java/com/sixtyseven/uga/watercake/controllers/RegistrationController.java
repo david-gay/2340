@@ -49,23 +49,23 @@ public class RegistrationController extends Activity {
                 return handled;
             }
         });
+        Log.d("registration controller", "registration controller created");
     }
 
 
     public void attemptRegistration(View view) {
 
         TextInputLayout registerUsernameInput = (TextInputLayout) findViewById(R.id.registerUsernameInputLayout);
-        String username = registerUsernameInput.getEditText().toString();
         EditText usernameEditText = registerUsernameInput.getEditText();
+        String username = usernameEditText.getText().toString();
 
         TextInputLayout registerPasswordInput = (TextInputLayout) findViewById(R.id.registerPasswordInputLayer);
-        String password = registerPasswordInput.getEditText().toString();
         EditText passwordEditText = registerPasswordInput.getEditText();
+        String password = passwordEditText.getText().toString();
 
         TextInputLayout registerRepeatPasswordInput = (TextInputLayout) findViewById(R.id.registerRepeatPasswordInputLayer);
-        String passwordRepeat = registerRepeatPasswordInput.getEditText().toString();
         EditText passwordRepeatEditText = registerRepeatPasswordInput.getEditText();
-
+        String passwordRepeat = passwordRepeatEditText.getText().toString();
 
         Log.d("registration", "registration attempted." +
                 " username: " + username +
@@ -100,10 +100,11 @@ public class RegistrationController extends Activity {
     }
 
     private void setError(TextInputLayout target, RegistrationError error, boolean shouldFocus) {
+        Log.d("registration controller", "setting error: " + error.getMessage());
         if (target != null) {
             target.setError(error.getMessage());
             if (shouldFocus) {
-                target.requestFocus();
+                target.getEditText().requestFocus();
             }
         }
     }
@@ -112,5 +113,4 @@ public class RegistrationController extends Activity {
         startActivity(new Intent(RegistrationController.this, LoginController.class));
         Log.d("registration", "registration canceled");
     }
-
 }

@@ -24,6 +24,7 @@ public class WelcomeCakeController extends Activity {
         mImageView.setImageResource(R.mipmap.water_cat_cake);
         ((TextView) findViewById(R.id.welcomeText)).setText("Welcome, "
                 + UserSession.currentSession().getCurrentUser() + "!");
+        Log.d("welcomecake controller", "welcomecake controller created");
 
     }
 

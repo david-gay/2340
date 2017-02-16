@@ -37,6 +37,7 @@ public class LoginController extends Activity {
                 return handled;
             }
         });
+        Log.d("login controller", "login controller created");
     }
 
     public void attemptLogin(View view) {
@@ -73,4 +74,12 @@ public class LoginController extends Activity {
         startActivity(new Intent(LoginController.this, RegistrationController.class));
     }
 
+    @Override
+    public void onBackPressed() {
+        Log.d("back button", "always exit on back button on login screen");
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(new Intent(Intent.ACTION_MAIN));
+    }
 }
