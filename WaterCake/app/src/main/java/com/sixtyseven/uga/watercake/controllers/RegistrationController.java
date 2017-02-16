@@ -5,10 +5,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.TextInputLayout;
 
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.R;
@@ -34,6 +37,18 @@ public class RegistrationController extends Activity {
 
         passwordBox = (EditText) findViewById(R.id.registerPasswordBox);
         repeatPasswordBox = (EditText) findViewById(R.id.registerRepeatPasswordBox);
+
+        repeatPasswordBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    attemptRegistration(null);
+                    handled = true;
+                }
+                return handled;
+            }
+        });
     }
 
 
@@ -68,13 +83,13 @@ public class RegistrationController extends Activity {
             boolean focusSet = false;
 
             for (RegistrationError error : errors) {
-                EditText target = null;
+                TextInputLayout target = null;
                 if (error.getField() == RegistrationField.USERNAME) {
-                    target = usernameEditText;
+                    target = registerUsernameInput;
                 } else if (error.getField() == RegistrationField.PASSWORD) {
-                    target = passwordEditText;
+                    target = registerPasswordInput;
                 } else if (error.getField() == RegistrationField.REPEAT_PASSWORD) {
-                    target = passwordRepeatEditText;
+                    target = registerRepeatPasswordInput;
                 }
 
                 setError(target, error, !focusSet);
@@ -84,7 +99,7 @@ public class RegistrationController extends Activity {
 
     }
 
-    private void setError(EditText target, RegistrationError error, boolean shouldFocus) {
+    private void setError(TextInputLayout target, RegistrationError error, boolean shouldFocus) {
         if (target != null) {
             target.setError(error.getMessage());
             if (shouldFocus) {

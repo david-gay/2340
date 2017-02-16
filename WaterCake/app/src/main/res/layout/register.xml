@@ -8,84 +8,95 @@
     android:orientation="vertical">
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/registerPasswordInputLayer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/registerPasswordInputLayer"
+        android:layout_alignEnd="@+id/cancelRegistrationButton"
         android:layout_alignStart="@+id/registerUsernameInputLayout"
-        android:layout_below="@+id/registerUsernameInputLayout"
-        android:layout_alignEnd="@+id/cancelRegistrationButton">
+        android:layout_below="@+id/registerUsernameInputLayout">
 
         <EditText
+            android:id="@+id/registerPasswordBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:id="@+id/registerPasswordBox" />
+            android:hint="@string/password"
+            android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/registerRepeatPasswordInputLayer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/registerRepeatPasswordInputLayer"
-        android:layout_below="@+id/registerPasswordInputLayer"
+        android:layout_alignEnd="@+id/cancelRegistrationButton"
         android:layout_alignStart="@+id/registerPasswordInputLayer"
-        android:layout_alignEnd="@+id/cancelRegistrationButton">
+        android:layout_below="@+id/registerPasswordInputLayer">
 
         <EditText
+            android:id="@+id/registerRepeatPasswordBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Repeat Password"
-            android:id="@+id/registerRepeatPasswordBox"
-            android:inputType="textPassword"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/registerRepeatPasswordInputLayer"
-            android:layout_alignParentStart="true" />
+            android:hint="@string/repeat_password"
+            android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
-
-    <Button
-        android:id="@+id/cancelRegistrationButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="cancelRegistration"
-        android:text="@string/cancel"
-        android:layout_marginEnd="71dp"
-        android:layout_alignBaseline="@+id/registerButton"
-        android:layout_alignBottom="@+id/registerButton"
-        android:layout_alignParentEnd="true" />
 
     <Button
         android:id="@+id/registerButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="attemptRegistration"
-        android:text="@string/register"
-        android:layout_marginTop="17dp"
-        android:layout_marginStart="66dp"
-        android:layout_below="@+id/registerRepeatPasswordInputLayer"
-        android:layout_alignParentStart="true" />
-
-    <android.support.design.widget.TextInputLayout
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/registerRepeatPasswordInputLayer"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="17dp"
+        android:onClick="attemptRegistration"
+        android:text="@string/register" />
+
+    <android.support.design.widget.TextInputLayout
         android:id="@+id/registerUsernameInputLayout"
-        android:layout_below="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/cancelRegistrationButton"
         android:layout_alignStart="@+id/registerButton"
-        android:layout_alignEnd="@+id/cancelRegistrationButton">
+        android:layout_below="@+id/textView">
 
         <EditText
-            android:layout_width="248dp"
+            android:id="@+id/registerUsernameBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"
-            android:id="@+id/registerUsernameBox" />
+            android:hint="@string/username"
+            android:inputType="textVisiblePassword">
+
+            <requestFocus />
+        </EditText>
     </android.support.design.widget.TextInputLayout>
 
     <TextView
-        android:text="Registration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="75dp"
         android:id="@+id/textView"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/registerUsernameInputLayout" />
+        android:layout_alignStart="@+id/registerUsernameInputLayout"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="@string/registration"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/colorPrimary" />
+
+    <Button
+        android:id="@+id/cancelRegistrationButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/registerButton"
+        android:layout_below="@+id/registerButton"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="22dp"
+        android:onClick="cancelRegistration"
+        android:text="@string/cancel" />
 
 </RelativeLayout>
