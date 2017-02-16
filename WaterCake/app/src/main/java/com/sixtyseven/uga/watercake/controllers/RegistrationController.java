@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.support.design.widget.TextInputLayout;
 
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,7 +24,6 @@ import java.util.EnumSet;
 
 public class RegistrationController extends Activity {
 
-    EditText usernameBox;
     EditText passwordBox;
     EditText repeatPasswordBox;
 
@@ -32,7 +32,6 @@ public class RegistrationController extends Activity {
 
         setContentView(R.layout.register);
 
-        usernameBox = (EditText) findViewById(R.id.registerUsernameTextbox);
         passwordBox = (EditText) findViewById(R.id.registerPasswordBox);
         repeatPasswordBox = (EditText) findViewById(R.id.registerRepeatPasswordBox);
     }
@@ -40,9 +39,18 @@ public class RegistrationController extends Activity {
 
     public void attemptRegistration(View view) {
 
-        String username = usernameBox.getText().toString();
-        String password = passwordBox.getText().toString();
-        String passwordRepeat = repeatPasswordBox.getText().toString();
+        TextInputLayout registerUsernameInput = (TextInputLayout) findViewById(R.id.registerUsernameInputLayout);
+        String username = registerUsernameInput.getEditText().toString();
+        EditText usernameEditText = registerUsernameInput.getEditText();
+
+        TextInputLayout registerPasswordInput = (TextInputLayout) findViewById(R.id.registerPasswordInputLayer);
+        String password = registerPasswordInput.getEditText().toString();
+        EditText passwordEditText = registerPasswordInput.getEditText();
+
+        TextInputLayout registerRepeatPasswordInput = (TextInputLayout) findViewById(R.id.registerRepeatPasswordInputLayer);
+        String passwordRepeat = registerRepeatPasswordInput.getEditText().toString();
+        EditText passwordRepeatEditText = registerRepeatPasswordInput.getEditText();
+
 
         Log.d("registration", "registration attempted." +
                 " username: " + username +
@@ -62,11 +70,11 @@ public class RegistrationController extends Activity {
             for (RegistrationError error : errors) {
                 EditText target = null;
                 if (error.getField() == RegistrationField.USERNAME) {
-                    target = usernameBox;
+                    target = usernameEditText;
                 } else if (error.getField() == RegistrationField.PASSWORD) {
-                    target = passwordBox;
+                    target = passwordEditText;
                 } else if (error.getField() == RegistrationField.REPEAT_PASSWORD) {
-                    target = repeatPasswordBox;
+                    target = passwordRepeatEditText;
                 }
 
                 setError(target, error, !focusSet);

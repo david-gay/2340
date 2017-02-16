@@ -7,78 +7,85 @@
     android:animateLayoutChanges="true"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="23dp"
-        android:layout_marginTop="67dp"
-        android:text="@string/username" />
+        android:id="@+id/registerPasswordInputLayer"
+        android:layout_alignStart="@+id/registerUsernameInputLayout"
+        android:layout_below="@+id/registerUsernameInputLayout"
+        android:layout_alignEnd="@+id/cancelRegistrationButton">
 
-    <EditText
-        android:id="@+id/registerUsernameTextbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView"
-        android:layout_below="@+id/textView"
-        android:ems="10"
-        android:inputType="textPersonName" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:id="@+id/registerPasswordBox" />
+    </android.support.design.widget.TextInputLayout>
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/registerUsernameTextbox"
-        android:layout_below="@+id/registerUsernameTextbox"
-        android:layout_marginTop="25dp"
-        android:text="@string/password" />
+        android:id="@+id/registerRepeatPasswordInputLayer"
+        android:layout_below="@+id/registerPasswordInputLayer"
+        android:layout_alignStart="@+id/registerPasswordInputLayer"
+        android:layout_alignEnd="@+id/cancelRegistrationButton">
 
-    <EditText
-        android:id="@+id/registerPasswordBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView4"
-        android:layout_below="@+id/textView4"
-        android:ems="10"
-        android:inputType="textPassword" />
-
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/registerPasswordBox"
-        android:layout_below="@+id/registerPasswordBox"
-        android:layout_marginTop="23dp"
-        android:text="@string/repeat_password" />
-
-    <EditText
-        android:id="@+id/registerRepeatPasswordBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView5"
-        android:layout_below="@+id/textView5"
-        android:ems="10"
-        android:inputType="textPassword" />
-
-    <Button
-        android:id="@+id/registerButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/registerRepeatPasswordBox"
-        android:layout_below="@+id/registerRepeatPasswordBox"
-        android:layout_marginTop="42dp"
-        android:onClick="attemptRegistration"
-        android:text="@string/register" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Repeat Password"
+            android:id="@+id/registerRepeatPasswordBox"
+            android:inputType="textPassword"
+            android:layout_below="@+id/registerRepeatPasswordInputLayer"
+            android:layout_alignParentStart="true" />
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/cancelRegistrationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/registerButton"
-        android:layout_marginStart="89dp"
-        android:layout_toEndOf="@+id/registerButton"
         android:onClick="cancelRegistration"
-        android:text="@string/cancel" />
+        android:text="@string/cancel"
+        android:layout_marginEnd="71dp"
+        android:layout_alignBaseline="@+id/registerButton"
+        android:layout_alignBottom="@+id/registerButton"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="attemptRegistration"
+        android:text="@string/register"
+        android:layout_marginTop="17dp"
+        android:layout_marginStart="66dp"
+        android:layout_below="@+id/registerRepeatPasswordInputLayer"
+        android:layout_alignParentStart="true" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/registerUsernameInputLayout"
+        android:layout_below="@+id/textView"
+        android:layout_alignStart="@+id/registerButton"
+        android:layout_alignEnd="@+id/cancelRegistrationButton">
+
+        <EditText
+            android:layout_width="248dp"
+            android:layout_height="wrap_content"
+            android:hint="Username"
+            android:id="@+id/registerUsernameBox" />
+    </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:text="Registration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        android:id="@+id/textView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/registerUsernameInputLayout" />
+
 </RelativeLayout>
