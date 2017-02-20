@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
 import com.sixtyseven.uga.watercake.models.response.LoginResult;
-
 /**
  * Created by Dimitar on 2/10/2017.
  */

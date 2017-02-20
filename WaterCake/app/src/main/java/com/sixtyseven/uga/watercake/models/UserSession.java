@@ -19,31 +19,31 @@ public class UserSession {
         return ourInstance;
     }
 
-    private Map<String, String> users;
+    private Map<String, User> users;
 
-    private String currentUser;
+    private User currentUser;
 
     private UserSession() {
         users = new HashMap<>();
-        users.put("user", "pass");
+        users.put("user", new RegisteredUser("user","pass"));
 
         currentUser = null;
     }
 
-    public String getCurrentUser() {
+    public User getCurrentUser() {
         return currentUser;
     }
 
 
     public LoginResult tryLogin(String username, String password) {
         LoginResult result;
-
+        username = username.toLowerCase();
         if (!users.containsKey(username)) {
             result = LoginResult.USER_DOES_NOT_EXIST;
-        } else if (!users.get(username).equals(password)) {
+        } else if (!users.get(username).hasPassword(password)) {
             result = LoginResult.WRONG_PASSWORD;
         } else {
-            currentUser = username;
+            currentUser = users.get(username);
             result = LoginResult.SUCCESS;
         }
         Log.d("login", result.getMessage());
@@ -69,7 +69,7 @@ public class UserSession {
         if (username.equals("")) {
             results.add(RegistrationError.INVALID_USERNAME);
         }
-        if (users.containsKey(username)) {
+        if (users.containsKey(username.toLowerCase())) {
             results.add(RegistrationError.USERNAME_TAKEN);
         }
         if (!password.equals(passwordRepeat)) {
@@ -80,7 +80,7 @@ public class UserSession {
         }
 
         if (results.isEmpty()) { // if we had no problems, then go ahead and register
-            users.put(username, password);
+            users.put(username.toLowerCase(), new RegisteredUser(username,password));
         }
 
         StringBuilder logOutput = new StringBuilder();

@@ -1,0 +1,27 @@
+package com.sixtyseven.uga.watercake.controllers;
+
+import com.sixtyseven.uga.watercake.models.User;
+
+/**
+ * Created by Thor on 2017-02-19.
+ */
+
+public class Manager extends User {
+    /**
+     * Constructor does the same as User's
+     * @param username the name the user sets
+     * @param password the password that the user sets
+     */
+    public Manager(String username, String password)
+    {
+        super(username, password);
+    }
+    /**
+     * Used to get a string of the type of user for display purposes
+     * @return the name of the class
+     */
+    public String getUserType()
+    {
+        return "Manager";
+    }
+}
