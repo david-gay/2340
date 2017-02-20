@@ -9,6 +9,10 @@ import android.util.Log;
 public abstract class User {
     private String name;
     private String password;
+    //defaults for when the user is created - can be updated through the profile changing option
+    private String email = "";
+    private String address = "";
+    private String title = "";
 
     /**
      * @param username the username of the User created at registration
@@ -39,6 +43,63 @@ public abstract class User {
      */
     public String getUsername() {
         return this.name;
+    }
+
+    /**
+     * Getter for the email address
+     *
+     * @return the email address
+     */
+    public String getEmail() {
+        return this.email;
+    }
+
+    /**
+     * Setter for the email address
+     *
+     * @param email the email address
+     */
+    public void setEmail(String email) {
+        Log.d("profile change", name + "'s email was changed to " + email);
+        this.email = email;
+    }
+
+    /**
+     * Getter for the home address
+     *
+     * @return the home address
+     */
+    public String getAddress() {
+        return this.address;
+    }
+
+    /**
+     * Setter for the home address
+     *
+     * @param address the home address
+     */
+    public void setAddress(String address) {
+        Log.d("profile change", name + "'s address was changed to " + address);
+        this.address = address;
+    }
+
+    /**
+     * Getter for the title
+     *
+     * @return the home address
+     */
+    public String getTitle() {
+        return this.title;
+    }
+
+    /**
+     * Setter for the title
+     *
+     * @param title the person's title
+     */
+    public void setTitle(String title) {
+        Log.d("profile change", name + "'s title was changed to " + title);
+        this.title = title;
     }
 
     public abstract String getUserType();
