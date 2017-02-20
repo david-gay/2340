@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.sixtyseven.uga.watercake.models.response.LoginResult;
 import com.sixtyseven.uga.watercake.models.Registration.RegistrationError;
+import com.sixtyseven.uga.watercake.models.user.User;
+import com.sixtyseven.uga.watercake.models.user.RegisteredUser;
 
 import java.util.EnumSet;
 import java.util.HashMap;
