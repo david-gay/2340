@@ -15,8 +15,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controllers.RegistrationController"></activity>
-        <activity android:name=".controllers.WelcomeCakeController"></activity>
+        <activity android:name=".controllers.RegistrationController"/>
+        <activity android:name=".controllers.WelcomeCakeController"/>
     </application>
 
 </manifest>
