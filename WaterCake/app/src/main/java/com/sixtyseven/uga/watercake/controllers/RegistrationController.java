@@ -1,6 +1,5 @@
 package com.sixtyseven.uga.watercake.controllers;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -60,15 +59,18 @@ public class RegistrationController extends Activity {
      */
     public void attemptRegistration(View view) {
 
-        TextInputLayout registerUsernameInput = (TextInputLayout) findViewById(R.id.registerUsernameInputLayout);
+        TextInputLayout registerUsernameInput = (TextInputLayout) findViewById(R.id
+                .usernameInputLayout);
         EditText usernameEditText = registerUsernameInput.getEditText();
         String username = usernameEditText.getText().toString();
 
-        TextInputLayout registerPasswordInput = (TextInputLayout) findViewById(R.id.registerPasswordInputLayer);
+        TextInputLayout registerPasswordInput = (TextInputLayout) findViewById(R.id
+                .passwordInputLayer);
         EditText passwordEditText = registerPasswordInput.getEditText();
         String password = passwordEditText.getText().toString();
 
-        TextInputLayout registerRepeatPasswordInput = (TextInputLayout) findViewById(R.id.registerRepeatPasswordInputLayer);
+        TextInputLayout registerRepeatPasswordInput = (TextInputLayout) findViewById(R.id
+                .repeatPasswordInputLayer);
         EditText passwordRepeatEditText = registerRepeatPasswordInput.getEditText();
         String passwordRepeat = passwordRepeatEditText.getText().toString();
 
