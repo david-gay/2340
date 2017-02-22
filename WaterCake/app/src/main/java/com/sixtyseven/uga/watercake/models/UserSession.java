@@ -3,7 +3,7 @@ package com.sixtyseven.uga.watercake.models;
 import android.util.Log;
 
 import com.sixtyseven.uga.watercake.models.response.LoginResult;
-import com.sixtyseven.uga.watercake.models.Registration.RegistrationError;
+import com.sixtyseven.uga.watercake.models.registration.RegistrationError;
 import com.sixtyseven.uga.watercake.models.user.User;
 import com.sixtyseven.uga.watercake.models.user.RegisteredUser;
 
@@ -27,16 +27,26 @@ public class UserSession {
 
     private UserSession() {
         users = new HashMap<>();
-        users.put("user", new RegisteredUser("user","pass"));
+        users.put("user", new RegisteredUser("user", "pass"));
 
         currentUser = null;
     }
 
+    /**
+     * Gets the current instance of UserSession
+     * @return the current instance of UserSession
+     */
     public User getCurrentUser() {
         return currentUser;
     }
 
-
+    /**
+     * Attempts to log the user in with the supplied username and password.
+     * @param username the username to login with
+     * @param password the plaintext password to log in with
+     * @return LoginResult.SUCCESS if successful; LoginResult corresponding with the problem
+     * otherwise.
+     */
     public LoginResult tryLogin(String username, String password) {
         LoginResult result;
         username = username.toLowerCase();
@@ -58,12 +68,12 @@ public class UserSession {
     }
 
     /**
-     * Attempts to register a user and returns an EnumSet of all registration errors present.
-     *
-     * @param username       the username to register
-     * @param password       the password to register
+     * Attempts to register a user and returns an EnumSet of any registration errors present.
+     * @param username the username to register
+     * @param password the password to register
      * @param passwordRepeat the repeat password
-     * @return an EnumSet of every error encountered in registration. Empty if registration was successful.
+     * @return an EnumSet of every error encountered in registration. Empty if registration was
+     * successful.
      */
     public EnumSet<RegistrationError> registerUser(String username, String password, String passwordRepeat) {
         EnumSet<RegistrationError> results = EnumSet.noneOf(RegistrationError.class);
@@ -82,7 +92,7 @@ public class UserSession {
         }
 
         if (results.isEmpty()) { // if we had no problems, then go ahead and register
-            users.put(username.toLowerCase(), new RegisteredUser(username,password));
+            users.put(username.toLowerCase(), new RegisteredUser(username, password));
         }
 
         StringBuilder logOutput = new StringBuilder();

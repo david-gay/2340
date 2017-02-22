@@ -14,12 +14,13 @@ import android.widget.TextView;
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
 import com.sixtyseven.uga.watercake.models.response.LoginResult;
-/**
- * Created by Dimitar on 2/10/2017.
- */
 
+/**
+ * Controller for the login screen
+ */
 public class LoginController extends Activity {
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
@@ -39,6 +40,10 @@ public class LoginController extends Activity {
         Log.d("login controller", "login controller created");
     }
 
+    /**
+     * Event handler for the login button. Attempts to log in using the supplied credentials
+     * @param view the button that initiated this event
+     */
     public void attemptLogin(View view) {
         TextInputLayout usernameInput = (TextInputLayout) findViewById(R.id.usernameInputLayout);
         TextInputLayout passwordInput = (TextInputLayout) findViewById(R.id.passwordInputLayout);

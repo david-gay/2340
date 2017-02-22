@@ -12,10 +12,10 @@ import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
 
 /**
- * Created by Dimitar on 2/11/2017.
+ * Welcome screen Controller
  */
-
 public class WelcomeCakeController extends Activity {
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome_cake);
@@ -28,6 +28,10 @@ public class WelcomeCakeController extends Activity {
 
     }
 
+    /**
+     * Event handler for the logout button.
+     * @param view the button that initiated this event
+     */
     public void logout(View view) {
         Log.d("logout", "water cake view logout");
         UserSession.currentSession().logout();

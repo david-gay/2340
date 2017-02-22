@@ -15,21 +15,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.R;
-import com.sixtyseven.uga.watercake.models.Registration.RegistrationField;
+import com.sixtyseven.uga.watercake.models.registration.RegistrationField;
 import com.sixtyseven.uga.watercake.models.UserSession;
-import com.sixtyseven.uga.watercake.models.Registration.RegistrationError;
+import com.sixtyseven.uga.watercake.models.registration.RegistrationError;
 
 import java.util.EnumSet;
 
 /**
- * Created by Dimitar on 2/11/2017.
+ * Controller for the Registration screen
  */
-
 public class RegistrationController extends Activity {
 
     EditText passwordBox;
     EditText repeatPasswordBox;
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -52,7 +52,12 @@ public class RegistrationController extends Activity {
         Log.d("registration controller", "registration controller created");
     }
 
-
+    /**
+     * Event handler for clicking the Register button. Validates user information; if valid, then
+     * registers the user. If not, then updates the Registration view with appropriate error
+     * messages.
+     * @param view the button that initiated this event
+     */
     public void attemptRegistration(View view) {
 
         TextInputLayout registerUsernameInput = (TextInputLayout) findViewById(R.id.registerUsernameInputLayout);
@@ -72,7 +77,8 @@ public class RegistrationController extends Activity {
                 " password: " + password +
                 " password repeat: " + passwordRepeat);
 
-        EnumSet<RegistrationError> errors = UserSession.currentSession().registerUser(username, password, passwordRepeat);
+        EnumSet<RegistrationError> errors = UserSession.currentSession()
+                .registerUser(username, password, passwordRepeat);
 
         if (errors.isEmpty()) { //No errors = success
             Toast.makeText(getBaseContext(), "Registration successful!", Toast.LENGTH_LONG).show();
@@ -109,6 +115,10 @@ public class RegistrationController extends Activity {
         }
     }
 
+    /**
+     * Event handler for the cancel button. Sets the current view to be the login screen.
+     * @param view the button that initiated this event
+     */
     public void cancelRegistration(View view) {
         startActivity(new Intent(RegistrationController.this, LoginController.class));
         Log.d("registration", "registration canceled");
