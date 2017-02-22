@@ -1,11 +1,8 @@
-package com.sixtyseven.uga.watercake.models.Registration;
+package com.sixtyseven.uga.watercake.models.registration;
 
 /**
- * Created by Dimitar on 2/13/2017.
- */
-
-/**
- * Result for use with user registration.
+ * Enum of every possible registration error. Also gives access to the associated RegistrationField
+ * that error applies to.
  */
 public enum RegistrationError {
     USERNAME_TAKEN("Username taken", RegistrationField.USERNAME),
