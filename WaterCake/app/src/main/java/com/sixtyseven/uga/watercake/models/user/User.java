@@ -21,7 +21,7 @@ public class User {
      * @param username the username of the User created at registration
      * @param password the password that the user chooses
      */
-    public User(String username, String password, UserType userType) {
+    public User(String username, String password) {
         Log.d("user instance", "Created instance of user " + username + " of type " + getUserType
                 ());
         this.name = username;
@@ -38,6 +38,14 @@ public class User {
                 (this.password) ?
                 "matches" : "does not match") + " the correct password");
         return this.password.equals(password);
+    }
+
+    /**
+     * Setter for password
+     * @param password the new password
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     /**
