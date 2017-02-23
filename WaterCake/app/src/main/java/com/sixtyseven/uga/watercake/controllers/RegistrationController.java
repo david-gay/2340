@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.EditText;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.R;
@@ -21,7 +23,6 @@ import java.util.EnumSet;
  */
 public class RegistrationController extends FragmentActivity {
     UserPropertiesFragment properties;
-    EditText repeatPasswordBox;
 
     TextInputLayout usernameTextLayout;
 
@@ -35,19 +36,26 @@ public class RegistrationController extends FragmentActivity {
                 .details_fragment);
         usernameTextLayout = (TextInputLayout) findViewById(R.id.registrationUsernameInputLayout);
 
-        repeatPasswordBox = (EditText) findViewById(R.id.propertiesRepeatPasswordBox);
+        //Sets the final text box in the UserPropertiesFragment to be flagged for IME_ACTION_DONE
+        //and adds a listener.
+        TextInputLayout textInputLayout = properties.getBottomTextInputLayout();
+        if (textInputLayout != null && textInputLayout.getEditText() != null) {
+            textInputLayout.getEditText().setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-        /*repeatPasswordBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    attemptRegistration(null);
-                    handled = true;
+            textInputLayout.getEditText().setOnEditorActionListener(new TextView
+                    .OnEditorActionListener() {
+
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    boolean handled = false;
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        attemptRegistration(null);
+                        handled = true;
+                    }
+                    return handled;
                 }
-                return handled;
-            }
-        });*/
+            });
+        }
 
         Log.d("registration controller", "registration controller created");
     }

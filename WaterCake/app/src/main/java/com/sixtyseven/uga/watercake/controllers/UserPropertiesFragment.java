@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.userprofile.UserProfileError;
@@ -19,11 +20,14 @@ public class UserPropertiesFragment extends Fragment {
     TextInputLayout passwordInput;
     TextInputLayout repeatPasswordInput;
 
+    /**
+     * Factory method for getting new UserPropertiesFragment. Required for Android Fragments
+     * @return a new UserPropertiesFragment
+     */
     public static UserPropertiesFragment newInstance() {
         return new UserPropertiesFragment();
     }
 
-    //3
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
@@ -35,6 +39,14 @@ public class UserPropertiesFragment extends Fragment {
         repeatPasswordInput = (TextInputLayout) view.findViewById(R.id
                 .repeatPasswordInputLayout);
         return view;
+    }
+
+    public void setTextFieldContents(UserProfileField field, String text) {
+        if (field == UserProfileField.PASSWORD) {
+            passwordInput.getEditText().setText(text);
+        } else if (field == UserProfileField.REPEAT_PASSWORD) {
+            repeatPasswordInput.getEditText().setText(text);
+        }
     }
 
     /**
@@ -72,7 +84,12 @@ public class UserPropertiesFragment extends Fragment {
         return focusSet && requestFocus;
     }
 
-    private void setError(UserProfileError error, boolean shouldFocus) {
+    /**
+     * Sets an error message on the text field associated with the error.
+     * @param error the error to set
+     * @param shouldFocus true if focus should be set on the field with the error
+     */
+    public void setError(UserProfileError error, boolean shouldFocus) {
         Log.d("userPropertiesFragment", "setting error: " + error.getMessage());
 
         TextInputLayout target = null;
@@ -88,5 +105,25 @@ public class UserPropertiesFragment extends Fragment {
                 target.getEditText().requestFocus();
             }
         }
+    }
+
+    /**
+     * Gets the bottom TextInputLayout in this layout.
+     * @return the bottom TextInputLayout
+     */
+    public TextInputLayout getBottomTextInputLayout() {
+        ViewGroup layout = (ViewGroup) getView();
+        int length = layout.getChildCount();
+        TextInputLayout output = null;
+
+        int i = length - 1;
+        while (output == null && i > -1) {
+            View v = layout.getChildAt(i);
+            if (v instanceof TextInputLayout) {
+                output = (TextInputLayout) v;
+            }
+            i--;
+        }
+        return output;
     }
 }
