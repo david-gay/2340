@@ -30,17 +30,26 @@ public class EditProfileActivity extends FragmentActivity {
         ((TextInputLayout) properties.getView().findViewById(R.id
                 .passwordInputLayout)).setHint("Change Password");
 
-        properties.getBottomTextInputLayout().getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
+        //Sets the final text box in the UserPropertiesFragment to be flagged for IME_ACTION_DONE
+        //and adds a listener.
+        TextInputLayout textInputLayout = properties.getBottomTextInputLayout();
+        if (textInputLayout != null && textInputLayout.getEditText() != null) {
+            textInputLayout.getEditText().setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-                    handled = true;
+            textInputLayout.getEditText().setOnEditorActionListener(new TextView
+                    .OnEditorActionListener() {
+
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    boolean handled = false;
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        confirmEditProfile(null);
+                        handled = true;
+                    }
+                    return handled;
                 }
-                return handled;
-            }
-        });
+            });
+        }
 
         Log.d("EditProfileActivity", "EditProfileActivity created");
     }
