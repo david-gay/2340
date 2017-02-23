@@ -5,7 +5,6 @@ import android.util.Log;
 import com.sixtyseven.uga.watercake.models.response.LoginResult;
 import com.sixtyseven.uga.watercake.models.userprofile.UserProfileError;
 import com.sixtyseven.uga.watercake.models.user.User;
-import com.sixtyseven.uga.watercake.models.user.RegisteredUser;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -27,7 +26,7 @@ public class UserSession {
 
     private UserSession() {
         users = new HashMap<>();
-        users.put("user", new RegisteredUser("user", "pass"));
+        users.put("user", new User("user", "pass"));
 
         currentUser = null;
     }
@@ -93,7 +92,7 @@ public class UserSession {
         }
 
         if (results.isEmpty()) { // if we had no problems, then go ahead and register
-            users.put(username.toLowerCase(), new RegisteredUser(username, password));
+            users.put(username.toLowerCase(), new User(username, password));
         }
 
         StringBuilder logOutput = new StringBuilder();
