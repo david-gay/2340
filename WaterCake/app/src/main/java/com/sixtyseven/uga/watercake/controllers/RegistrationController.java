@@ -11,8 +11,8 @@ import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
-import com.sixtyseven.uga.watercake.models.registration.RegistrationError;
-import com.sixtyseven.uga.watercake.models.registration.RegistrationField;
+import com.sixtyseven.uga.watercake.models.userprofile.UserProfileError;
+import com.sixtyseven.uga.watercake.models.userprofile.UserProfileField;
 
 import java.util.EnumSet;
 
@@ -64,16 +64,16 @@ public class RegistrationController extends FragmentActivity {
 
 
         String username = usernameTextLayout.getEditText().getText().toString();
-        String password = properties.getTextFieldContents(RegistrationField.PASSWORD);
+        String password = properties.getTextFieldContents(UserProfileField.PASSWORD);
 
-        String passwordRepeat = properties.getTextFieldContents(RegistrationField.REPEAT_PASSWORD);
+        String passwordRepeat = properties.getTextFieldContents(UserProfileField.REPEAT_PASSWORD);
 
         Log.d("registration", "registration attempted." +
                 " username: " + username +
                 " password: " + password +
                 " password repeat: " + passwordRepeat);
 
-        EnumSet<RegistrationError> errors = UserSession.currentSession()
+        EnumSet<UserProfileError> errors = UserSession.currentSession()
                 .registerUser(username, password, passwordRepeat);
 
         if (errors.isEmpty()) { //No errors = success
@@ -85,8 +85,8 @@ public class RegistrationController extends FragmentActivity {
             boolean focusSet = false;
 
             // Handle username errors first, so that it takes focus
-            for (RegistrationError error : errors) {
-                if (error.getField() == RegistrationField.USERNAME) {
+            for (UserProfileError error : errors) {
+                if (error.getField() == UserProfileField.USERNAME) {
                     setError(usernameTextLayout, error, !focusSet);
                     focusSet = true;
                 }
@@ -97,7 +97,7 @@ public class RegistrationController extends FragmentActivity {
 
     }
 
-    private void setError(TextInputLayout target, RegistrationError error, boolean shouldFocus) {
+    private void setError(TextInputLayout target, UserProfileError error, boolean shouldFocus) {
         Log.d("registration controller", "setting error: " + error.getMessage());
         if (target != null) {
             target.setError(error.getMessage());

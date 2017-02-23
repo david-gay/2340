@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sixtyseven.uga.watercake.R;
-import com.sixtyseven.uga.watercake.models.registration.RegistrationError;
-import com.sixtyseven.uga.watercake.models.registration.RegistrationField;
+import com.sixtyseven.uga.watercake.models.userprofile.UserProfileError;
+import com.sixtyseven.uga.watercake.models.userprofile.UserProfileField;
 
 import java.util.EnumSet;
 
@@ -38,15 +38,15 @@ public class UserPropertiesFragment extends Fragment {
     }
 
     /**
-     * Gets the current text in the corresponding RegistrationField
+     * Gets the current text in the corresponding UserProfileField
      * @param field the field to get
-     * @return the contents corresponding to the RegistrationField. Will return "" if the
-     * RegistrationField is not a TextField.
+     * @return the contents corresponding to the UserProfileField. Will return "" if the
+     * UserProfileField is not a TextField.
      */
-    public String getTextFieldContents(RegistrationField field) {
-        if (field == RegistrationField.PASSWORD) {
+    public String getTextFieldContents(UserProfileField field) {
+        if (field == UserProfileField.PASSWORD) {
             return passwordInput.getEditText().getText().toString();
-        } else if (field == RegistrationField.REPEAT_PASSWORD) {
+        } else if (field == UserProfileField.REPEAT_PASSWORD) {
             return repeatPasswordInput.getEditText().getText().toString();
         }
 
@@ -60,11 +60,11 @@ public class UserPropertiesFragment extends Fragment {
      * @param requestFocus true if the first error should cause the field to take focus
      * @return true if focus was set within this method
      */
-    public boolean setErrors(EnumSet<RegistrationError> errors, boolean requestFocus) {
+    public boolean setErrors(EnumSet<UserProfileError> errors, boolean requestFocus) {
 
         boolean focusSet = !requestFocus;
 
-        for (RegistrationError error : errors) {
+        for (UserProfileError error : errors) {
             setError(error, !focusSet);
             focusSet = true;
         }
@@ -72,13 +72,13 @@ public class UserPropertiesFragment extends Fragment {
         return focusSet && requestFocus;
     }
 
-    private void setError(RegistrationError error, boolean shouldFocus) {
+    private void setError(UserProfileError error, boolean shouldFocus) {
         Log.d("userPropertiesFragment", "setting error: " + error.getMessage());
 
         TextInputLayout target = null;
-        if (error.getField() == RegistrationField.PASSWORD) {
+        if (error.getField() == UserProfileField.PASSWORD) {
             target = passwordInput;
-        } else if (error.getField() == RegistrationField.REPEAT_PASSWORD) {
+        } else if (error.getField() == UserProfileField.REPEAT_PASSWORD) {
             target = repeatPasswordInput;
         }
 

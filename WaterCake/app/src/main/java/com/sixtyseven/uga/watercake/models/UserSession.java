@@ -3,7 +3,7 @@ package com.sixtyseven.uga.watercake.models;
 import android.util.Log;
 
 import com.sixtyseven.uga.watercake.models.response.LoginResult;
-import com.sixtyseven.uga.watercake.models.registration.RegistrationError;
+import com.sixtyseven.uga.watercake.models.userprofile.UserProfileError;
 import com.sixtyseven.uga.watercake.models.user.User;
 import com.sixtyseven.uga.watercake.models.user.RegisteredUser;
 
@@ -75,20 +75,21 @@ public class UserSession {
      * @return an EnumSet of every error encountered in registration. Empty if registration was
      * successful.
      */
-    public EnumSet<RegistrationError> registerUser(String username, String password, String passwordRepeat) {
-        EnumSet<RegistrationError> results = EnumSet.noneOf(RegistrationError.class);
+    public EnumSet<UserProfileError> registerUser(String username, String password, String
+            passwordRepeat) {
+        EnumSet<UserProfileError> results = EnumSet.noneOf(UserProfileError.class);
 
         if (username.equals("")) {
-            results.add(RegistrationError.INVALID_USERNAME);
+            results.add(UserProfileError.INVALID_USERNAME);
         }
         if (users.containsKey(username.toLowerCase())) {
-            results.add(RegistrationError.USERNAME_TAKEN);
+            results.add(UserProfileError.USERNAME_TAKEN);
         }
         if (!password.equals(passwordRepeat)) {
-            results.add(RegistrationError.PASSWORD_MISMATCH);
+            results.add(UserProfileError.PASSWORD_MISMATCH);
         }
         if (password.length() < 6) {
-            results.add(RegistrationError.PASSWORD_TOO_SHORT);
+            results.add(UserProfileError.PASSWORD_TOO_SHORT);
         }
 
         if (results.isEmpty()) { // if we had no problems, then go ahead and register
@@ -97,7 +98,7 @@ public class UserSession {
 
         StringBuilder logOutput = new StringBuilder();
         boolean first = true;
-        for (RegistrationError result : results) {
+        for (UserProfileError result : results) {
             if (!first) {
                 logOutput.append(", ");
             } else {

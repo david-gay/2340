@@ -1,9 +1,9 @@
-package com.sixtyseven.uga.watercake.models.registration;
+package com.sixtyseven.uga.watercake.models.userprofile;
 
 /**
  * A enum for representing all possible fields used for registration
  */
-public enum RegistrationField {
+public enum UserProfileField {
     USERNAME,
     PASSWORD,
     REPEAT_PASSWORD,
