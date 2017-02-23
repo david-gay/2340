@@ -1,32 +1,29 @@
 package com.sixtyseven.uga.watercake.controllers;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
 import android.support.design.widget.TextInputLayout;
-
-import android.view.inputmethod.EditorInfo;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.R;
-import com.sixtyseven.uga.watercake.models.registration.RegistrationField;
 import com.sixtyseven.uga.watercake.models.UserSession;
 import com.sixtyseven.uga.watercake.models.registration.RegistrationError;
+import com.sixtyseven.uga.watercake.models.registration.RegistrationField;
 
 import java.util.EnumSet;
 
 /**
  * Controller for the Registration screen
  */
-public class RegistrationController extends Activity {
-
-    EditText passwordBox;
+public class RegistrationController extends FragmentActivity {
+    UserPropertiesFragment properties;
     EditText repeatPasswordBox;
+
+    TextInputLayout usernameTextLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,10 +31,13 @@ public class RegistrationController extends Activity {
 
         setContentView(R.layout.register);
 
-        passwordBox = (EditText) findViewById(R.id.registerPasswordBox);
-        repeatPasswordBox = (EditText) findViewById(R.id.registerRepeatPasswordBox);
+        properties = (UserPropertiesFragment) getSupportFragmentManager().findFragmentById(R.id
+                .details_fragment);
+        usernameTextLayout = (TextInputLayout) findViewById(R.id.registrationUsernameInputLayout);
 
-        repeatPasswordBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        repeatPasswordBox = (EditText) findViewById(R.id.propertiesRepeatPasswordBox);
+
+        /*repeatPasswordBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
@@ -47,7 +47,8 @@ public class RegistrationController extends Activity {
                 }
                 return handled;
             }
-        });
+        });*/
+
         Log.d("registration controller", "registration controller created");
     }
 
@@ -59,20 +60,13 @@ public class RegistrationController extends Activity {
      */
     public void attemptRegistration(View view) {
 
-        TextInputLayout registerUsernameInput = (TextInputLayout) findViewById(R.id
-                .usernameInputLayout);
-        EditText usernameEditText = registerUsernameInput.getEditText();
-        String username = usernameEditText.getText().toString();
+        Log.d("registration controller", "attemptRegistration");
 
-        TextInputLayout registerPasswordInput = (TextInputLayout) findViewById(R.id
-                .passwordInputLayer);
-        EditText passwordEditText = registerPasswordInput.getEditText();
-        String password = passwordEditText.getText().toString();
 
-        TextInputLayout registerRepeatPasswordInput = (TextInputLayout) findViewById(R.id
-                .repeatPasswordInputLayer);
-        EditText passwordRepeatEditText = registerRepeatPasswordInput.getEditText();
-        String passwordRepeat = passwordRepeatEditText.getText().toString();
+        String username = usernameTextLayout.getEditText().getText().toString();
+        String password = properties.getTextFieldContents(RegistrationField.PASSWORD);
+
+        String passwordRepeat = properties.getTextFieldContents(RegistrationField.REPEAT_PASSWORD);
 
         Log.d("registration", "registration attempted." +
                 " username: " + username +
@@ -90,19 +84,15 @@ public class RegistrationController extends Activity {
 
             boolean focusSet = false;
 
+            // Handle username errors first, so that it takes focus
             for (RegistrationError error : errors) {
-                TextInputLayout target = null;
                 if (error.getField() == RegistrationField.USERNAME) {
-                    target = registerUsernameInput;
-                } else if (error.getField() == RegistrationField.PASSWORD) {
-                    target = registerPasswordInput;
-                } else if (error.getField() == RegistrationField.REPEAT_PASSWORD) {
-                    target = registerRepeatPasswordInput;
+                    setError(usernameTextLayout, error, !focusSet);
+                    focusSet = true;
                 }
-
-                setError(target, error, !focusSet);
-                focusSet = true;
             }
+
+            properties.setErrors(errors, !focusSet);
         }
 
     }

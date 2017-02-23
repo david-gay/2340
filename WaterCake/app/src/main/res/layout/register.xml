@@ -17,8 +17,25 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@color/colorPrimary"/>
 
-    <include
-        layout="@layout/fragment_user_properties"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/registrationUsernameInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/usernameBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/username"
+            android:inputType="textVisiblePassword">
+
+            <requestFocus/>
+        </EditText>
+    </android.support.design.widget.TextInputLayout>
+
+    <fragment
+        android:id="@+id/details_fragment"
+        class="com.sixtyseven.uga.watercake.controllers.UserPropertiesFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
