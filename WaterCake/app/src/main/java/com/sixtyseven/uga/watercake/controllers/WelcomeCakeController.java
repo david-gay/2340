@@ -37,4 +37,10 @@ public class WelcomeCakeController extends Activity {
         UserSession.currentSession().logout();
         startActivity(new Intent(WelcomeCakeController.this, LoginController.class));
     }
+
+    public void editProfile(View view) {
+        Log.d("WelcomeCakeController", "Clicked Edit Profile.");
+        startActivity(new Intent(WelcomeCakeController.this, EditProfileActivity.class));
+
+    }
 }
