@@ -106,7 +106,7 @@ public class UserSession {
     /**
      * Performs validation on all fields present in fieldMap.
      * @param fieldMap a map of UserProfileFields to their associated data Strings
-     * @return
+     * @return an EnumSet of every error encountered in validation.
      */
     public EnumSet<UserProfileError> validateUserFields(Map<UserProfileField, String> fieldMap) {
 
@@ -135,6 +135,20 @@ public class UserSession {
             }
         }
 
+        return results;
+    }
+
+    /**
+     * Updates the current user based on a map of UserProfileFields to Strings
+     * @param fieldMap a map of UserProfileFields to their associated data Strings
+     * @return an EnumSet of every error encountered in updating. Empty if update was successful.
+     */
+    public EnumSet<UserProfileError> updateUserFields(Map<UserProfileField, String> fieldMap) {
+        EnumSet<UserProfileError> results = validateUserFields(fieldMap);
+
+        if (results.isEmpty()) {
+            currentUser.setFieldsFromFieldsMap(fieldMap);
+        }
         return results;
     }
 }

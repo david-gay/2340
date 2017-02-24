@@ -13,7 +13,11 @@ import android.widget.TextView;
 
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
+import com.sixtyseven.uga.watercake.models.userprofile.UserProfileError;
 import com.sixtyseven.uga.watercake.models.userprofile.UserProfileField;
+
+import java.util.EnumSet;
+import java.util.Map;
 
 
 public class EditProfileActivity extends FragmentActivity {
@@ -25,6 +29,7 @@ public class EditProfileActivity extends FragmentActivity {
 
         setContentView(R.layout.activity_edit_profile);
 
+        //Changes the default Password field to say Change Password
         properties = (UserPropertiesFragment) getSupportFragmentManager().findFragmentById(R.id
                 .details_fragment);
         ((TextInputLayout) properties.getView().findViewById(R.id
@@ -56,19 +61,21 @@ public class EditProfileActivity extends FragmentActivity {
 
     /**
      * Event handler for the confirm button. Validates user info and saves.
-     * @param view
+     * @param view the button that initiated this event
      */
     public void confirmEditProfile(View view) {
-        String password = properties.getTextFieldContents(UserProfileField.PASSWORD);
+        Map<UserProfileField, String> fieldsMap = properties.getFieldMap();
 
-        if (password != null && !"".equals(password)) {
-            //TODO validate password length, etc.
-            UserSession.currentSession().getCurrentUser().setPassword(password);
+        EnumSet<UserProfileError> results = UserSession.currentSession().updateUserFields
+                (fieldsMap);
+
+        if (results.isEmpty()) {
+            Log.d("EditProfileActivity", "Profile Updated");
+            startActivity(new Intent(EditProfileActivity.this, WelcomeCakeController.class));
+        } else {
+            Log.d("EditProfileActivity", "Profile Update failed");
+            properties.setErrors(results, true);
         }
-
-        //TODO if errors, don't transition
-        Log.d("EditProfileActivity", "Profile Updated");
-        startActivity(new Intent(EditProfileActivity.this, WelcomeCakeController.class));
     }
 
     /**
