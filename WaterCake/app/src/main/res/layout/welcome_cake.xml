@@ -51,6 +51,7 @@
         android:onClick="editProfile"
         android:text="@string/edit_profile"
         style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_centerHorizontal="true"
         android:layout_above="@+id/logoutButton"
         android:layout_alignStart="@+id/textView7"/>
 </RelativeLayout>
