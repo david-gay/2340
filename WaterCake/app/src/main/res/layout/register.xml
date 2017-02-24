@@ -1,66 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:orientation="vertical"
-    android:padding="20dp">
-
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/registration"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@color/colorPrimary"/>
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/registrationUsernameInputLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/usernameBox"
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/username"
-            android:inputType="textVisiblePassword">
+            android:gravity="center"
+            android:text="@string/registration"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@color/colorPrimary"/>
 
-            <requestFocus/>
-        </EditText>
-    </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/registrationUsernameInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <fragment
-        android:id="@+id/details_fragment"
-        class="com.sixtyseven.uga.watercake.controllers.UserPropertiesFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+            <EditText
+                android:id="@+id/usernameBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/username"
+                android:inputType="textVisiblePassword">
 
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/userTypeSpinner"/>
+                <requestFocus/>
+            </EditText>
+        </android.support.design.widget.TextInputLayout>
 
-    <Button
-        android:id="@+id/registerButton"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:onClick="attemptRegistration"
-        android:text="@string/register"/>
+        <Spinner
+            android:id="@+id/userTypeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"/>
+
+        <fragment
+            android:id="@+id/details_fragment"
+            class="com.sixtyseven.uga.watercake.controllers.UserPropertiesFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/registerButton"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="attemptRegistration"
+            android:text="@string/register"/>
 
 
-    <Button
-        android:id="@+id/cancelRegistrationButton"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="cancelRegistration"
-        android:text="@string/cancel"/>
+        <Button
+            android:id="@+id/cancelRegistrationButton"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="cancelRegistration"
+            android:text="@string/cancel"/>
 
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
