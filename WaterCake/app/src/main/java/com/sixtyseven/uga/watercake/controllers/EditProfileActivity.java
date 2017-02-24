@@ -55,6 +55,18 @@ public class EditProfileActivity extends FragmentActivity {
             });
         }
 
+
+        Map<UserProfileField, String> fieldsMap = UserSession.currentSession().getCurrentUser()
+                .getFieldsMap();
+
+        //Do not populate the password field
+        fieldsMap.remove(UserProfileField.PASSWORD);
+
+        //Populate fields from the current user's data
+        for (UserProfileField f : fieldsMap.keySet()) {
+            properties.setTextFieldContents(f, fieldsMap.get(f));
+        }
+
         Log.d("EditProfileActivity", "EditProfileActivity created");
     }
 
