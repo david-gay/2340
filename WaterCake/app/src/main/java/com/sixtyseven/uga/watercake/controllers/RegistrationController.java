@@ -8,11 +8,14 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
+import com.sixtyseven.uga.watercake.models.user.UserType;
 import com.sixtyseven.uga.watercake.models.userprofile.UserProfileError;
 import com.sixtyseven.uga.watercake.models.userprofile.UserProfileField;
 
@@ -26,6 +29,7 @@ public class RegistrationController extends FragmentActivity {
     UserPropertiesFragment properties;
 
     TextInputLayout usernameTextLayout;
+    Spinner userTypeSpinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,12 @@ public class RegistrationController extends FragmentActivity {
         properties = (UserPropertiesFragment) getSupportFragmentManager().findFragmentById(R.id
                 .details_fragment);
         usernameTextLayout = (TextInputLayout) findViewById(R.id.registrationUsernameInputLayout);
+        userTypeSpinner = (Spinner) findViewById(R.id.userTypeSpinner);
+
+        ArrayAdapter<UserType> adapter = new ArrayAdapter<>(this, android.R.layout
+                .simple_spinner_item, UserType.values());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        userTypeSpinner.setAdapter(adapter);
 
         //Sets the final text box in the UserPropertiesFragment to be flagged for IME_ACTION_DONE
         //and adds a listener.
@@ -76,6 +86,7 @@ public class RegistrationController extends FragmentActivity {
 
         fieldMap.put(UserProfileField.USERNAME, usernameTextLayout.getEditText().getText()
                 .toString());
+        fieldMap.put(UserProfileField.USER_TYPE, ((UserType) userTypeSpinner.getSelectedItem()).name());
 
         EnumSet<UserProfileError> errors = UserSession.currentSession()
                 .registerUser(fieldMap);
