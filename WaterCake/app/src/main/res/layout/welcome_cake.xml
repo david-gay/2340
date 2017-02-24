@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:orientation="vertical">
-
     <Button
         android:id="@+id/logoutButton"
         android:layout_width="wrap_content"
@@ -44,4 +43,15 @@
         android:minHeight="150dp"
         android:minWidth="150dp"
         app:srcCompat="@mipmap/water_cat_cake" />
+
+    <Button
+        android:id="@+id/editProfileButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="editProfile"
+        android:text="@string/edit_profile"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/logoutButton"
+        android:layout_alignStart="@+id/textView7"/>
 </RelativeLayout>

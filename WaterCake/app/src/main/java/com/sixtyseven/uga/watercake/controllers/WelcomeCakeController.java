@@ -23,6 +23,7 @@ public class WelcomeCakeController extends Activity {
         mImageView = (ImageView) findViewById(R.id.imageView);
         mImageView.setImageResource(R.mipmap.water_cat_cake);
         ((TextView) findViewById(R.id.welcomeText)).setText("Welcome, "
+                + UserSession.currentSession().getCurrentUser().getTitle() + " "
                 + UserSession.currentSession().getCurrentUser().getUsername() + "!");
         Log.d("welcomecake controller", "welcomecake controller created");
 
@@ -35,6 +36,12 @@ public class WelcomeCakeController extends Activity {
     public void logout(View view) {
         Log.d("logout", "water cake view logout");
         UserSession.currentSession().logout();
-        startActivity(new Intent(WelcomeCakeController.this, LoginController.class));
+        finish();
+    }
+
+    public void editProfile(View view) {
+        Log.d("WelcomeCakeController", "Clicked Edit Profile.");
+        startActivity(new Intent(WelcomeCakeController.this, EditProfileActivity.class));
+
     }
 }

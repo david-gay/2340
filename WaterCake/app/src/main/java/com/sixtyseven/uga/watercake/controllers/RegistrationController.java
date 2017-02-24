@@ -1,33 +1,34 @@
 package com.sixtyseven.uga.watercake.controllers;
 
-
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.support.design.widget.TextInputLayout;
-
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.R;
-import com.sixtyseven.uga.watercake.models.registration.RegistrationField;
 import com.sixtyseven.uga.watercake.models.UserSession;
-import com.sixtyseven.uga.watercake.models.registration.RegistrationError;
+import com.sixtyseven.uga.watercake.models.user.UserType;
+import com.sixtyseven.uga.watercake.models.userprofile.UserProfileError;
+import com.sixtyseven.uga.watercake.models.userprofile.UserProfileField;
 
 import java.util.EnumSet;
+import java.util.Map;
 
 /**
  * Controller for the Registration screen
  */
-public class RegistrationController extends Activity {
+public class RegistrationController extends FragmentActivity {
+    UserPropertiesFragment properties;
 
-    EditText passwordBox;
-    EditText repeatPasswordBox;
+    TextInputLayout usernameTextLayout;
+    Spinner userTypeSpinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,20 +36,37 @@ public class RegistrationController extends Activity {
 
         setContentView(R.layout.register);
 
-        passwordBox = (EditText) findViewById(R.id.registerPasswordBox);
-        repeatPasswordBox = (EditText) findViewById(R.id.registerRepeatPasswordBox);
+        properties = (UserPropertiesFragment) getSupportFragmentManager().findFragmentById(R.id
+                .details_fragment);
+        usernameTextLayout = (TextInputLayout) findViewById(R.id.registrationUsernameInputLayout);
+        userTypeSpinner = (Spinner) findViewById(R.id.userTypeSpinner);
 
-        repeatPasswordBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    attemptRegistration(null);
-                    handled = true;
+        ArrayAdapter<UserType> adapter = new ArrayAdapter<>(this, android.R.layout
+                .simple_spinner_item, UserType.values());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        userTypeSpinner.setAdapter(adapter);
+
+        //Sets the final text box in the UserPropertiesFragment to be flagged for IME_ACTION_DONE
+        //and adds a listener.
+        TextInputLayout textInputLayout = properties.getBottomTextInputLayout();
+        if (textInputLayout != null && textInputLayout.getEditText() != null) {
+            textInputLayout.getEditText().setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+            textInputLayout.getEditText().setOnEditorActionListener(new TextView
+                    .OnEditorActionListener() {
+
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    boolean handled = false;
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        attemptRegistration(null);
+                        handled = true;
+                    }
+                    return handled;
                 }
-                return handled;
-            }
-        });
+            });
+        }
+
         Log.d("registration controller", "registration controller created");
     }
 
@@ -60,52 +78,41 @@ public class RegistrationController extends Activity {
      */
     public void attemptRegistration(View view) {
 
-        TextInputLayout registerUsernameInput = (TextInputLayout) findViewById(R.id.registerUsernameInputLayout);
-        EditText usernameEditText = registerUsernameInput.getEditText();
-        String username = usernameEditText.getText().toString();
+        Log.d("registration controller", "attemptRegistration");
 
-        TextInputLayout registerPasswordInput = (TextInputLayout) findViewById(R.id.registerPasswordInputLayer);
-        EditText passwordEditText = registerPasswordInput.getEditText();
-        String password = passwordEditText.getText().toString();
 
-        TextInputLayout registerRepeatPasswordInput = (TextInputLayout) findViewById(R.id.registerRepeatPasswordInputLayer);
-        EditText passwordRepeatEditText = registerRepeatPasswordInput.getEditText();
-        String passwordRepeat = passwordRepeatEditText.getText().toString();
+        Map<UserProfileField, String> fieldMap = properties.getFieldMap();
 
-        Log.d("registration", "registration attempted." +
-                " username: " + username +
-                " password: " + password +
-                " password repeat: " + passwordRepeat);
+        fieldMap.put(UserProfileField.USERNAME, usernameTextLayout.getEditText().getText()
+                .toString());
+        fieldMap.put(UserProfileField.USER_TYPE, ((UserType) userTypeSpinner.getSelectedItem())
+                .name());
 
-        EnumSet<RegistrationError> errors = UserSession.currentSession()
-                .registerUser(username, password, passwordRepeat);
+        EnumSet<UserProfileError> errors = UserSession.currentSession()
+                .registerUser(fieldMap);
 
         if (errors.isEmpty()) { //No errors = success
             Toast.makeText(getBaseContext(), "Registration successful!", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(RegistrationController.this, LoginController.class));
+            finish();
         } else {
             Toast.makeText(getBaseContext(), "Registration failed!", Toast.LENGTH_SHORT).show();
 
             boolean focusSet = false;
 
-            for (RegistrationError error : errors) {
-                TextInputLayout target = null;
-                if (error.getField() == RegistrationField.USERNAME) {
-                    target = registerUsernameInput;
-                } else if (error.getField() == RegistrationField.PASSWORD) {
-                    target = registerPasswordInput;
-                } else if (error.getField() == RegistrationField.REPEAT_PASSWORD) {
-                    target = registerRepeatPasswordInput;
+            // Handle username errors first, so that it takes focus
+            for (UserProfileError error : errors) {
+                if (error.getField() == UserProfileField.USERNAME) {
+                    setError(usernameTextLayout, error, !focusSet);
+                    focusSet = true;
                 }
-
-                setError(target, error, !focusSet);
-                focusSet = true;
             }
+
+            properties.setErrors(errors, !focusSet);
         }
 
     }
 
-    private void setError(TextInputLayout target, RegistrationError error, boolean shouldFocus) {
+    private void setError(TextInputLayout target, UserProfileError error, boolean shouldFocus) {
         Log.d("registration controller", "setting error: " + error.getMessage());
         if (target != null) {
             target.setError(error.getMessage());
@@ -120,7 +127,7 @@ public class RegistrationController extends Activity {
      * @param view the button that initiated this event
      */
     public void cancelRegistration(View view) {
-        startActivity(new Intent(RegistrationController.this, LoginController.class));
+        finish();
         Log.d("registration", "registration canceled");
     }
 }
