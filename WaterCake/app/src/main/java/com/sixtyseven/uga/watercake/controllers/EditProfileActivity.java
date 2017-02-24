@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.sixtyseven.uga.watercake.R;
@@ -65,6 +64,12 @@ public class EditProfileActivity extends FragmentActivity {
      */
     public void confirmEditProfile(View view) {
         Map<UserProfileField, String> fieldsMap = properties.getFieldMap();
+
+        //special handling for when the user does not try to change their password
+        if (fieldsMap.containsKey(UserProfileField.PASSWORD) && "".equals(fieldsMap.get
+                (UserProfileField.PASSWORD))) {
+            fieldsMap.remove(UserProfileField.PASSWORD);
+        }
 
         EnumSet<UserProfileError> results = UserSession.currentSession().updateUserFields
                 (fieldsMap);
