@@ -1,6 +1,5 @@
 package com.sixtyseven.uga.watercake.controllers;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentActivity;
@@ -88,7 +87,7 @@ public class EditProfileActivity extends FragmentActivity {
 
         if (results.isEmpty()) {
             Log.d("EditProfileActivity", "Profile Updated");
-            startActivity(new Intent(EditProfileActivity.this, WelcomeCakeController.class));
+            finish();
         } else {
             Log.d("EditProfileActivity", "Profile Update failed");
             properties.setErrors(results, true);
@@ -101,6 +100,6 @@ public class EditProfileActivity extends FragmentActivity {
      */
     public void cancelEditProfile(View view) {
         Log.d("EditProfileActivity", "Canceled");
-        startActivity(new Intent(EditProfileActivity.this, WelcomeCakeController.class));
+        finish();
     }
 }

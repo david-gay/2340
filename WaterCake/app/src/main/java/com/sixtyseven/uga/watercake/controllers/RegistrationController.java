@@ -1,6 +1,5 @@
 package com.sixtyseven.uga.watercake.controllers;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentActivity;
@@ -86,14 +85,15 @@ public class RegistrationController extends FragmentActivity {
 
         fieldMap.put(UserProfileField.USERNAME, usernameTextLayout.getEditText().getText()
                 .toString());
-        fieldMap.put(UserProfileField.USER_TYPE, ((UserType) userTypeSpinner.getSelectedItem()).name());
+        fieldMap.put(UserProfileField.USER_TYPE, ((UserType) userTypeSpinner.getSelectedItem())
+                .name());
 
         EnumSet<UserProfileError> errors = UserSession.currentSession()
                 .registerUser(fieldMap);
 
         if (errors.isEmpty()) { //No errors = success
             Toast.makeText(getBaseContext(), "Registration successful!", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(RegistrationController.this, LoginController.class));
+            finish();
         } else {
             Toast.makeText(getBaseContext(), "Registration failed!", Toast.LENGTH_SHORT).show();
 
@@ -127,7 +127,7 @@ public class RegistrationController extends FragmentActivity {
      * @param view the button that initiated this event
      */
     public void cancelRegistration(View view) {
-        startActivity(new Intent(RegistrationController.this, LoginController.class));
+        finish();
         Log.d("registration", "registration canceled");
     }
 }
