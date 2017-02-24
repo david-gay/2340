@@ -1,9 +1,8 @@
 package com.sixtyseven.uga.watercake.models.response;
 
 /**
- * Created by Dimitar on 2/13/2017.
+ * Enum for representing the possible outcomes of an attempted login
  */
-
 public enum LoginResult {
     SUCCESS("Login successful"),
     USER_DOES_NOT_EXIST("User does not exist"),
