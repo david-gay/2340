@@ -12,11 +12,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Dimitar on 2/11/2017.
+ * Singleton User login and registration manager. Also handles validation and managing the current
+ * user.
  */
 public class UserSession {
     private static UserSession ourInstance = new UserSession();
 
+    /**
+     * Returns the current UserSession
+     * @return the current UserSession
+     */
     public static UserSession currentSession() {
         return ourInstance;
     }
