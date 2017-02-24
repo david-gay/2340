@@ -20,6 +20,17 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="@color/colorPrimary"/>
 
+        <TextView
+            android:id="@+id/userNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome"/>
+
+        <TextView
+            android:id="@+id/userTypeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/welcome"/>
         <fragment
             android:id="@+id/details_fragment"
             class="com.sixtyseven.uga.watercake.controllers.UserPropertiesFragment"

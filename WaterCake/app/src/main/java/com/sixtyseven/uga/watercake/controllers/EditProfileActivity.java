@@ -27,6 +27,7 @@ public class EditProfileActivity extends FragmentActivity {
 
         setContentView(R.layout.activity_edit_profile);
 
+
         //Changes the default Password field to say Change Password
         properties = (UserPropertiesFragment) getSupportFragmentManager().findFragmentById(R.id
                 .details_fragment);
@@ -57,6 +58,11 @@ public class EditProfileActivity extends FragmentActivity {
 
         Map<UserProfileField, String> fieldsMap = UserSession.currentSession().getCurrentUser()
                 .getFieldsMap();
+
+        ((TextView) findViewById(R.id.userNameTextView)).setText("Username: " + fieldsMap.get
+                (UserProfileField.USERNAME));
+        ((TextView) findViewById(R.id.userTypeTextView)).setText("User Type: " + fieldsMap.get
+                (UserProfileField.USER_TYPE));
 
         //Do not populate the password field
         fieldsMap.remove(UserProfileField.PASSWORD);
