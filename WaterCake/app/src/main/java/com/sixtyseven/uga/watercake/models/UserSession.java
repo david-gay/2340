@@ -3,20 +3,25 @@ package com.sixtyseven.uga.watercake.models;
 import android.util.Log;
 
 import com.sixtyseven.uga.watercake.models.response.LoginResult;
-import com.sixtyseven.uga.watercake.models.registration.RegistrationError;
 import com.sixtyseven.uga.watercake.models.user.User;
-import com.sixtyseven.uga.watercake.models.user.RegisteredUser;
+import com.sixtyseven.uga.watercake.models.userprofile.UserProfileError;
+import com.sixtyseven.uga.watercake.models.userprofile.UserProfileField;
 
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Dimitar on 2/11/2017.
+ * Singleton User login and registration manager. Also handles validation and managing the current
+ * user.
  */
 public class UserSession {
     private static UserSession ourInstance = new UserSession();
 
+    /**
+     * Returns the current UserSession
+     * @return the current UserSession
+     */
     public static UserSession currentSession() {
         return ourInstance;
     }
@@ -27,7 +32,7 @@ public class UserSession {
 
     private UserSession() {
         users = new HashMap<>();
-        users.put("user", new RegisteredUser("user", "pass"));
+        users.put("user", new User("user", "pass"));
 
         currentUser = null;
     }
@@ -69,35 +74,23 @@ public class UserSession {
 
     /**
      * Attempts to register a user and returns an EnumSet of any registration errors present.
-     * @param username the username to register
-     * @param password the password to register
-     * @param passwordRepeat the repeat password
+     * @param fieldMap a map of UserProfileFields to their associated data Strings to use for user
+     * creation. Must have UserProfileField.USERNAME.
      * @return an EnumSet of every error encountered in registration. Empty if registration was
      * successful.
      */
-    public EnumSet<RegistrationError> registerUser(String username, String password, String passwordRepeat) {
-        EnumSet<RegistrationError> results = EnumSet.noneOf(RegistrationError.class);
+    public EnumSet<UserProfileError> registerUser(Map<UserProfileField, String> fieldMap) {
+        EnumSet<UserProfileError> results = validateUserFields(fieldMap);
 
-        if (username.equals("")) {
-            results.add(RegistrationError.INVALID_USERNAME);
-        }
-        if (users.containsKey(username.toLowerCase())) {
-            results.add(RegistrationError.USERNAME_TAKEN);
-        }
-        if (!password.equals(passwordRepeat)) {
-            results.add(RegistrationError.PASSWORD_MISMATCH);
-        }
-        if (password.length() < 6) {
-            results.add(RegistrationError.PASSWORD_TOO_SHORT);
-        }
+        String username = fieldMap.get(UserProfileField.USERNAME);
 
         if (results.isEmpty()) { // if we had no problems, then go ahead and register
-            users.put(username.toLowerCase(), new RegisteredUser(username, password));
+            users.put(username.toLowerCase(), User.generateUserFromFieldsMap(fieldMap));
         }
 
         StringBuilder logOutput = new StringBuilder();
         boolean first = true;
-        for (RegistrationError result : results) {
+        for (UserProfileError result : results) {
             if (!first) {
                 logOutput.append(", ");
             } else {
@@ -110,5 +103,52 @@ public class UserSession {
         return results;
     }
 
+    /**
+     * Performs validation on all fields present in fieldMap.
+     * @param fieldMap a map of UserProfileFields to their associated data Strings
+     * @return an EnumSet of every error encountered in validation.
+     */
+    public EnumSet<UserProfileError> validateUserFields(Map<UserProfileField, String> fieldMap) {
 
+        EnumSet<UserProfileError> results = EnumSet.noneOf(UserProfileError.class);
+
+        if (fieldMap.containsKey(UserProfileField.USERNAME)) {
+            String username = fieldMap.get(UserProfileField.USERNAME);
+            if (username.equals("")) {
+                results.add(UserProfileError.INVALID_USERNAME);
+            }
+            if (users.containsKey(username.toLowerCase())) {
+                results.add(UserProfileError.USERNAME_TAKEN);
+            }
+        }
+
+        if (fieldMap.containsKey(UserProfileField.PASSWORD)) {
+            String password = fieldMap.get(UserProfileField.PASSWORD);
+            if (password.length() < 6) {
+                results.add(UserProfileError.PASSWORD_TOO_SHORT);
+            }
+            if (fieldMap.containsKey(UserProfileField.REPEAT_PASSWORD)) {
+                String passwordRepeat = fieldMap.get(UserProfileField.REPEAT_PASSWORD);
+                if (!password.equals(passwordRepeat)) {
+                    results.add(UserProfileError.PASSWORD_MISMATCH);
+                }
+            }
+        }
+
+        return results;
+    }
+
+    /**
+     * Updates the current user based on a map of UserProfileFields to Strings
+     * @param fieldMap a map of UserProfileFields to their associated data Strings
+     * @return an EnumSet of every error encountered in updating. Empty if update was successful.
+     */
+    public EnumSet<UserProfileError> updateUserFields(Map<UserProfileField, String> fieldMap) {
+        EnumSet<UserProfileError> results = validateUserFields(fieldMap);
+
+        if (results.isEmpty()) {
+            currentUser.setFieldsFromFieldsMap(fieldMap);
+        }
+        return results;
+    }
 }
