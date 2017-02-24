@@ -17,6 +17,7 @@ import com.sixtyseven.uga.watercake.models.userprofile.UserProfileError;
 import com.sixtyseven.uga.watercake.models.userprofile.UserProfileField;
 
 import java.util.EnumSet;
+import java.util.Map;
 
 /**
  * Controller for the Registration screen
@@ -71,18 +72,13 @@ public class RegistrationController extends FragmentActivity {
         Log.d("registration controller", "attemptRegistration");
 
 
-        String username = usernameTextLayout.getEditText().getText().toString();
-        String password = properties.getTextFieldContents(UserProfileField.PASSWORD);
+        Map<UserProfileField, String> fieldMap = properties.getFieldMap();
 
-        String passwordRepeat = properties.getTextFieldContents(UserProfileField.REPEAT_PASSWORD);
-
-        Log.d("registration", "registration attempted." +
-                " username: " + username +
-                " password: " + password +
-                " password repeat: " + passwordRepeat);
+        fieldMap.put(UserProfileField.USERNAME, usernameTextLayout.getEditText().getText()
+                .toString());
 
         EnumSet<UserProfileError> errors = UserSession.currentSession()
-                .registerUser(username, password, passwordRepeat);
+                .registerUser(fieldMap);
 
         if (errors.isEmpty()) { //No errors = success
             Toast.makeText(getBaseContext(), "Registration successful!", Toast.LENGTH_LONG).show();

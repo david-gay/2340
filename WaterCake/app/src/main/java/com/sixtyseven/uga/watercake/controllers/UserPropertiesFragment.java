@@ -8,13 +8,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.userprofile.UserProfileError;
 import com.sixtyseven.uga.watercake.models.userprofile.UserProfileField;
 
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserPropertiesFragment extends Fragment {
     TextInputLayout passwordInput;
@@ -52,8 +53,8 @@ public class UserPropertiesFragment extends Fragment {
     /**
      * Gets the current text in the corresponding UserProfileField
      * @param field the field to get
-     * @return the contents corresponding to the UserProfileField. Will return "" if the
-     * UserProfileField is not a TextField.
+     * @return the contents corresponding to the UserProfileField, as a string. Null if that field
+     * is not present.
      */
     public String getTextFieldContents(UserProfileField field) {
         if (field == UserProfileField.PASSWORD) {
@@ -62,7 +63,7 @@ public class UserPropertiesFragment extends Fragment {
             return repeatPasswordInput.getEditText().getText().toString();
         }
 
-        return "";
+        return null;
     }
 
     /**
@@ -125,5 +126,22 @@ public class UserPropertiesFragment extends Fragment {
             i--;
         }
         return output;
+    }
+
+    /**
+     * Returns a map of UserProfileFields to Strings with that field's associated data.
+     * @return a map of UserProfileFields to Strings with that field's associated data
+     */
+    public Map<UserProfileField, String> getFieldMap() {
+        Map<UserProfileField, String> map = new HashMap<>();
+
+        for (UserProfileField f : UserProfileField.values()) {
+            String fieldValue = getTextFieldContents(f);
+            if (fieldValue != null) {
+                map.put(f, fieldValue);
+            }
+        }
+
+        return map;
     }
 }
