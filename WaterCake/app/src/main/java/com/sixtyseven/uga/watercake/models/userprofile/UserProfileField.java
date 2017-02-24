@@ -7,5 +7,7 @@ public enum UserProfileField {
     USERNAME,
     PASSWORD,
     REPEAT_PASSWORD,
-    EMAIL;
+    EMAIL,
+    TITLE,
+    USER_TYPE;
 }

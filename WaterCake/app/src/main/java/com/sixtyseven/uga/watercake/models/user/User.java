@@ -2,11 +2,15 @@ package com.sixtyseven.uga.watercake.models.user;
 
 import android.util.Log;
 
+import com.sixtyseven.uga.watercake.models.userprofile.UserProfileField;
+
+import java.util.Map;
+
 /**
  * Core user class for representing any user with privileges determined by UserType
  */
 public class User {
-    private String name;
+    private final String name;
     private String password;
     //defaults for when the user is created - can be updated through the profile changing option
     private String email = "";
@@ -15,6 +19,43 @@ public class User {
 
     private UserType userType;
 
+    /**
+     * Factory method for creating a User with the fields in fieldsMap populated appropriately.
+     * @param fieldsMap the map of UserProfileFields and their associated values to use
+     * @return the new User object
+     */
+    public static User generateUserFromFieldsMap(Map<UserProfileField, String> fieldsMap) {
+        User output = null;
+        if (fieldsMap.containsKey(UserProfileField.USERNAME) && fieldsMap.containsKey
+                (UserProfileField.PASSWORD)) {
+            output = new User(fieldsMap.get(UserProfileField.USERNAME), fieldsMap.get
+                    (UserProfileField.PASSWORD));
+
+            output.setFieldsFromFieldsMap(fieldsMap);
+        }
+        return output;
+    }
+
+    /**
+     * Sets fields in this User to the values in fieldsMap. This will not clear any fields that are
+     * already set.
+     * @param fieldsMap the map of UserProfileFields and their associated values to use
+     */
+    public void setFieldsFromFieldsMap(Map<UserProfileField, String>
+                                               fieldsMap) {
+        if (fieldsMap.containsKey(UserProfileField.PASSWORD)) {
+            setPassword(fieldsMap.get(UserProfileField.PASSWORD));
+        }
+        if (fieldsMap.containsKey(UserProfileField.EMAIL)) {
+            setEmail(fieldsMap.get(UserProfileField.EMAIL));
+        }
+        if (fieldsMap.containsKey(UserProfileField.TITLE)) {
+            setTitle(fieldsMap.get(UserProfileField.TITLE));
+        }
+        if (fieldsMap.containsKey(UserProfileField.USER_TYPE)) {
+            setUserType(UserType.valueOf(fieldsMap.get(UserProfileField.USER_TYPE)));
+        }
+    }
 
     /**
      * Constructor
