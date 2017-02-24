@@ -12,4 +12,7 @@
     <string name="registration">Registration</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="accept">Accept</string>
+    <string name="email">Email</string>
+    <string name="city">City</string>
+    <string name="title">Title</string>
 </resources>

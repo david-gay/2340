@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.sixtyseven.uga.watercake.models.userprofile.UserProfileField;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -14,15 +15,16 @@ public class User {
     private String password;
     //defaults for when the user is created - can be updated through the profile changing option
     private String email = "";
-    private String address = "";
+    private String city = "";
     private String title = "";
 
-    private UserType userType;
+    private UserType userType = UserType.CONTRIBUTOR;
 
     /**
      * Factory method for creating a User with the fields in fieldsMap populated appropriately.
      * @param fieldsMap the map of UserProfileFields and their associated values to use
-     * @return the new User object
+     * @return the new User object. Null if fieldsMap did not contain both UserProfileField.USERNAME
+     * and UserProfileField.PASSWORD
      */
     public static User generateUserFromFieldsMap(Map<UserProfileField, String> fieldsMap) {
         User output = null;
@@ -52,9 +54,28 @@ public class User {
         if (fieldsMap.containsKey(UserProfileField.TITLE)) {
             setTitle(fieldsMap.get(UserProfileField.TITLE));
         }
+        if (fieldsMap.containsKey(UserProfileField.CITY)) {
+            setCity(fieldsMap.get(UserProfileField.CITY));
+        }
         if (fieldsMap.containsKey(UserProfileField.USER_TYPE)) {
             setUserType(UserType.valueOf(fieldsMap.get(UserProfileField.USER_TYPE)));
         }
+    }
+
+    /**
+     * Gets a UserProfileField to String map of all of the fields of User
+     * @return a UserProfileField to String map of all of the fields of User
+     */
+    public Map<UserProfileField, String> getFieldsMap() {
+        Map<UserProfileField, String> fieldsMap = new HashMap<>();
+        fieldsMap.put(UserProfileField.USERNAME, name);
+        fieldsMap.put(UserProfileField.PASSWORD, password);
+        fieldsMap.put(UserProfileField.EMAIL, email);
+        fieldsMap.put(UserProfileField.TITLE, title);
+        fieldsMap.put(UserProfileField.CITY, city);
+        fieldsMap.put(UserProfileField.USER_TYPE, userType.name());
+
+        return fieldsMap;
     }
 
     /**
@@ -98,16 +119,16 @@ public class User {
     }
 
     /**
-     * Getter for the email address
-     * @return the email address
+     * Getter for the email city
+     * @return the email city
      */
     public String getEmail() {
         return this.email;
     }
 
     /**
-     * Setter for the email address
-     * @param email the email address
+     * Setter for the email city
+     * @param email the email city
      */
     public void setEmail(String email) {
         Log.d("profile change", name + "'s email was changed to " + email);
@@ -115,25 +136,25 @@ public class User {
     }
 
     /**
-     * Getter for the home address
-     * @return the home address
+     * Getter for the home city
+     * @return the home city
      */
-    public String getAddress() {
-        return this.address;
+    public String getCity() {
+        return this.city;
     }
 
     /**
-     * Setter for the home address
-     * @param address the home address
+     * Setter for the home city
+     * @param city the home city
      */
-    public void setAddress(String address) {
-        Log.d("profile change", name + "'s address was changed to " + address);
-        this.address = address;
+    public void setCity(String city) {
+        Log.d("profile change", name + "'s city was changed to " + city);
+        this.city = city;
     }
 
     /**
      * Getter for the title
-     * @return the home address
+     * @return the home city
      */
     public String getTitle() {
         return this.title;

@@ -20,6 +20,9 @@ import java.util.Map;
 public class UserPropertiesFragment extends Fragment {
     TextInputLayout passwordInput;
     TextInputLayout repeatPasswordInput;
+    TextInputLayout emailInput;
+    TextInputLayout cityInput;
+    TextInputLayout titleInput;
 
     /**
      * Factory method for getting new UserPropertiesFragment. Required for Android Fragments
@@ -36,17 +39,35 @@ public class UserPropertiesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_properties, container, false);
         passwordInput = (TextInputLayout) view.findViewById(R.id
                 .passwordInputLayout);
-
         repeatPasswordInput = (TextInputLayout) view.findViewById(R.id
                 .repeatPasswordInputLayout);
+        emailInput = (TextInputLayout) view.findViewById(R.id
+                .emailInputLayout);
+        cityInput = (TextInputLayout) view.findViewById(R.id
+                .cityInputLayout);
+        titleInput = (TextInputLayout) view.findViewById(R.id
+                .titleInputLayout);
+
         return view;
     }
 
+    /**
+     * Sets the text for a given UserProfileField. Does nothing if that field is not part of this
+     * fragment.
+     * @param field the target UserProfileField
+     * @param text the new text to set
+     */
     public void setTextFieldContents(UserProfileField field, String text) {
         if (field == UserProfileField.PASSWORD) {
             passwordInput.getEditText().setText(text);
         } else if (field == UserProfileField.REPEAT_PASSWORD) {
             repeatPasswordInput.getEditText().setText(text);
+        } else if (field == UserProfileField.EMAIL) {
+            emailInput.getEditText().setText(text);
+        } else if (field == UserProfileField.CITY) {
+            cityInput.getEditText().setText(text);
+        } else if (field == UserProfileField.TITLE) {
+            titleInput.getEditText().setText(text);
         }
     }
 
@@ -61,6 +82,12 @@ public class UserPropertiesFragment extends Fragment {
             return passwordInput.getEditText().getText().toString();
         } else if (field == UserProfileField.REPEAT_PASSWORD) {
             return repeatPasswordInput.getEditText().getText().toString();
+        } else if (field == UserProfileField.EMAIL) {
+            return emailInput.getEditText().getText().toString();
+        } else if (field == UserProfileField.CITY) {
+            return cityInput.getEditText().getText().toString();
+        } else if (field == UserProfileField.TITLE) {
+            return titleInput.getEditText().getText().toString();
         }
 
         return null;

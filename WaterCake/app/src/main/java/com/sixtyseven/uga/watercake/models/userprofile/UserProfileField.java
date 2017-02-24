@@ -9,5 +9,6 @@ public enum UserProfileField {
     REPEAT_PASSWORD,
     EMAIL,
     TITLE,
-    USER_TYPE;
+    USER_TYPE,
+    CITY
 }

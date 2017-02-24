@@ -2,7 +2,7 @@ package com.sixtyseven.uga.watercake.models.user;
 
 
 public enum UserType {
-    REGISTERED("Registered"),
+    CONTRIBUTOR("Contributor"),
     WORKER("Worker"),
     MANAGER("Manager"),
     ADMINISTRATOR("Administrator");
