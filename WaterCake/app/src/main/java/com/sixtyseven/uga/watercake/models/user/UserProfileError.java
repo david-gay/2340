@@ -1,4 +1,4 @@
-package com.sixtyseven.uga.watercake.models.userprofile;
+package com.sixtyseven.uga.watercake.models.user;
 
 /**
  * Enum of every possible registration error. Also gives access to the associated UserProfileField
