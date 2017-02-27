@@ -39,14 +39,25 @@ class WaterSourceReport {
      */
     WaterSourceReport(int reportNumber, String authorUsername,
                       DateTime dataAndTime, WaterType waterType, WaterCondition condition,
-                      WaterPurityCondition waterPurityCondition, float virusPPM, float contaminantPPM) {
+                      WaterPurityCondition waterPurityCondition, float virusPPM, float
+                              contaminantPPM) {
         this(reportNumber, authorUsername, dataAndTime, waterType, condition, new
                 WaterPurityDetails(waterPurityCondition, virusPPM, contaminantPPM));
     }
 
+    /**
+     * Constructor for a WaterSourceReport that takes in a WaterPurityDetails.
+     * @param reportNumber the reportNumber
+     * @param authorUsername the author's username
+     * @param dataAndTime the time and date that the report was submitted
+     * @param waterType the type of water
+     * @param condition the condition of the water
+     * @param waterPurityDetails the WaterPurityDetails that contains waterPurityCondition, virusPPM
+     * and contaminantPPM
+     */
     private WaterSourceReport(int reportNumber, String authorUsername, DateTime dataAndTime,
-                      WaterType waterType, WaterCondition condition, WaterPurityDetails
-                              waterPurityDetails) {
+                              WaterType waterType, WaterCondition condition, WaterPurityDetails
+                                      waterPurityDetails) {
         this.reportNumber = reportNumber;
         this.authorUsername = authorUsername;
         this.dataAndTime = dataAndTime;
