@@ -43,4 +43,9 @@ public class WelcomeCakeController extends Activity {
         startActivity(new Intent(WelcomeCakeController.this, EditProfileActivity.class));
 
     }
+
+    public void goToMap(View view) {
+        Log.d("map", "go to map");
+        startActivity(new Intent(WelcomeCakeController.this, MapsActivity.class));
+    }
 }
