@@ -4,8 +4,8 @@ import android.util.Log;
 
 import com.sixtyseven.uga.watercake.models.response.LoginResult;
 import com.sixtyseven.uga.watercake.models.user.User;
-import com.sixtyseven.uga.watercake.models.userprofile.UserProfileError;
-import com.sixtyseven.uga.watercake.models.userprofile.UserProfileField;
+import com.sixtyseven.uga.watercake.models.user.UserProfileError;
+import com.sixtyseven.uga.watercake.models.user.UserProfileField;
 
 import java.util.EnumSet;
 import java.util.HashMap;

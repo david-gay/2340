@@ -15,8 +15,8 @@ import android.widget.Toast;
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
 import com.sixtyseven.uga.watercake.models.user.UserType;
-import com.sixtyseven.uga.watercake.models.userprofile.UserProfileError;
-import com.sixtyseven.uga.watercake.models.userprofile.UserProfileField;
+import com.sixtyseven.uga.watercake.models.user.UserProfileError;
+import com.sixtyseven.uga.watercake.models.user.UserProfileField;
 
 import java.util.EnumSet;
 import java.util.Map;

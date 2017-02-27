@@ -1,4 +1,4 @@
-package com.sixtyseven.uga.watercake.models.userprofile;
+package com.sixtyseven.uga.watercake.models.user;
 
 /**
  * A enum for representing all possible fields used for registration

@@ -2,8 +2,6 @@ package com.sixtyseven.uga.watercake.models.user;
 
 import android.util.Log;
 
-import com.sixtyseven.uga.watercake.models.userprofile.UserProfileField;
-
 import java.util.HashMap;
 import java.util.Map;
 
