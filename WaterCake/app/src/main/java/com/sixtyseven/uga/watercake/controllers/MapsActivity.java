@@ -11,6 +11,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.sixtyseven.uga.watercake.models.pins.Location;
+import com.sixtyseven.uga.watercake.models.pins.Pin;
+import com.sixtyseven.uga.watercake.models.pins.PinManager;
+
+import java.util.Set;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -41,8 +46,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        Set<Pin> pins = PinManager.getPins();
+        for(Pin pin: pins)
+        {
+            Location location = pin.getLocation();
+            LatLng latLng = new LatLng(location.getLatitude(),location.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(latLng).title(pin.getLabel()));
+        }
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }
