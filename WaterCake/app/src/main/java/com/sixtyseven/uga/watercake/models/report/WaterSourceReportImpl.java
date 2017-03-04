@@ -1,6 +1,7 @@
 package com.sixtyseven.uga.watercake.models.report;
 
 
+import com.sixtyseven.uga.watercake.models.pins.Location;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
@@ -14,6 +15,7 @@ class WaterSourceReportImpl implements WaterSourceReport, WaterPurityReport{
     private final int reportNumber;
     private final String authorUsername;
     private final Date dataAndTime;
+    private Location location;
     private WaterType waterType;
     private WaterCondition condition;
     private WaterPurityDetails waterPurityDetails;
@@ -27,8 +29,8 @@ class WaterSourceReportImpl implements WaterSourceReport, WaterPurityReport{
      * @param condition the condition of the water
      */
     WaterSourceReportImpl(int reportNumber, String authorUsername,
-                          Date dataAndTime, WaterType waterType, WaterCondition condition) {
-        this(reportNumber, authorUsername, dataAndTime, waterType, condition, null);
+                          Date dataAndTime, Location location, WaterType waterType, WaterCondition condition) {
+        this(reportNumber, authorUsername, dataAndTime, location, waterType, condition, null);
     }
 
     /**
@@ -43,10 +45,10 @@ class WaterSourceReportImpl implements WaterSourceReport, WaterPurityReport{
      * @param contaminantPPM the contaminant parts per million
      */
     WaterSourceReportImpl(int reportNumber, String authorUsername,
-                          Date dataAndTime, WaterType waterType, WaterCondition condition,
+                          Date dataAndTime, Location location, WaterType waterType, WaterCondition condition,
                           WaterPurityCondition waterPurityCondition, float virusPPM, float
                               contaminantPPM) {
-        this(reportNumber, authorUsername, dataAndTime, waterType, condition, new
+        this(reportNumber, authorUsername, dataAndTime, location, waterType, condition, new
                 WaterPurityDetails(waterPurityCondition, virusPPM, contaminantPPM));
     }
 
@@ -60,12 +62,13 @@ class WaterSourceReportImpl implements WaterSourceReport, WaterPurityReport{
      * @param waterPurityDetails the WaterPurityDetails that contains waterPurityCondition, virusPPM
      * and contaminantPPM
      */
-    private WaterSourceReportImpl(int reportNumber, String authorUsername, Date dataAndTime,
+    private WaterSourceReportImpl(int reportNumber, String authorUsername, Date dataAndTime, Location location,
                                   WaterType waterType, WaterCondition condition, WaterPurityDetails
                                       waterPurityDetails) {
         this.reportNumber = reportNumber;
         this.authorUsername = authorUsername;
         this.dataAndTime = dataAndTime;
+        this.location = location;
         this.waterType = waterType;
         this.condition = condition;
         this.waterPurityDetails = waterPurityDetails;
@@ -93,6 +96,19 @@ class WaterSourceReportImpl implements WaterSourceReport, WaterPurityReport{
     @Override
     public Date getDataAndTime() {
         return dataAndTime;
+    }
+
+    @Override
+    public Location getLocation() {
+        return location;
+    }
+
+    /**
+     * Sets the Location
+     * @param location the new location
+     */
+    void setLocation(Location location) {
+        this.location = location;
     }
 
     @Override

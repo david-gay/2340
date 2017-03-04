@@ -1,5 +1,6 @@
 package com.sixtyseven.uga.watercake.models.report;
 
+import com.sixtyseven.uga.watercake.models.pins.Location;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
 
@@ -36,4 +37,10 @@ public interface WaterSourceReport {
      * @return the water condition
      */
     WaterCondition getCondition();
+
+    /**
+     * Returns the location of this report
+     * @return the lcoation of this report
+     */
+    Location getLocation();
 }
