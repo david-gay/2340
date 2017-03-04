@@ -1,8 +1,6 @@
 package com.sixtyseven.uga.watercake.models.report;
 
-
-import org.joda.time.DateTime;
-
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,14 +37,12 @@ public class ReportManager {
      */
     public boolean createWaterReport(String authorUsername, WaterType waterType, WaterCondition
             condition) {
-        //todo validation here
         //if validation passes {
-        reports.put(nextReportId, new WaterSourceReport(nextReportId, authorUsername, DateTime
-                .now(), waterType, condition));
+        reports.put(nextReportId, new WaterSourceReport(nextReportId, authorUsername, new Date()
+                , waterType, condition));
 
         nextReportId++;
 
-        //todo return false if validation fails
         return true;
     }
 
@@ -61,14 +57,12 @@ public class ReportManager {
     public boolean createPurityReport(String authorUsername, WaterType waterType, WaterCondition
             condition, WaterPurityCondition waterPurityCondition, float virusPPM, float
             contaminantPPM) {
-        //todo validation here
         //if validation passes {
-        reports.put(nextReportId, new WaterSourceReport(nextReportId, authorUsername, DateTime
-                .now(), waterType, condition, waterPurityCondition, virusPPM, contaminantPPM));
+        reports.put(nextReportId, new WaterSourceReport(nextReportId, authorUsername, new Date(),
+                waterType, condition, waterPurityCondition, virusPPM, contaminantPPM));
 
         nextReportId++;
 
-        //todo return false if validation fails
         return true;
     }
 }
