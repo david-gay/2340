@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
  * Manager singleton for all WaterSourceReports.
  */
@@ -42,17 +41,17 @@ public class ReportManager {
      * @param condition the condition of that water
      * @return true if the report is created and added
      */
-    public boolean createWaterReport(String authorUsername, Location location, WaterType waterType, WaterCondition
-            condition) {
+    public boolean createWaterReport(String authorUsername, Location location, WaterType waterType,
+            WaterCondition condition) {
 
-        waterSourceReports.put(nextReportId, new WaterSourceReportImpl(nextReportId, authorUsername, new Date(),
-                location, waterType, condition));
+        waterSourceReports.put(nextReportId,
+                new WaterSourceReportImpl(nextReportId, authorUsername, new Date(), location,
+                        waterType, condition));
 
         nextReportId++;
 
         return true;
     }
-
 
     /**
      * Generates a Water Purity Report and stores it
@@ -61,14 +60,13 @@ public class ReportManager {
      * @param condition the condition of that water
      * @return true if the report is created and added
      */
-    public boolean createPurityReport(String authorUsername, Location location, WaterType waterType, WaterCondition
-            condition, WaterPurityCondition waterPurityCondition, float virusPPM, float
-                                              contaminantPPM) {
+    public boolean createPurityReport(String authorUsername, Location location, WaterType waterType,
+            WaterCondition condition, WaterPurityCondition waterPurityCondition, float virusPPM,
+            float contaminantPPM) {
 
-        WaterSourceReportImpl potentialReport = new WaterSourceReportImpl(nextReportId, authorUsername, new Date(),
-                location, waterType, condition, waterPurityCondition, virusPPM, contaminantPPM);
-
-
+        WaterSourceReportImpl potentialReport = new WaterSourceReportImpl(nextReportId,
+                authorUsername, new Date(), location, waterType, condition, waterPurityCondition,
+                virusPPM, contaminantPPM);
 
         waterSourceReports.put(nextReportId, potentialReport);
         waterPurityReports.put(nextReportId, potentialReport);
@@ -109,8 +107,8 @@ public class ReportManager {
      * @param condition the new condition
      * @return true if the report was updated
      */
-    public boolean updateWaterSourceReportWithId(int id, Location location, WaterType waterType, WaterCondition
-            condition) {
+    public boolean updateWaterSourceReportWithId(int id, Location location, WaterType waterType,
+            WaterCondition condition) {
         if (waterSourceReports.containsKey(id)) {
             MutableWaterSourceReport report = waterSourceReports.get(id);
             report.setWaterType(waterType);
@@ -128,9 +126,9 @@ public class ReportManager {
      * @param condition the new condition
      * @return true if the report was updated
      */
-    public boolean updateWaterPurityReportWithId(int id, Location location, WaterType waterType, WaterCondition
-            condition, WaterPurityCondition waterPurityCondition, float virusPPM, float
-                                                         contaminantPPM) {
+    public boolean updateWaterPurityReportWithId(int id, Location location, WaterType waterType,
+            WaterCondition condition, WaterPurityCondition waterPurityCondition, float virusPPM,
+            float contaminantPPM) {
         if (waterPurityReports.containsKey(id)) {
             MutableWaterPurityReport report = waterPurityReports.get(id);
             report.setWaterType(waterType);

@@ -1,6 +1,5 @@
 package com.sixtyseven.uga.watercake.models.report;
 
-
 import com.sixtyseven.uga.watercake.models.pins.Location;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;

@@ -26,5 +26,4 @@ interface MutableWaterSourceReport extends WaterSourceReport {
      * @param condition the new WaterCondition
      */
     void setCondition(WaterCondition condition);
-
 }

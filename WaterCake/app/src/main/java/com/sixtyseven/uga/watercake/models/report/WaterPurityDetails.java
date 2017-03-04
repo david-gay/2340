@@ -31,6 +31,10 @@ class WaterPurityDetails {
         return condition;
     }
 
+    /**
+     * Sets the WaterPurityCondition
+     * @param condition the new WaterPurityCondition
+     */
     void setCondition(WaterPurityCondition condition) {
         this.condition = condition;
     }
@@ -43,7 +47,11 @@ class WaterPurityDetails {
         return virusPPM;
     }
 
-    public void setVirusPPM(float virusPPM) {
+    /**
+     * Sets the virus parts per million
+     * @param virusPPM the new virus parts per million
+     */
+    void setVirusPPM(float virusPPM) {
         this.virusPPM = virusPPM;
     }
 
@@ -55,6 +63,10 @@ class WaterPurityDetails {
         return contaminantPPM;
     }
 
+    /**
+     * Sets the contaminant parts per million
+     * @param contaminantPPM the new contaminant parts per million
+     */
     void setContaminantPPM(float contaminantPPM) {
         this.contaminantPPM = contaminantPPM;
     }

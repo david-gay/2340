@@ -6,7 +6,6 @@ import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
 
 import java.util.Date;
 
-
 public interface WaterSourceReport {
     /**
      * Returns the report number
