@@ -8,12 +8,12 @@ import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
 import java.util.Date;
 
 /**
- * Report containing all of the data for a single water source.
+ * The concrete implementation for all WaterSource reports containing all of the data for a single water source.
  */
-class WaterSourceReportImpl {
+class WaterSourceReportImpl implements WaterSourceReport, WaterPurityReport{
     private final int reportNumber;
-    private String authorUsername;
-    private Date dataAndTime;
+    private final String authorUsername;
+    private final Date dataAndTime;
     private WaterType waterType;
     private WaterCondition condition;
     private WaterPurityDetails waterPurityDetails;
@@ -72,75 +72,56 @@ class WaterSourceReportImpl {
     }
 
     /**
-     * Returns true if this WaterSourceReportImpl has water purity data
-     * @return true if this WaterSourceReportImpl has water purity data
+     * Returns true if this WaterSourceReportImpl is a water purity report
+     * @return true if this WaterSourceReportImpl is a water purity report
      */
     public boolean isWaterPurityReport() {
         return waterPurityDetails != null;
     }
 
-    /**
-     * Returns the report number
-     * @return the report number
-     */
+    @Override
     public int getReportNumber() {
         return reportNumber;
     }
 
 
-    /**
-     * Returns the author's username
-     * @return the author's username
-     */
+    @Override
     public String getAuthorUsername() {
         return authorUsername;
     }
 
-    void setAuthorUsername(String authorUsername) {
-        this.authorUsername = authorUsername;
-    }
-
-    /**
-     * Returns a DateTime object with the creation date and time
-     * @return a DateTime object with the creation date and time
-     */
+    @Override
     public Date getDataAndTime() {
         return dataAndTime;
     }
 
-    void setDataAndTime(Date dataAndTime) {
-        this.dataAndTime = dataAndTime;
-    }
-
-    /**
-     * Returns the water type
-     * @return the water type
-     */
+    @Override
     public WaterType getWaterType() {
         return waterType;
     }
 
+    /**
+     * Sets the WaterType
+     * @param waterType the new WaterType
+     */
     void setWaterType(WaterType waterType) {
         this.waterType = waterType;
     }
 
-    /**
-     * Returns the water condition
-     * @return the water condition
-     */
+    @Override
     public WaterCondition getCondition() {
         return condition;
     }
 
+    /**
+     * Sets the WaterCondition
+     * @param condition the new WaterCondition
+     */
     void setCondition(WaterCondition condition) {
         this.condition = condition;
     }
 
-    /**
-     * Returns the WaterPurityCondition, if isWaterPurityReport() is true.
-     * @return the WaterPurityCondition
-     * @throws UnsupportedOperationException if isWaterPurityReport() is false.
-     */
+    @Override
     public WaterPurityCondition getWaterPurityCondition() {
         if (isWaterPurityReport()) {
             return waterPurityDetails.getCondition();
@@ -157,11 +138,7 @@ class WaterSourceReportImpl {
                 + "isWaterPurityReport() is false.");
     }
 
-    /**
-     * Returns the virus PPM, if isWaterPurityReport() is true.
-     * @return the virus PPM
-     * @throws UnsupportedOperationException if isWaterPurityReport() is false.
-     */
+    @Override
     public float getVirusPPM() {
         if (isWaterPurityReport()) {
             return waterPurityDetails.getVirusPPM();
@@ -178,11 +155,7 @@ class WaterSourceReportImpl {
                 + "isWaterPurityReport() is false.");
     }
 
-    /**
-     * Returns the virus PPM, if isWaterPurityReport() is true.
-     * @return the virus PPM
-     * @throws UnsupportedOperationException if isWaterPurityReport() is false.
-     */
+    @Override
     public float getContaminantPPM() {
         if (isWaterPurityReport()) {
             return waterPurityDetails.getContaminantPPM();

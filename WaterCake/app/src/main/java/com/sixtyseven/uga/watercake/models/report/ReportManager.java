@@ -14,7 +14,8 @@ import java.util.Map;
  */
 public class ReportManager {
 
-    private Map<Integer, WaterSourceReportImpl> reports;
+    private Map<Integer, WaterSourceReportImpl> waterSourceReports;
+    private Map<Integer, WaterSourceReportImpl> waterPurityReports;
     private int nextReportId;
 
     private static ReportManager ourInstance = new ReportManager();
@@ -28,7 +29,8 @@ public class ReportManager {
     }
 
     private ReportManager() {
-        reports = new HashMap<>();
+        waterSourceReports = new HashMap<>();
+        waterPurityReports = new HashMap<>();
         nextReportId = 0;
     }
 
@@ -42,7 +44,7 @@ public class ReportManager {
     public boolean createWaterReport(String authorUsername, WaterType waterType, WaterCondition
             condition) {
         //if validation passes {
-        reports.put(nextReportId, new WaterSourceReportImpl(nextReportId, authorUsername, new Date(),
+        waterSourceReports.put(nextReportId, new WaterSourceReportImpl(nextReportId, authorUsername, new Date(),
                 waterType, condition));
 
         nextReportId++;
@@ -67,7 +69,8 @@ public class ReportManager {
 
 
 
-        reports.put(nextReportId, potentialReport);
+        waterSourceReports.put(nextReportId, potentialReport);
+        waterPurityReports.put(nextReportId, potentialReport);
 
         nextReportId++;
 
@@ -75,18 +78,60 @@ public class ReportManager {
     }
 
     /**
-     * Returns the WaterSourceReportImpl for the given id.
-     * @param id the id of the WaterSourceReportImpl
+     * Returns the WaterSourceReport for the given id.
+     * @param id the id of the WaterSourceReport
      * @return the WaterSourceReportImpl; null if no such report exists
      */
-    public WaterSourceReportImpl getReportById(int id) {
-        if (!reports.containsKey(id)) {
+    public WaterSourceReport getReportById(int id) {
+        if (!waterSourceReports.containsKey(id)) {
             return null;
         }
-        return reports.get(id);
+        return waterSourceReports.get(id);
     }
 
-    private boolean isReportValid(WaterSourceReportImpl report) {
-        return true;
+    /**
+     * Returns the WaterPurityReport for the given id.
+     * @param id the id of the WaterPurityReport
+     * @return the WaterSourceReportImpl; null if no such report exists
+     */
+    public WaterPurityReport getPurityReportById(int id) {
+        if (!waterPurityReports.containsKey(id)) {
+            return null;
+        }
+        return waterPurityReports.get(id);
+    }
+
+    /**
+     * Updates a water source report, if it exists.
+     * @param id the id of the report to update
+     * @param waterType the new waterType
+     * @param condition the new condition
+     * @return true if the report was updated
+     */
+    public boolean updateWaterSourceReportWithId(int id, WaterType waterType, WaterCondition
+            condition) {
+        if (waterSourceReports.containsKey(id)) {
+            WaterSourceReportImpl report = waterSourceReports.get(id);
+            report.setWaterType(waterType);
+            report.setCondition(condition);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Deletes the report with id
+     * @param id the report id to delete
+     * @return true if a report was delete; false otherwise
+     */
+    public boolean deleteReportById(int id) {
+        if (waterSourceReports.containsKey(id)) {
+            if (waterSourceReports.get(id).isWaterPurityReport()) {
+                waterPurityReports.remove(id);
+            }
+            waterSourceReports.remove(id);
+            return true;
+        }
+        return false;
     }
 }
