@@ -83,12 +83,17 @@ class WaterSourceReport {
         return reportNumber;
     }
 
+
     /**
      * Returns the author's username
      * @return the author's username
      */
     public String getAuthorUsername() {
         return authorUsername;
+    }
+
+    void setAuthorUsername(String authorUsername) {
+        this.authorUsername = authorUsername;
     }
 
     /**
@@ -99,12 +104,20 @@ class WaterSourceReport {
         return dataAndTime;
     }
 
+    void setDataAndTime(Date dataAndTime) {
+        this.dataAndTime = dataAndTime;
+    }
+
     /**
      * Returns the water type
      * @return the water type
      */
     public WaterType getWaterType() {
         return waterType;
+    }
+
+    void setWaterType(WaterType waterType) {
+        this.waterType = waterType;
     }
 
     /**
@@ -114,4 +127,72 @@ class WaterSourceReport {
     public WaterCondition getCondition() {
         return condition;
     }
+
+    void setCondition(WaterCondition condition) {
+        this.condition = condition;
+    }
+
+    /**
+     * Returns the WaterPurityCondition, if isWaterPurityReport() is true.
+     * @return the WaterPurityCondition
+     * @throws UnsupportedOperationException if isWaterPurityReport() is false.
+     */
+    public WaterPurityCondition getWaterPurityCondition() {
+        if (isWaterPurityReport()) {
+            return waterPurityDetails.getCondition();
+        }
+        throw new UnsupportedOperationException("getWaterPurityCondition() is unsupported when "
+                + "isWaterPurityReport() is false.");
+    }
+
+    void setWaterPurityCondition(WaterPurityCondition condition) {
+        if (isWaterPurityReport()) {
+            waterPurityDetails.setCondition(condition);
+        }
+        throw new UnsupportedOperationException("getWaterPurityCondition() is unsupported when "
+                + "isWaterPurityReport() is false.");
+    }
+
+    /**
+     * Returns the virus PPM, if isWaterPurityReport() is true.
+     * @return the virus PPM
+     * @throws UnsupportedOperationException if isWaterPurityReport() is false.
+     */
+    public float getVirusPPM() {
+        if (isWaterPurityReport()) {
+            return waterPurityDetails.getVirusPPM();
+        }
+        throw new UnsupportedOperationException("getVirusPPM() is unsupported when "
+                + "isWaterPurityReport() is false.");
+    }
+
+    void setVirusPPM(float ppm) {
+        if (isWaterPurityReport()) {
+            waterPurityDetails.setVirusPPM(ppm);
+        }
+        throw new UnsupportedOperationException("setVirusPPM() is unsupported when "
+                + "isWaterPurityReport() is false.");
+    }
+
+    /**
+     * Returns the virus PPM, if isWaterPurityReport() is true.
+     * @return the virus PPM
+     * @throws UnsupportedOperationException if isWaterPurityReport() is false.
+     */
+    public float getContaminantPPM() {
+        if (isWaterPurityReport()) {
+            return waterPurityDetails.getContaminantPPM();
+        }
+        throw new UnsupportedOperationException("getContaminantPPM() is unsupported when "
+                + "isWaterPurityReport() is false.");
+    }
+
+    void setContaminantPPM(float ppm) {
+        if (isWaterPurityReport()) {
+            waterPurityDetails.setContaminantPPM(ppm);
+        }
+        throw new UnsupportedOperationException("setContaminantPPM() is unsupported when "
+                + "isWaterPurityReport() is false.");
+    }
+
 }
