@@ -109,12 +109,36 @@ public class ReportManager {
      * @param condition the new condition
      * @return true if the report was updated
      */
-    public boolean updateWaterSourceReportWithId(int id, WaterType waterType, WaterCondition
+    public boolean updateWaterSourceReportWithId(int id, Location location, WaterType waterType, WaterCondition
             condition) {
         if (waterSourceReports.containsKey(id)) {
             WaterSourceReportImpl report = waterSourceReports.get(id);
             report.setWaterType(waterType);
             report.setCondition(condition);
+            report.setLocation(location);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Updates a water purity report, if it exists.
+     * @param id the id of the report to update
+     * @param waterType the new waterType
+     * @param condition the new condition
+     * @return true if the report was updated
+     */
+    public boolean updateWaterPurityReportWithId(int id, Location location, WaterType waterType, WaterCondition
+            condition, WaterPurityCondition waterPurityCondition, float virusPPM, float
+                                                         contaminantPPM) {
+        if (waterPurityReports.containsKey(id)) {
+            WaterSourceReportImpl report = waterPurityReports.get(id);
+            report.setWaterType(waterType);
+            report.setCondition(condition);
+            report.setLocation(location);
+            report.setWaterPurityCondition(waterPurityCondition);
+            report.setVirusPPM(virusPPM);
+            report.setContaminantPPM(contaminantPPM);
             return true;
         }
         return false;
