@@ -1,6 +1,7 @@
 package com.sixtyseven.uga.watercake.models.report;
 
-import org.joda.time.DateTime;
+
+import java.util.Date;
 
 /**
  * Report containing all of the data for a single water source.
@@ -8,7 +9,7 @@ import org.joda.time.DateTime;
 class WaterSourceReport {
     private final int reportNumber;
     private String authorUsername;
-    private DateTime dataAndTime;
+    private Date dataAndTime;
     private WaterType waterType;
     private WaterCondition condition;
     private WaterPurityDetails waterPurityDetails;
@@ -22,7 +23,7 @@ class WaterSourceReport {
      * @param condition the condition of the water
      */
     WaterSourceReport(int reportNumber, String authorUsername,
-                      DateTime dataAndTime, WaterType waterType, WaterCondition condition) {
+                      Date dataAndTime, WaterType waterType, WaterCondition condition) {
         this(reportNumber, authorUsername, dataAndTime, waterType, condition, null);
     }
 
@@ -38,7 +39,7 @@ class WaterSourceReport {
      * @param contaminantPPM the contaminant parts per million
      */
     WaterSourceReport(int reportNumber, String authorUsername,
-                      DateTime dataAndTime, WaterType waterType, WaterCondition condition,
+                      Date dataAndTime, WaterType waterType, WaterCondition condition,
                       WaterPurityCondition waterPurityCondition, float virusPPM, float
                               contaminantPPM) {
         this(reportNumber, authorUsername, dataAndTime, waterType, condition, new
@@ -55,7 +56,7 @@ class WaterSourceReport {
      * @param waterPurityDetails the WaterPurityDetails that contains waterPurityCondition, virusPPM
      * and contaminantPPM
      */
-    private WaterSourceReport(int reportNumber, String authorUsername, DateTime dataAndTime,
+    private WaterSourceReport(int reportNumber, String authorUsername, Date dataAndTime,
                               WaterType waterType, WaterCondition condition, WaterPurityDetails
                                       waterPurityDetails) {
         this.reportNumber = reportNumber;
@@ -94,7 +95,7 @@ class WaterSourceReport {
      * Returns a DateTime object with the creation date and time
      * @return a DateTime object with the creation date and time
      */
-    public DateTime getDataAndTime() {
+    public Date getDataAndTime() {
         return dataAndTime;
     }
 
