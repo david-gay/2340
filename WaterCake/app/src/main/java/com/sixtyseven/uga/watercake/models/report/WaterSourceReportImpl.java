@@ -1,12 +1,16 @@
 package com.sixtyseven.uga.watercake.models.report;
 
 
+import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
+import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
+import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
+
 import java.util.Date;
 
 /**
  * Report containing all of the data for a single water source.
  */
-class WaterSourceReport {
+class WaterSourceReportImpl {
     private final int reportNumber;
     private String authorUsername;
     private Date dataAndTime;
@@ -15,20 +19,20 @@ class WaterSourceReport {
     private WaterPurityDetails waterPurityDetails;
 
     /**
-     * Constructor for a standard WaterSourceReport
+     * Constructor for a standard WaterSourceReportImpl
      * @param reportNumber the reportNumber
      * @param authorUsername the author's username
      * @param dataAndTime the time and date that the report was submitted
      * @param waterType the type of water
      * @param condition the condition of the water
      */
-    WaterSourceReport(int reportNumber, String authorUsername,
-                      Date dataAndTime, WaterType waterType, WaterCondition condition) {
+    WaterSourceReportImpl(int reportNumber, String authorUsername,
+                          Date dataAndTime, WaterType waterType, WaterCondition condition) {
         this(reportNumber, authorUsername, dataAndTime, waterType, condition, null);
     }
 
     /**
-     * Constructor for a WaterSourceReport that has water purity details
+     * Constructor that has water purity details
      * @param reportNumber the reportNumber
      * @param authorUsername the author's username
      * @param dataAndTime the time and date that the report was submitted
@@ -38,16 +42,16 @@ class WaterSourceReport {
      * @param virusPPM the virus parts per million
      * @param contaminantPPM the contaminant parts per million
      */
-    WaterSourceReport(int reportNumber, String authorUsername,
-                      Date dataAndTime, WaterType waterType, WaterCondition condition,
-                      WaterPurityCondition waterPurityCondition, float virusPPM, float
+    WaterSourceReportImpl(int reportNumber, String authorUsername,
+                          Date dataAndTime, WaterType waterType, WaterCondition condition,
+                          WaterPurityCondition waterPurityCondition, float virusPPM, float
                               contaminantPPM) {
         this(reportNumber, authorUsername, dataAndTime, waterType, condition, new
                 WaterPurityDetails(waterPurityCondition, virusPPM, contaminantPPM));
     }
 
     /**
-     * Constructor for a WaterSourceReport that takes in a WaterPurityDetails.
+     * Constructor for a WaterSourceReportImpl that takes in a WaterPurityDetails.
      * @param reportNumber the reportNumber
      * @param authorUsername the author's username
      * @param dataAndTime the time and date that the report was submitted
@@ -56,8 +60,8 @@ class WaterSourceReport {
      * @param waterPurityDetails the WaterPurityDetails that contains waterPurityCondition, virusPPM
      * and contaminantPPM
      */
-    private WaterSourceReport(int reportNumber, String authorUsername, Date dataAndTime,
-                              WaterType waterType, WaterCondition condition, WaterPurityDetails
+    private WaterSourceReportImpl(int reportNumber, String authorUsername, Date dataAndTime,
+                                  WaterType waterType, WaterCondition condition, WaterPurityDetails
                                       waterPurityDetails) {
         this.reportNumber = reportNumber;
         this.authorUsername = authorUsername;
@@ -68,8 +72,8 @@ class WaterSourceReport {
     }
 
     /**
-     * Returns true if this WaterSourceReport has water purity data
-     * @return true if this WaterSourceReport has water purity data
+     * Returns true if this WaterSourceReportImpl has water purity data
+     * @return true if this WaterSourceReportImpl has water purity data
      */
     public boolean isWaterPurityReport() {
         return waterPurityDetails != null;

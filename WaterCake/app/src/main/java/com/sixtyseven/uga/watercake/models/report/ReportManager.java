@@ -1,5 +1,9 @@
 package com.sixtyseven.uga.watercake.models.report;
 
+import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
+import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
+import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +14,7 @@ import java.util.Map;
  */
 public class ReportManager {
 
-    private Map<Integer, WaterSourceReport> reports;
+    private Map<Integer, WaterSourceReportImpl> reports;
     private int nextReportId;
 
     private static ReportManager ourInstance = new ReportManager();
@@ -29,7 +33,7 @@ public class ReportManager {
     }
 
     /**
-     * Generates a WaterSourceReport and stores it
+     * Generates a WaterSourceReportImpl and stores it
      * @param authorUsername the username of the report author
      * @param waterType the type of water reported
      * @param condition the condition of that water
@@ -38,8 +42,8 @@ public class ReportManager {
     public boolean createWaterReport(String authorUsername, WaterType waterType, WaterCondition
             condition) {
         //if validation passes {
-        reports.put(nextReportId, new WaterSourceReport(nextReportId, authorUsername, new Date()
-                , waterType, condition));
+        reports.put(nextReportId, new WaterSourceReportImpl(nextReportId, authorUsername, new Date(),
+                waterType, condition));
 
         nextReportId++;
 
@@ -48,7 +52,7 @@ public class ReportManager {
 
 
     /**
-     * Generates a WaterSourceReport and stores it
+     * Generates a WaterSourceReportImpl and stores it
      * @param authorUsername the username of the report author
      * @param waterType the type of water reported
      * @param condition the condition of that water
@@ -56,13 +60,33 @@ public class ReportManager {
      */
     public boolean createPurityReport(String authorUsername, WaterType waterType, WaterCondition
             condition, WaterPurityCondition waterPurityCondition, float virusPPM, float
-            contaminantPPM) {
-        //if validation passes {
-        reports.put(nextReportId, new WaterSourceReport(nextReportId, authorUsername, new Date(),
-                waterType, condition, waterPurityCondition, virusPPM, contaminantPPM));
+                                              contaminantPPM) {
+
+        WaterSourceReportImpl potentialReport = new WaterSourceReportImpl(nextReportId, authorUsername, new Date(),
+                waterType, condition, waterPurityCondition, virusPPM, contaminantPPM);
+
+
+
+        reports.put(nextReportId, potentialReport);
 
         nextReportId++;
 
+        return true;
+    }
+
+    /**
+     * Returns the WaterSourceReportImpl for the given id.
+     * @param id the id of the WaterSourceReportImpl
+     * @return the WaterSourceReportImpl; null if no such report exists
+     */
+    public WaterSourceReportImpl getReportById(int id) {
+        if (!reports.containsKey(id)) {
+            return null;
+        }
+        return reports.get(id);
+    }
+
+    private boolean isReportValid(WaterSourceReportImpl report) {
         return true;
     }
 }

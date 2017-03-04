@@ -1,7 +1,9 @@
 package com.sixtyseven.uga.watercake.models.report;
 
+import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
+
 /**
- * Purity details that a WaterSourceReport can optionally have. Internally used by
+ * Purity details that a WaterSourceReportImpl can optionally have. Internally used by
  * WaterSourceReports.
  */
 class WaterPurityDetails {
