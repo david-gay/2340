@@ -15,8 +15,8 @@ import java.util.Map;
  */
 public class ReportManager {
 
-    private Map<Integer, WaterSourceReportImpl> waterSourceReports;
-    private Map<Integer, WaterSourceReportImpl> waterPurityReports;
+    private Map<Integer, MutableWaterSourceReport> waterSourceReports;
+    private Map<Integer, MutableWaterPurityReport> waterPurityReports;
     private int nextReportId;
 
     private static ReportManager ourInstance = new ReportManager();
@@ -36,7 +36,7 @@ public class ReportManager {
     }
 
     /**
-     * Generates a WaterSourceReportImpl and stores it
+     * Generates a Water Source Report and stores it
      * @param authorUsername the username of the report author
      * @param waterType the type of water reported
      * @param condition the condition of that water
@@ -44,7 +44,7 @@ public class ReportManager {
      */
     public boolean createWaterReport(String authorUsername, Location location, WaterType waterType, WaterCondition
             condition) {
-        //if validation passes {
+
         waterSourceReports.put(nextReportId, new WaterSourceReportImpl(nextReportId, authorUsername, new Date(),
                 location, waterType, condition));
 
@@ -55,7 +55,7 @@ public class ReportManager {
 
 
     /**
-     * Generates a WaterSourceReportImpl and stores it
+     * Generates a Water Purity Report and stores it
      * @param authorUsername the username of the report author
      * @param waterType the type of water reported
      * @param condition the condition of that water
@@ -112,7 +112,7 @@ public class ReportManager {
     public boolean updateWaterSourceReportWithId(int id, Location location, WaterType waterType, WaterCondition
             condition) {
         if (waterSourceReports.containsKey(id)) {
-            WaterSourceReportImpl report = waterSourceReports.get(id);
+            MutableWaterSourceReport report = waterSourceReports.get(id);
             report.setWaterType(waterType);
             report.setCondition(condition);
             report.setLocation(location);
@@ -132,7 +132,7 @@ public class ReportManager {
             condition, WaterPurityCondition waterPurityCondition, float virusPPM, float
                                                          contaminantPPM) {
         if (waterPurityReports.containsKey(id)) {
-            WaterSourceReportImpl report = waterPurityReports.get(id);
+            MutableWaterPurityReport report = waterPurityReports.get(id);
             report.setWaterType(waterType);
             report.setCondition(condition);
             report.setLocation(location);
@@ -150,11 +150,9 @@ public class ReportManager {
      * @return true if a report was delete; false otherwise
      */
     public boolean deleteReportById(int id) {
-        if (waterSourceReports.containsKey(id)) {
-            if (waterSourceReports.get(id).isWaterPurityReport()) {
-                waterPurityReports.remove(id);
-            }
+        if (waterSourceReports.containsKey(id) || waterPurityReports.containsKey(id)) {
             waterSourceReports.remove(id);
+            waterPurityReports.remove(id);
             return true;
         }
         return false;
