@@ -54,4 +54,15 @@
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/logoutButton"
         android:layout_alignStart="@+id/textView7"/>
+
+    <Button
+        android:text="Map"
+        android:onClick="goToMap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="16dp"
+        android:id="@+id/goToMap" />
 </RelativeLayout>
