@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Collections;
 import java.util.Set;
 
+import com.sixtyseven.uga.watercake.models.reports.Location;
 
 public class PinManager {
     private static PinManager pinManager = new PinManager();
@@ -24,25 +25,25 @@ public class PinManager {
     }
 
     /**
-     * adds the pin to the set
+     * Adds the pin to the set
      *
-     * @param pin
+     * @param pin a pin to add to the pin set
      */
     public void add(Pin pin) {
         pins.add(pin);
     }
 
     /**
-     * removes the pin from the set
+     * Removes the pin from the set
      *
-     * @param pin
+     * @param pin the pin to remove from the map set
      */
     public void remove(Pin pin) {
         pins.remove(pin);
     }
 
     /**
-     * gives an UNMODIFIABLE set of pins - note that the pins themselves can be edited
+     * Returns an UNMODIFIABLE set of pins - note that the pins themselves can be edited
      *
      * @return the unmodifiable set of pins
      */

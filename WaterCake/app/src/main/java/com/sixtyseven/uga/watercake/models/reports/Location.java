@@ -1,15 +1,14 @@
-package com.sixtyseven.uga.watercake.models.pins;
+package com.sixtyseven.uga.watercake.models.reports;
 
 /**
- * Created by Thor on 2017-03-01.
+ * Immutable class for storing location
  */
-
 public class Location {
     private double latitude;
     private double longitude;
 
     /**
-     * Constructor creates the location with the specified
+     * This constructor creates the location with the specified latitude and longitude
      *
      * @param latitude  The latitude of the point
      * @param longitude The longitude of the point
@@ -26,7 +25,7 @@ public class Location {
     }
 
     /**
-     * Getter for the latitude
+     * Gets the latitude
      *
      * @return the latitude of the point
      */
@@ -35,7 +34,7 @@ public class Location {
     }
 
     /**
-     * Getter for the longitude
+     * Gets the longitude
      *
      * @return the longitude of the point
      */
