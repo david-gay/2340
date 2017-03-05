@@ -5,8 +5,8 @@ package com.sixtyseven.uga.watercake.models.pins;
  */
 
 public class Location {
-    private int latitude;
-    private int longitude;
+    private double latitude;
+    private double longitude;
 
     /**
      * Constructor creates the location with the specified
@@ -14,7 +14,13 @@ public class Location {
      * @param latitude  The latitude of the point
      * @param longitude The longitude of the point
      */
-    public Location(int latitude, int longitude) {
+    public Location(double latitude, double longitude) {
+        if (latitude > 85 || latitude < -85) {
+            throw new IllegalArgumentException("latitude out of range");
+        }
+        if (longitude > 180 || longitude < -180) {
+            throw new IllegalArgumentException("longitude out of range");
+        }
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -24,7 +30,7 @@ public class Location {
      *
      * @return the latitude of the point
      */
-    public int getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
@@ -33,7 +39,7 @@ public class Location {
      *
      * @return the longitude of the point
      */
-    public int getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 }
