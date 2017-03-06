@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
-import com.sixtyseven.uga.watercake.controllers.NewReportActivity;
 
 /**
  * Welcome screen Controller
@@ -43,15 +42,5 @@ public class WelcomeCakeController extends Activity {
         Log.d("WelcomeCakeController", "Clicked Edit Profile.");
         startActivity(new Intent(WelcomeCakeController.this, EditProfileActivity.class));
 
-    }
-
-    public void viewReports(View view) {
-        Log.d("WelcomeCakeController", "Clicked View Reports.");
-        startActivity(new Intent(WelcomeCakeController.this, SourceReportList.class));
-    }
-
-    public void createReportButton(View view) {
-        Log.d("WelcomeCakeController", "Clicked Create Report");
-        startActivity(new Intent(WelcomeCakeController.this, NewReportActivity.class));
     }
 }

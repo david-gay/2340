@@ -18,7 +18,6 @@
         <activity android:name=".controllers.RegistrationController"/>
         <activity android:name=".controllers.WelcomeCakeController"/>
         <activity android:name=".controllers.EditProfileActivity"/>
-        <activity android:name=".controllers.NewReportActivity"/>
     </application>
 
 </manifest>
