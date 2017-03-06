@@ -1,4 +1,4 @@
-package com.sixtyseven.uga.watercake.models.report;
+package com.sixtyseven.uga.watercake.models.report.constants;
 
 /**
  * Condition of water for normal WaterSourceReports

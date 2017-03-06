@@ -17,7 +17,6 @@ import com.sixtyseven.uga.watercake.models.user.UserProfileField;
 import java.util.EnumSet;
 import java.util.Map;
 
-
 public class EditProfileActivity extends FragmentActivity {
     UserPropertiesFragment properties;
 
@@ -27,12 +26,11 @@ public class EditProfileActivity extends FragmentActivity {
 
         setContentView(R.layout.activity_edit_profile);
 
-
         //Changes the default Password field to say Change Password
-        properties = (UserPropertiesFragment) getSupportFragmentManager().findFragmentById(R.id
-                .details_fragment);
-        ((TextInputLayout) properties.getView().findViewById(R.id
-                .passwordInputLayout)).setHint("Change Password");
+        properties = (UserPropertiesFragment) getSupportFragmentManager().findFragmentById(
+                R.id.details_fragment);
+        ((TextInputLayout) properties.getView().findViewById(R.id.passwordInputLayout)).setHint(
+                "Change Password");
 
         //Sets the final text box in the UserPropertiesFragment to be flagged for IME_ACTION_DONE
         //and adds a listener.
@@ -40,29 +38,28 @@ public class EditProfileActivity extends FragmentActivity {
         if (textInputLayout != null && textInputLayout.getEditText() != null) {
             textInputLayout.getEditText().setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-            textInputLayout.getEditText().setOnEditorActionListener(new TextView
-                    .OnEditorActionListener() {
+            textInputLayout.getEditText().setOnEditorActionListener(
+                    new TextView.OnEditorActionListener() {
 
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    boolean handled = false;
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        confirmEditProfile(null);
-                        handled = true;
-                    }
-                    return handled;
-                }
-            });
+                        @Override
+                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                            boolean handled = false;
+                            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                                confirmEditProfile(null);
+                                handled = true;
+                            }
+                            return handled;
+                        }
+                    });
         }
 
+        Map<UserProfileField, String> fieldsMap =
+                UserSession.currentSession().getCurrentUser().getFieldsMap();
 
-        Map<UserProfileField, String> fieldsMap = UserSession.currentSession().getCurrentUser()
-                .getFieldsMap();
-
-        ((TextView) findViewById(R.id.userNameTextView)).setText("Username: " + fieldsMap.get
-                (UserProfileField.USERNAME));
-        ((TextView) findViewById(R.id.userTypeTextView)).setText("User Type: " + fieldsMap.get
-                (UserProfileField.USER_TYPE));
+        ((TextView) findViewById(R.id.userNameTextView)).setText(
+                "Username: " + fieldsMap.get(UserProfileField.USERNAME));
+        ((TextView) findViewById(R.id.userTypeTextView)).setText(
+                "User Type: " + fieldsMap.get(UserProfileField.USER_TYPE));
 
         //Do not populate the password field
         fieldsMap.remove(UserProfileField.PASSWORD);
@@ -83,13 +80,13 @@ public class EditProfileActivity extends FragmentActivity {
         Map<UserProfileField, String> fieldsMap = properties.getFieldMap();
 
         //special handling for when the user does not try to change their password
-        if (fieldsMap.containsKey(UserProfileField.PASSWORD) && "".equals(fieldsMap.get
-                (UserProfileField.PASSWORD))) {
+        if (fieldsMap.containsKey(UserProfileField.PASSWORD) && "".equals(
+                fieldsMap.get(UserProfileField.PASSWORD))) {
             fieldsMap.remove(UserProfileField.PASSWORD);
         }
 
-        EnumSet<UserProfileError> results = UserSession.currentSession().updateUserFields
-                (fieldsMap);
+        EnumSet<UserProfileError> results = UserSession.currentSession().updateUserFields(
+                fieldsMap);
 
         if (results.isEmpty()) {
             Log.d("EditProfileActivity", "Profile Updated");

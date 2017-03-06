@@ -1,7 +1,9 @@
 package com.sixtyseven.uga.watercake.models.report;
 
+import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
+
 /**
- * Purity details that a WaterSourceReport can optionally have. Internally used by
+ * Purity details that a WaterSourceReportImpl can optionally have. Internally used by
  * WaterSourceReports.
  */
 class WaterPurityDetails {
@@ -30,6 +32,14 @@ class WaterPurityDetails {
     }
 
     /**
+     * Sets the WaterPurityCondition
+     * @param condition the new WaterPurityCondition
+     */
+    void setCondition(WaterPurityCondition condition) {
+        this.condition = condition;
+    }
+
+    /**
      * Returns the virus parts per million
      * @return the virus parts per million
      */
@@ -38,10 +48,26 @@ class WaterPurityDetails {
     }
 
     /**
+     * Sets the virus parts per million
+     * @param virusPPM the new virus parts per million
+     */
+    void setVirusPPM(float virusPPM) {
+        this.virusPPM = virusPPM;
+    }
+
+    /**
      * Returns the contaminant parts per million
      * @return the contaminant parts per million
      */
     float getContaminantPPM() {
         return contaminantPPM;
+    }
+
+    /**
+     * Sets the contaminant parts per million
+     * @param contaminantPPM the new contaminant parts per million
+     */
+    void setContaminantPPM(float contaminantPPM) {
+        this.contaminantPPM = contaminantPPM;
     }
 }

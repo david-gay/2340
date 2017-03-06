@@ -2,12 +2,12 @@ package com.sixtyseven.uga.watercake.models.report;
 
 import com.sixtyseven.uga.watercake.models.pins.Location;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
+import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
 
 import java.util.Date;
->>>>>>> origin/report-generation
 
-public interface WaterSourceReport {
+public interface WaterPurityReport {
     /**
      * Returns the report number
      * @return the report number
@@ -24,17 +24,7 @@ public interface WaterSourceReport {
      * Returns a DateTime object with the creation date and time
      * @return a DateTime object with the creation date and time
      */
-
-    public DateTime getDateAndTime() {
-        return dateAndTime;
-    }
-
-
-    /**
-     * Returns a Location object with latitude and longitude of the water source
-     * @return a Location object with latitude and longitude of the water source
-     */
-    public Location getLocation() {return location;}
+    Date getDataAndTime();
 
     /**
      * Returns the water type
@@ -53,4 +43,22 @@ public interface WaterSourceReport {
      * @return the lcoation of this report
      */
     Location getLocation();
+
+    /**
+     * Returns the WaterPurityCondition, if isWaterPurityReport() is true.
+     * @return the WaterPurityCondition
+     */
+    WaterPurityCondition getWaterPurityCondition();
+
+    /**
+     * Returns the virus PPM, if isWaterPurityReport() is true.
+     * @return the virus PPM
+     */
+    float getVirusPPM();
+
+    /**
+     * Returns the virus PPM, if isWaterPurityReport() is true.
+     * @return the virus PPM
+     */
+    float getContaminantPPM();
 }

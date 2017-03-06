@@ -1,7 +1,7 @@
 package com.sixtyseven.uga.watercake.models.user;
 
 /**
- * A enum for representing all possible fields used for registration
+ * Enum for representing all possible fields used for registration
  */
 public enum UserProfileField {
     USERNAME,
