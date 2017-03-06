@@ -16,6 +16,9 @@ import com.sixtyseven.uga.watercake.models.pins.PinManager;
 
 import java.util.Set;
 
+/**
+ * Creates a map that the user can interact with for displaying water locations.
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
