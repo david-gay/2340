@@ -1,8 +1,6 @@
 package com.sixtyseven.uga.watercake.models.user;
 
-/**
- * Enum for each possible User type
- */
+
 public enum UserType {
     CONTRIBUTOR("Contributor"),
     WORKER("Worker"),

@@ -45,7 +45,6 @@ public class WelcomeCakeController extends Activity {
 
     }
 
-<<<<<<< HEAD
     public void viewReports(View view) {
         Log.d("WelcomeCakeController", "Clicked View Reports.");
         startActivity(new Intent(WelcomeCakeController.this, SourceReportList.class));
@@ -54,10 +53,5 @@ public class WelcomeCakeController extends Activity {
     public void createReportButton(View view) {
         Log.d("WelcomeCakeController", "Clicked Create Report");
         startActivity(new Intent(WelcomeCakeController.this, NewReportActivity.class));
-=======
-    public void goToMap(View view) {
-        Log.d("map", "go to map");
-        startActivity(new Intent(WelcomeCakeController.this, MapsActivity.class));
->>>>>>> origin/report-generation
     }
 }

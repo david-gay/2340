@@ -1,4 +1,4 @@
-package com.sixtyseven.uga.watercake.models.report.constants;
+package com.sixtyseven.uga.watercake.models.report;
 
 /**
  * Type of water for WaterSourceReports
