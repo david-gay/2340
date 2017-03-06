@@ -10,11 +10,12 @@ import java.util.Date;
  * The concrete implementation for all WaterSource reports containing all of the data for a single
  * water source.
  */
-class WaterSourceReportImpl implements MutableWaterSourceReport, MutableWaterPurityReport {
+class WaterSourceReportImpl implements WaterSourceReport, WaterPurityReport {
     private final int reportNumber;
     private final String authorUsername;
     private final Date dataAndTime;
-    private Location location;
+    private double latitude;
+    private double longitude;
     private WaterType waterType;
     private WaterCondition condition;
     private WaterPurityDetails waterPurityDetails;
@@ -28,8 +29,8 @@ class WaterSourceReportImpl implements MutableWaterSourceReport, MutableWaterPur
      * @param condition the condition of the water
      */
     WaterSourceReportImpl(int reportNumber, String authorUsername, Date dataAndTime,
-            Location location, WaterType waterType, WaterCondition condition) {
-        this(reportNumber, authorUsername, dataAndTime, location, waterType, condition, null);
+            double latitude, double longitude, WaterType waterType, WaterCondition condition) {
+        this(reportNumber, authorUsername, dataAndTime,  latitude,  longitude, waterType, condition, null);
     }
 
     /**
@@ -44,9 +45,9 @@ class WaterSourceReportImpl implements MutableWaterSourceReport, MutableWaterPur
      * @param contaminantPPM the contaminant parts per million
      */
     WaterSourceReportImpl(int reportNumber, String authorUsername, Date dataAndTime,
-            Location location, WaterType waterType, WaterCondition condition,
+            double latitude, double longitude, WaterType waterType, WaterCondition condition,
             WaterPurityCondition waterPurityCondition, float virusPPM, float contaminantPPM) {
-        this(reportNumber, authorUsername, dataAndTime, location, waterType, condition,
+        this(reportNumber, authorUsername, dataAndTime, latitude, longitude, waterType, condition,
                 new WaterPurityDetails(waterPurityCondition, virusPPM, contaminantPPM));
     }
 
@@ -61,12 +62,13 @@ class WaterSourceReportImpl implements MutableWaterSourceReport, MutableWaterPur
      * and contaminantPPM
      */
     private WaterSourceReportImpl(int reportNumber, String authorUsername, Date dataAndTime,
-            Location location, WaterType waterType, WaterCondition condition,
+            double latitude, double longitude, WaterType waterType, WaterCondition condition,
             WaterPurityDetails waterPurityDetails) {
         this.reportNumber = reportNumber;
         this.authorUsername = authorUsername;
         this.dataAndTime = dataAndTime;
-        this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.waterType = waterType;
         this.condition = condition;
         this.waterPurityDetails = waterPurityDetails;
@@ -96,13 +98,13 @@ class WaterSourceReportImpl implements MutableWaterSourceReport, MutableWaterPur
     }
 
     @Override
-    public Location getLocation() {
-        return location;
+    public double getLatitude() {
+        return latitude;
     }
 
     @Override
-    public void setLocation(Location location) {
-        this.location = location;
+    public double getLongitude() {
+        return longitude;
     }
 
     @Override
@@ -110,7 +112,6 @@ class WaterSourceReportImpl implements MutableWaterSourceReport, MutableWaterPur
         return waterType;
     }
 
-    @Override
     public void setWaterType(WaterType waterType) {
         this.waterType = waterType;
     }
@@ -120,7 +121,6 @@ class WaterSourceReportImpl implements MutableWaterSourceReport, MutableWaterPur
         return condition;
     }
 
-    @Override
     public void setCondition(WaterCondition condition) {
         this.condition = condition;
     }
@@ -134,7 +134,6 @@ class WaterSourceReportImpl implements MutableWaterSourceReport, MutableWaterPur
                 + "isWaterPurityReport() is false.");
     }
 
-    @Override
     public void setWaterPurityCondition(WaterPurityCondition condition) {
         if (isWaterPurityReport()) {
             waterPurityDetails.setCondition(condition);
@@ -152,7 +151,6 @@ class WaterSourceReportImpl implements MutableWaterSourceReport, MutableWaterPur
                 "getVirusPPM() is unsupported when " + "isWaterPurityReport() is false.");
     }
 
-    @Override
 
     public void setVirusPPM(float ppm) {
         if (isWaterPurityReport()) {
@@ -171,7 +169,6 @@ class WaterSourceReportImpl implements MutableWaterSourceReport, MutableWaterPur
                 "getContaminantPPM() is unsupported when " + "isWaterPurityReport() is false.");
     }
 
-    @Override
     public void setContaminantPPM(float ppm) {
         if (isWaterPurityReport()) {
             waterPurityDetails.setContaminantPPM(ppm);

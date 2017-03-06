@@ -36,9 +36,7 @@ public interface WaterSourceReport {
      */
     WaterCondition getCondition();
 
-    /**
-     * Returns the location of this report
-     * @return the lcoation of this report
-     */
-    Location getLocation();
+    double getLatitude();
+
+    double getLongitude();
 }

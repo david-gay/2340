@@ -13,8 +13,8 @@ import java.util.Map;
  */
 public class ReportManager {
 
-    private Map<Integer, MutableWaterSourceReport> waterSourceReports;
-    private Map<Integer, MutableWaterPurityReport> waterPurityReports;
+    private Map<Integer, WaterSourceReport> waterSourceReports;
+    private Map<Integer, WaterPurityReport> waterPurityReports;
     private int nextReportId;
 
     private static ReportManager ourInstance = new ReportManager();
@@ -30,7 +30,7 @@ public class ReportManager {
     private ReportManager() {
         waterSourceReports = new HashMap<>();
         waterPurityReports = new HashMap<>();
-        nextReportId = 0;
+        nextReportId = 1;
     }
 
     /**
@@ -40,12 +40,12 @@ public class ReportManager {
      * @param condition the condition of that water
      * @return true if the report is created and added
      */
-    public boolean createWaterReport(String authorUsername, Location location, WaterType waterType,
-            WaterCondition condition) {
+    public boolean createWaterReport(String authorUsername, double latitude, double longitude,
+            WaterType waterType, WaterCondition condition) {
 
         waterSourceReports.put(nextReportId,
-                new WaterSourceReportImpl(nextReportId, authorUsername, new Date(), location,
-                        waterType, condition));
+                new WaterSourceReportImpl(nextReportId, authorUsername, new Date(), latitude,
+                        longitude, waterType, condition));
 
         nextReportId++;
 
@@ -59,13 +59,13 @@ public class ReportManager {
      * @param condition the condition of that water
      * @return true if the report is created and added
      */
-    public boolean createPurityReport(String authorUsername, Location location, WaterType waterType,
-            WaterCondition condition, WaterPurityCondition waterPurityCondition, float virusPPM,
-            float contaminantPPM) {
+    public boolean createPurityReport(String authorUsername, double latitude, double longitude,
+            WaterType waterType, WaterCondition condition,
+            WaterPurityCondition waterPurityCondition, float virusPPM, float contaminantPPM) {
 
         WaterSourceReportImpl potentialReport = new WaterSourceReportImpl(nextReportId,
-                authorUsername, new Date(), location, waterType, condition, waterPurityCondition,
-                virusPPM, contaminantPPM);
+                authorUsername, new Date(), latitude, longitude, waterType, condition,
+                waterPurityCondition, virusPPM, contaminantPPM);
 
         waterSourceReports.put(nextReportId, potentialReport);
         waterPurityReports.put(nextReportId, potentialReport);
@@ -97,48 +97,6 @@ public class ReportManager {
             return null;
         }
         return waterPurityReports.get(id);
-    }
-
-    /**
-     * Updates a water source report, if it exists.
-     * @param id the id of the report to update
-     * @param waterType the new waterType
-     * @param condition the new condition
-     * @return true if the report was updated
-     */
-    public boolean updateWaterSourceReportWithId(int id, Location location, WaterType waterType,
-            WaterCondition condition) {
-        if (waterSourceReports.containsKey(id)) {
-            MutableWaterSourceReport report = waterSourceReports.get(id);
-            report.setWaterType(waterType);
-            report.setCondition(condition);
-            report.setLocation(location);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Updates a water purity report, if it exists.
-     * @param id the id of the report to update
-     * @param waterType the new waterType
-     * @param condition the new condition
-     * @return true if the report was updated
-     */
-    public boolean updateWaterPurityReportWithId(int id, Location location, WaterType waterType,
-            WaterCondition condition, WaterPurityCondition waterPurityCondition, float virusPPM,
-            float contaminantPPM) {
-        if (waterPurityReports.containsKey(id)) {
-            MutableWaterPurityReport report = waterPurityReports.get(id);
-            report.setWaterType(waterType);
-            report.setCondition(condition);
-            report.setLocation(location);
-            report.setWaterPurityCondition(waterPurityCondition);
-            report.setVirusPPM(virusPPM);
-            report.setContaminantPPM(contaminantPPM);
-            return true;
-        }
-        return false;
     }
 
     /**
