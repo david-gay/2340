@@ -15,4 +15,28 @@
     <string name="email">Email</string>
     <string name="city">City</string>
     <string name="title">Title</string>
+    <string name="new_source_report">New Source Report</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="delete">Delete</string>
+    <string name="waste">Waste</string>
+    <string name="treatable_clear">Treatable Clear</string>
+    <string name="treatable_muddy">Treatable Muddy</string>
+    <string name="potable">Potable</string>
+    <string name="bottled">Bottled</string>
+    <string name="spring">Spring</string>
+    <string name="well">Well</string>
+    <string name="lake">Lake</string>
+    <string name="other">Other</string>
+    <string name="stream">Stream</string>
+    <string name="create_report">Create New Report</string>
+    <string name="view_reports">View Reports</string>
+    <string name="return_to_list">Return to List</string>
+    <string name="water_type">Water Type:</string>
+    <string name="water_condition">Water Condition:</string>
+    <string name="location">Location:</string>
+    <string name="report_number">Report Number:</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
