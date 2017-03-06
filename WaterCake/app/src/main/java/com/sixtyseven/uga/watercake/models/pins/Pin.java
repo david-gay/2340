@@ -1,9 +1,10 @@
 package com.sixtyseven.uga.watercake.models.pins;
 
-/**
- * Created by Thor on 2017-03-01.
- */
+import com.sixtyseven.uga.watercake.models.reports.Location;
 
+/**
+ * Representation of a single map pin.
+ */
 public class Pin {
     private String label;
     private Location location;
@@ -41,7 +42,7 @@ public class Pin {
     }
 
     /**
-     * Sets the location of the pin
+     * Sets the location of the pin - Note that this does not automatically update the map
      *
      * @param location the new label for the pin
      */
