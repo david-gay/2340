@@ -2,6 +2,9 @@ package com.sixtyseven.uga.watercake.models.pins;
 
 import com.sixtyseven.uga.watercake.models.reports.Location;
 
+/**
+ * Representation of a single map pin.
+ */
 public class Pin {
     private String label;
     private Location location;

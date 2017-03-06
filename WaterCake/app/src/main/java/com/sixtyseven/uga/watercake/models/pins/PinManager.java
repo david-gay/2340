@@ -6,11 +6,18 @@ import java.util.Set;
 
 import com.sixtyseven.uga.watercake.models.reports.Location;
 
+/**
+ * Manager for containing Pins.
+ */
 public class PinManager {
     private static PinManager pinManager = new PinManager();
     private Set<Pin> pins;
 
-    public static PinManager getPinManager() {
+    /**
+     * Returns the current PinManager instance
+     * @return the current PinManager instance
+     */
+    public static PinManager getInstance() {
         return pinManager;
     }
 
@@ -18,7 +25,7 @@ public class PinManager {
      * Constructor - loads hard coded pins. Should load pins from other source later
      */
     private PinManager() {
-        pins = new HashSet<Pin>();
+        pins = new HashSet<>();
         pins.add(new Pin("Marker in Sydney", new Location(-34, 151)));
         pins.add(new Pin("Whole lot of water", new Location(-74, -70)));
         pins.add(new Pin("Mirage water", new Location(22, 11)));

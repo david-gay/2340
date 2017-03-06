@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentActivity;
 
 import com.sixtyseven.uga.watercake.R;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -45,7 +44,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        Set<Pin> pins = PinManager.getPinManager().getPins();
+        Set<Pin> pins = PinManager.getInstance().getPins();
         for(Pin pin: pins)
         {
             Location location = pin.getLocation();
