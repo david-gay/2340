@@ -4,8 +4,8 @@ package com.sixtyseven.uga.watercake.models.report.constants;
  * Condition of water for normal WaterSourceReports
  */
 public enum WaterCondition {
-    WASTE,
+    POTABLE,
     TREATABLE_CLEAR,
     TREATABLE_MUDDY,
-    POTABLE;
+    WASTE
 }
