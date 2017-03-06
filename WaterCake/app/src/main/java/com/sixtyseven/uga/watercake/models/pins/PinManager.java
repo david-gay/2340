@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Collections;
 import java.util.Set;
 
-import com.sixtyseven.uga.watercake.models.reports.Location;
+import com.sixtyseven.uga.watercake.models.report.Location;
 
 /**
  * Manager for containing Pins.

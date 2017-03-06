@@ -1,4 +1,4 @@
-package com.sixtyseven.uga.watercake.models.reports;
+package com.sixtyseven.uga.watercake.models.report;
 
 /**
  * Immutable class for storing location

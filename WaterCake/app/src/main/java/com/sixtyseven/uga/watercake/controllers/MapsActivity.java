@@ -10,7 +10,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.sixtyseven.uga.watercake.models.reports.Location;
+import com.sixtyseven.uga.watercake.models.report.Location;
 import com.sixtyseven.uga.watercake.models.pins.Pin;
 import com.sixtyseven.uga.watercake.models.pins.PinManager;
 

@@ -1,6 +1,6 @@
 package com.sixtyseven.uga.watercake.models.pins;
 
-import com.sixtyseven.uga.watercake.models.reports.Location;
+import com.sixtyseven.uga.watercake.models.report.Location;
 
 /**
  * Representation of a single map pin.
