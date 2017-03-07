@@ -6,16 +6,17 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:orientation="vertical">
+
     <Button
         android:id="@+id/logoutButton"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="45dp"
         android:onClick="logout"
-        android:text="@string/logout"
-        style="@style/Widget.AppCompat.Button.Colored" />
+        android:text="@string/logout"/>
 
     <TextView
         android:id="@+id/welcomeText"
@@ -24,7 +25,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="96dp"
-        android:text="@string/welcome" />
+        android:text="@string/welcome"/>
 
     <TextView
         android:id="@+id/textView7"
@@ -32,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/imageView"
         android:layout_centerHorizontal="true"
-        android:text="@string/have_some_cake" />
+        android:text="@string/have_some_cake"/>
 
     <ImageView
         android:id="@+id/imageView"
@@ -42,27 +43,46 @@
         android:layout_centerVertical="true"
         android:minHeight="150dp"
         android:minWidth="150dp"
-        app:srcCompat="@mipmap/water_cat_cake" />
+        app:srcCompat="@mipmap/water_cat_cake"/>
 
     <Button
         android:id="@+id/editProfileButton"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="editProfile"
-        android:text="@string/edit_profile"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_centerHorizontal="true"
         android:layout_above="@+id/logoutButton"
-        android:layout_alignStart="@+id/textView7"/>
+        android:layout_centerHorizontal="true"
+        android:onClick="editProfile"
+        android:text="@string/edit_profile"/>
 
     <Button
-        android:text="Map"
-        android:onClick="goToMap"
+        android:id="@+id/createReportButton"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_above="@+id/viewReportButton"
+        android:layout_centerHorizontal="true"
+        android:onClick="createWaterReport"
+        android:text="@string/create_water_report"/>
+
+    <Button
+        android:id="@+id/viewReportButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/editProfileButton"
+        android:layout_centerHorizontal="true"
+        android:onClick="viewWaterReports"
+        android:text="@string/view_water_reports"/>
+
+    <Button
+        android:id="@+id/goToMap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="11dp"
         android:layout_marginTop="16dp"
-        android:id="@+id/goToMap" />
+        android:onClick="goToMap"
+        android:text="Map"/>
 </RelativeLayout>
