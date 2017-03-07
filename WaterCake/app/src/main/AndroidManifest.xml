@@ -44,6 +44,8 @@
         <activity android:name=".controllers.EditProfileActivity"/>
         <activity android:name=".controllers.CreateWaterReportActivity">
         </activity>
+        <activity android:name=".controllers.ReportListActivity">
+        </activity>
     </application>
 
 </manifest>

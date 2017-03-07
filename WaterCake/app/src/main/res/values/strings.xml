@@ -20,4 +20,8 @@
     <string name="latitude">Latitude</string>
     <string name="submit">Submit</string>
     <string name="create_water_report">Create Water Report</string>
+    <string name="view_water_report">View Water Report</string>
+    <string name="view_water_reports">View Water Reports</string>
+    <string name="water_condition">Water Condition</string>
+    <string name="water_type">Water Type</string>
 </resources>

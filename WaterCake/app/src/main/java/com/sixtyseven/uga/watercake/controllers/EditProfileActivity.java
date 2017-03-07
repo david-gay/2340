@@ -56,7 +56,7 @@ public class EditProfileActivity extends FragmentActivity {
         Map<UserProfileField, String> fieldsMap =
                 UserSession.currentSession().getCurrentUser().getFieldsMap();
 
-        ((TextView) findViewById(R.id.userNameTextView)).setText(
+        ((TextView) findViewById(R.id.usernameTextView)).setText(
                 "Username: " + fieldsMap.get(UserProfileField.USERNAME));
         ((TextView) findViewById(R.id.userTypeTextView)).setText(
                 "User Type: " + fieldsMap.get(UserProfileField.USER_TYPE));
