@@ -2,8 +2,6 @@ package com.sixtyseven.uga.watercake.models.user;
 
 import android.util.Log;
 
-import com.sixtyseven.uga.watercake.models.userprofile.UserProfileField;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,8 +41,7 @@ public class User {
      * already set.
      * @param fieldsMap the map of UserProfileFields and their associated values to use
      */
-    public void setFieldsFromFieldsMap(Map<UserProfileField, String>
-                                               fieldsMap) {
+    public void setFieldsFromFieldsMap(Map<UserProfileField, String> fieldsMap) {
         if (fieldsMap.containsKey(UserProfileField.PASSWORD)) {
             setPassword(fieldsMap.get(UserProfileField.PASSWORD));
         }
@@ -97,8 +94,7 @@ public class User {
      */
     public boolean hasPassword(String password) {
         Log.d("password", "User entered password " + password + ", which " + (password.equals
-                (this.password) ?
-                "matches" : "does not match") + " the correct password");
+                (this.password) ? "matches" : "does not match") + " the correct password");
         return this.password.equals(password);
     }
 

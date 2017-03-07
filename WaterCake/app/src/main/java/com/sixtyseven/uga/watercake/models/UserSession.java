@@ -4,8 +4,8 @@ import android.util.Log;
 
 import com.sixtyseven.uga.watercake.models.response.LoginResult;
 import com.sixtyseven.uga.watercake.models.user.User;
-import com.sixtyseven.uga.watercake.models.userprofile.UserProfileError;
-import com.sixtyseven.uga.watercake.models.userprofile.UserProfileField;
+import com.sixtyseven.uga.watercake.models.user.UserProfileError;
+import com.sixtyseven.uga.watercake.models.user.UserProfileField;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -17,6 +17,8 @@ import java.util.Map;
  */
 public class UserSession {
     private static UserSession ourInstance = new UserSession();
+    private Map<String, User> users;
+    private User currentUser;
 
     /**
      * Returns the current UserSession
@@ -26,10 +28,9 @@ public class UserSession {
         return ourInstance;
     }
 
-    private Map<String, User> users;
-
-    private User currentUser;
-
+    /**
+     * Default constructor; should normally only be called once at startup.
+     */
     private UserSession() {
         users = new HashMap<>();
         users.put("user", new User("user", "pass"));
@@ -67,10 +68,14 @@ public class UserSession {
         return result;
     }
 
-    public boolean logout() {
+    /**
+     * Logs the current user out.
+     */
+    public void logout() {
         currentUser = null;
-        return true;
     }
+
+
 
     /**
      * Attempts to register a user and returns an EnumSet of any registration errors present.

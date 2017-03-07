@@ -43,4 +43,19 @@ public class WelcomeCakeController extends Activity {
         startActivity(new Intent(WelcomeCakeController.this, EditProfileActivity.class));
 
     }
+
+    public void createWaterReport(View view) {
+        Log.d("report", "go to Create Water Report");
+        startActivity(new Intent(WelcomeCakeController.this, CreateWaterReportActivity.class));
+    }
+
+    public void viewWaterReports(View view) {
+        Log.d("report", "go to View Water Report");
+        startActivity(new Intent(WelcomeCakeController.this, ReportListActivity.class));
+    }
+
+    public void goToMap(View view) {
+        Log.d("map", "go to map");
+        startActivity(new Intent(WelcomeCakeController.this, MapsActivity.class));
+    }
 }

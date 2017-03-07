@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <TextView
+        android:id="@+id/reportNumberTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:text="100"
+        android:textColor="@android:color/black"
+        />
+
+    <TextView
+        android:id="@+id/usernameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/username"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="31dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/latitudeTextView"/>
+
+    <TextView
+        android:id="@+id/latitudeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/latitude"
+        android:layout_alignBaseline="@+id/longitudeTextView"
+        android:layout_alignBottom="@+id/longitudeTextView"
+        android:layout_toEndOf="@+id/longitudeTextView"
+        android:layout_marginStart="26dp"/>
+
+    <TextView
+        android:id="@+id/longitudeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/longitude"
+        android:layout_marginTop="11dp"
+        android:layout_below="@+id/reportNumberTextView"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="13dp"/>
+
+    <TextView
+        android:id="@+id/waterTypeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/water_type"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/waterConditionTextView"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="12dp"/>
+
+    <TextView
+        android:id="@+id/waterConditionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/water_condition"
+        android:layout_alignBaseline="@+id/latitudeTextView"
+        android:layout_alignBottom="@+id/latitudeTextView"
+        android:layout_toEndOf="@+id/latitudeTextView"
+        android:layout_marginStart="35dp"/>
+
+</RelativeLayout>
