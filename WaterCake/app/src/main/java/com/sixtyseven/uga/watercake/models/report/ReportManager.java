@@ -5,6 +5,7 @@ import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition
 import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -84,7 +85,7 @@ public class ReportManager {
      */
     public List<WaterSourceReport> getWaterSourceReportList() {
         List<WaterSourceReport> list = new ArrayList<>(waterSourceReports.values());
-        list.sort(new Comparator<WaterSourceReport>() {
+        Collections.sort(list,new Comparator<WaterSourceReport>() {
             @Override
             public int compare(WaterSourceReport o1, WaterSourceReport o2) {
                 return o1.getReportNumber() - o2.getReportNumber();
