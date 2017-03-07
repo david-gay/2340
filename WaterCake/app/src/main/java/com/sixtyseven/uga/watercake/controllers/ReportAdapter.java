@@ -54,20 +54,20 @@ public class ReportAdapter extends ArrayAdapter<WaterSourceReport> {
                 //NB, lat and long are never "negative"; they just have different direction
                 if (report.getLatitude() < 0) {
                     latitudeText.setText(
-                            String.format(Locale.US, "%4fS", Math.abs(report.getLongitude())));
+                            String.format(Locale.US, "%4fS", Math.abs(report.getLatitude())));
                 } else {
-                    latitudeText.setText(String.format(Locale.US, "%4fN", report.getLongitude()));
+                    latitudeText.setText(String.format(Locale.US, "%4fN", report.getLatitude()));
                 }
             }
 
             TextView longitudeText = (TextView) view.findViewById(R.id.longitudeTextView);
             if (longitudeText != null) {
                 //NB, lat and long are never "negative"; they just have different direction
-                if (report.getLatitude() < 0) {
+                if (report.getLongitude() < 0) {
                     longitudeText.setText(
-                            String.format(Locale.US, "%4fW", Math.abs(report.getLatitude())));
+                            String.format(Locale.US, "%4fW", Math.abs(report.getLongitude())));
                 } else {
-                    longitudeText.setText(String.format(Locale.US, "%4fE", report.getLatitude()));
+                    longitudeText.setText(String.format(Locale.US, "%4fE", report.getLongitude()));
                 }
             }
 
