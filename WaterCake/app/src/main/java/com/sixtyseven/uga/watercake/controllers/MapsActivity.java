@@ -11,6 +11,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.UiSettings;
 import com.sixtyseven.uga.watercake.models.report.ReportManager;
@@ -23,16 +25,12 @@ import java.util.List;
 /**
  * Creates a map that the user can interact with for displaying water locations.
  */
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnInfoWindowClickListener,
+        OnMapReadyCallback {
 
     private GoogleMap mMap;
     private UiSettings mUiSettings;
-    private CheckBox mLocationButtonCheckbox;
-    private CheckBox mLocationLayerCheckbox;
-    private static final int MY_LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private static final int LCOATION_LAYER_PERMISSION_REQUEST_CODE = 2;
-
-    private boolean mLocationPermissionDenied = false;
+ 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +74,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.addMarker(new MarkerOptions().position(new LatLng(report.getLatitude(),
                     report.getLongitude())).title(report.getWaterType() + ", "
                     + report.getCondition()));
+
         }
+
+        //set a listner for report details info windows
+        mMap.setOnInfoWindowClickListener(this);
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Toast.makeText(this, "Infor window clicked", Toast.LENGTH_SHORT).show();
     }
 
 }
