@@ -13,8 +13,8 @@ import com.sixtyseven.uga.watercake.R;
  * adapter to create custom infoWindows for markers on map
  */
 public class MarkerWindowAdapter implements InfoWindowAdapter {
-    private View markerWindow=null;
-    private LayoutInflater inflater=null;
+    private View markerWindow = null;
+    private LayoutInflater inflater = null;
 
     MarkerWindowAdapter(LayoutInflater inflater) {
         this.inflater=inflater;
@@ -29,14 +29,14 @@ public class MarkerWindowAdapter implements InfoWindowAdapter {
     @Override
     public View getInfoContents(Marker marker) {
         if (markerWindow == null) {
-            markerWindow=inflater.inflate(R.layout.marker_window, null);
+            markerWindow = inflater.inflate(R.layout.marker_window, null);
         }
 
-        TextView tv=(TextView)markerWindow.findViewById(R.id.title);
+        TextView textView = (TextView) markerWindow.findViewById(R.id.title);
 
-        tv.setText(marker.getTitle());
-        tv=(TextView)markerWindow.findViewById(R.id.snippet);
-        tv.setText(marker.getSnippet());
+        textView.setText(marker.getTitle());
+        textView = (TextView) markerWindow.findViewById(R.id.snippet);
+        textView.setText(marker.getSnippet());
 
         return(markerWindow);
     }
