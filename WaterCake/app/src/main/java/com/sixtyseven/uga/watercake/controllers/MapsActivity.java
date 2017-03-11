@@ -2,7 +2,6 @@ package com.sixtyseven.uga.watercake.controllers;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.R;
@@ -15,9 +14,9 @@ import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.sixtyseven.uga.watercake.models.report.ReportManager;
 import com.sixtyseven.uga.watercake.models.report.WaterSourceReport;
-
 
 import java.util.List;
 
@@ -30,7 +29,6 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
 
     private GoogleMap mMap;
     private UiSettings mUiSettings;
- 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +40,6 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-
-    private boolean isChecked(int id) {
-        return ((CheckBox) findViewById(id)).isChecked();
-    }
-
 
     /**
      * Manipulates the map once available.
@@ -63,6 +56,7 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
 
         mUiSettings = mMap.getUiSettings();
 
+
         mUiSettings.setZoomControlsEnabled(true);
         mUiSettings.setScrollGesturesEnabled(true);
         mUiSettings.setZoomGesturesEnabled((true));
@@ -70,20 +64,24 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
 
         // place markers
         List<WaterSourceReport> reports = ReportManager.getInstance().getWaterSourceReportList();
+        List<Marker> reportMarkers = new java.util.LinkedList<>();
         for (WaterSourceReport report : reports) {
-            mMap.addMarker(new MarkerOptions().position(new LatLng(report.getLatitude(),
-                    report.getLongitude())).title(report.getWaterType() + ", "
-                    + report.getCondition()));
-
+            Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(report.
+                    getLatitude(), report.getLongitude())).title("Report Number: " +
+                    report.getReportNumber()).snippet("Created: " + report.getDataAndTime()
+                    + "\nAuthor: " + report.getAuthorUsername()
+                    + "\nType: " + report.getWaterType()
+                    + "\nCondition: " + report.getCondition()));
         }
 
-        //set a listner for report details info windows
+        //set info window adapter and clickListener
+        mMap.setInfoWindowAdapter(new MarkerWindowAdapter(getLayoutInflater()));
         mMap.setOnInfoWindowClickListener(this);
     }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Toast.makeText(this, "Infor window clicked", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, marker.getTitle(), Toast.LENGTH_LONG).show();
     }
 
 }
