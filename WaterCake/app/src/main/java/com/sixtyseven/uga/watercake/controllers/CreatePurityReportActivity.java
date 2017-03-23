@@ -1,0 +1,86 @@
+package com.sixtyseven.uga.watercake.controllers;
+
+import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.sixtyseven.uga.watercake.R;
+import com.sixtyseven.uga.watercake.models.UserSession;
+import com.sixtyseven.uga.watercake.models.report.ReportManager;
+import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
+
+public class CreatePurityReportActivity extends AppCompatActivity {
+
+    TextInputLayout latitudeInput;
+    TextInputLayout longitudeInput;
+    Spinner waterPurityConditionSpinner;
+    TextInputLayout virusPpmInput;
+    TextInputLayout contaminantPpmInput;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_create_purity_report);
+
+        latitudeInput = (TextInputLayout) findViewById(R.id.latitudeInput);
+        longitudeInput = (TextInputLayout) findViewById(R.id.longitudeInput);
+
+        waterPurityConditionSpinner = (Spinner) findViewById(R.id.waterPurityConditionSpinner);
+        ArrayAdapter<WaterPurityCondition> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, WaterPurityCondition.values());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        waterPurityConditionSpinner.setAdapter(adapter);
+
+        virusPpmInput = (TextInputLayout) findViewById(R.id.virusPpmInput);
+        contaminantPpmInput = (TextInputLayout) findViewById(R.id.contaminantPpmInput);
+
+    }
+
+    /**
+     * Button handler for attempting to submit a report. Attempts to submit a report and updates any
+     * fields that may be invalid.
+     * @param view the button initiating this method
+     */
+    public void attemptSubmitReport(View view) {
+        ReportManager manager = ReportManager.getInstance();
+
+        double longitude = Double.parseDouble(longitudeInput.getEditText().getText().toString());
+        double latitude = Double.parseDouble(latitudeInput.getEditText().getText().toString());
+
+        float virusPpm = Float.parseFloat(virusPpmInput.getEditText().getText().toString());
+        float contaminantPpm = Float.parseFloat(contaminantPpmInput.getEditText().getText().toString());
+
+        if ((longitude > 180 || longitude < -180) || (latitude > 90 || latitude < -90)) {
+            // Invalid coords
+            Toast.makeText(getBaseContext(), "Invalid coordinates!", Toast.LENGTH_SHORT).show();
+        } else if (virusPpm < 0) {
+            // Negative Virus PPM
+            Toast.makeText(getBaseContext(), "Invalid Virus PPM!", Toast.LENGTH_SHORT).show();
+        } else if (contaminantPpm < 0) {
+            // Negative Contaminant PPM
+            Toast.makeText(getBaseContext(), "Invalid Contaminant PPM!", Toast.LENGTH_SHORT).show();
+        } else {
+            // Success!
+            WaterPurityCondition condition = (WaterPurityCondition) waterPurityConditionSpinner.getSelectedItem();
+
+            //manager.createPurityReport(UserSession.currentSession().getCurrentUser().getUsername(),
+            //        latitude, longitude, condition, virusPpm, contaminantPpm);
+
+            Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG).show();
+            finish();
+        }
+    }
+
+    /**
+     * Button handler to return to the previous screen.
+     * @param view the button initiating this method
+     */
+    public void cancel(View view) {
+        finish();
+    }
+}

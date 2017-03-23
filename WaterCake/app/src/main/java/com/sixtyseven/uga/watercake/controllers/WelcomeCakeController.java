@@ -58,4 +58,9 @@ public class WelcomeCakeController extends Activity {
         Log.d("map", "go to map");
         startActivity(new Intent(WelcomeCakeController.this, MapsActivity.class));
     }
+
+    public void createPurityReport(View view) {
+        Log.d("report", "go to Create Purity Report");
+        startActivity(new Intent(WelcomeCakeController.this, CreatePurityReportActivity.class));
+    }
 }

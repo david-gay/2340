@@ -60,10 +60,10 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/viewReportButton"
-        android:layout_centerHorizontal="true"
         android:onClick="createWaterReport"
-        android:text="@string/create_water_report"/>
+        android:text="@string/create_water_report"
+        android:layout_above="@+id/viewReportButton"
+        android:layout_centerHorizontal="true"/>
 
     <Button
         android:id="@+id/viewReportButton"
@@ -86,6 +86,7 @@
         android:layout_marginTop="16dp"
         android:onClick="goToMap"
         android:text="Map"/>
+
     <Button
         android:id="@+id/createPurityReportButton"
         style="@style/Widget.AppCompat.Button.Colored"
