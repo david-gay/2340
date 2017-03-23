@@ -88,10 +88,10 @@ public class CreatePurityReportActivity extends AppCompatActivity {
             // Success!
             WaterPurityCondition purityCondition = (WaterPurityCondition) waterPurityConditionSpinner.getSelectedItem();
             WaterCondition condition = (WaterCondition) waterConditionSpinner.getSelectedItem();
-            WaterType type = (WaterType) waterTypeSpinner.getSelectedItem();
+            WaterType waterType = (WaterType) waterTypeSpinner.getSelectedItem();
 
-            //manager.createPurityReport(UserSession.currentSession().getCurrentUser().getUsername(),
-            //        latitude, longitude, waterType, condition, purityCondition, virusPpm, contaminantPpm);
+            manager.createPurityReport(UserSession.currentSession().getCurrentUser().getUsername(),
+                    latitude, longitude, waterType, condition, purityCondition, virusPpm, contaminantPpm);
 
             Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG).show();
             finish();
