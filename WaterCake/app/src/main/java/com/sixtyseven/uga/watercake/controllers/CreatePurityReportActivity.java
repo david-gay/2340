@@ -11,8 +11,13 @@ import android.widget.Toast;
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
 import com.sixtyseven.uga.watercake.models.report.ReportManager;
+import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
+import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
 
+/**
+ * 2017-03-23 Susannah Doss
+ */
 public class CreatePurityReportActivity extends AppCompatActivity {
 
     TextInputLayout latitudeInput;
@@ -20,6 +25,8 @@ public class CreatePurityReportActivity extends AppCompatActivity {
     Spinner waterPurityConditionSpinner;
     TextInputLayout virusPpmInput;
     TextInputLayout contaminantPpmInput;
+    Spinner waterTypeSpinner;
+    Spinner waterConditionSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +45,19 @@ public class CreatePurityReportActivity extends AppCompatActivity {
 
         virusPpmInput = (TextInputLayout) findViewById(R.id.virusPpmInput);
         contaminantPpmInput = (TextInputLayout) findViewById(R.id.contaminantPpmInput);
+
+        waterTypeSpinner = (Spinner) findViewById(R.id.waterTypeSpinner);
+        ArrayAdapter<WaterType> waterTypeArrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, WaterType.values());
+        waterTypeArrayAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item);
+        waterTypeSpinner.setAdapter(waterTypeArrayAdapter);
+
+        waterConditionSpinner = (Spinner) findViewById(R.id.waterConditionSpinner);
+        ArrayAdapter<WaterCondition> adapter2 = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, WaterCondition.values());
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        waterConditionSpinner.setAdapter(adapter2);
 
     }
 
@@ -66,10 +86,12 @@ public class CreatePurityReportActivity extends AppCompatActivity {
             Toast.makeText(getBaseContext(), "Invalid Contaminant PPM!", Toast.LENGTH_SHORT).show();
         } else {
             // Success!
-            WaterPurityCondition condition = (WaterPurityCondition) waterPurityConditionSpinner.getSelectedItem();
+            WaterPurityCondition purityCondition = (WaterPurityCondition) waterPurityConditionSpinner.getSelectedItem();
+            WaterCondition condition = (WaterCondition) waterConditionSpinner.getSelectedItem();
+            WaterType type = (WaterType) waterTypeSpinner.getSelectedItem();
 
             //manager.createPurityReport(UserSession.currentSession().getCurrentUser().getUsername(),
-            //        latitude, longitude, condition, virusPpm, contaminantPpm);
+            //        latitude, longitude, waterType, condition, purityCondition, virusPpm, contaminantPpm);
 
             Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG).show();
             finish();

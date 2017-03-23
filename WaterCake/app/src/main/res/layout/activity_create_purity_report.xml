@@ -47,6 +47,22 @@
         </android.support.design.widget.TextInputLayout>
 
         <Spinner
+            android:id="@+id/waterTypeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"/>
+
+        <Spinner
+            android:id="@+id/waterConditionSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"/>
+
+        <Spinner
             android:id="@+id/waterPurityConditionSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
