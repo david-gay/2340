@@ -95,5 +95,24 @@
                 android:hint="Contaminant PPM"
                 android:inputType="numberSigned|numberDecimal"/>
         </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/submitReportButton"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:onClick="attemptSubmitReport"
+            android:text="@string/submit"/>
+
+        <Button
+            android:id="@+id/cancelReportButton"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="cancel"
+            android:text="@string/cancel"/>
     </LinearLayout>
 </ScrollView>
