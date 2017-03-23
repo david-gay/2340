@@ -22,10 +22,10 @@
         android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:text="@string/welcome"
+        android:layout_above="@+id/textView7"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="96dp"
-        android:text="@string/welcome"/>
+        android:layout_marginBottom="15dp"/>
 
     <TextView
         android:id="@+id/textView7"
@@ -98,4 +98,14 @@
         android:layout_marginEnd="14dp"
         android:onClick="createPurityReport"
         android:text="CREATE QUALITY REPORT"/>
+
+    <Button
+        android:id="@+id/viewQualityReportButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/createPurityReportButton"
+        android:layout_below="@+id/createPurityReportButton"
+        android:onClick="viewPurityReports"
+        android:text="View Quality Reports"/>
 </RelativeLayout>
