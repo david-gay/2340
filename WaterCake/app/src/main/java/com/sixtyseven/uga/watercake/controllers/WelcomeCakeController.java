@@ -7,9 +7,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Button;
 
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
+import com.sixtyseven.uga.watercake.models.user.UserType;
 
 /**
  * Welcome screen Controller
@@ -24,6 +26,15 @@ public class WelcomeCakeController extends Activity {
         mImageView.setImageResource(R.mipmap.water_cat_cake);
         ((TextView) findViewById(R.id.welcomeText)).setText("Welcome, "
                 + UserSession.currentSession().getCurrentUser().getUsername() + "!");
+
+        // Hide Purity Report Buttons unless Worker+
+        Button purityReportButton = (Button)findViewById(R.id.createPurityReportButton);
+        UserType userType = UserSession.currentSession().getCurrentUser().getUserType();
+        if (userType != UserType.CONTRIBUTOR) // Only show the button if above a Contributor
+        {
+            purityReportButton.setVisibility(View.VISIBLE); //SHOW the button
+        }
+
         Log.d("welcomecake controller", "welcomecake controller created");
 
     }
@@ -64,8 +75,4 @@ public class WelcomeCakeController extends Activity {
         startActivity(new Intent(WelcomeCakeController.this, CreatePurityReportActivity.class));
     }
 
-    public void viewPurityReports(View view) {
-        Log.d("report", "go to View Purity Report");
-        //startActivity(new Intent(WelcomeCakeController.this, PurityReportListActivity.class));
-    }
 }
