@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
+import android.util.Log;
 
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
@@ -46,18 +47,6 @@ public class CreatePurityReportActivity extends AppCompatActivity {
         virusPpmInput = (TextInputLayout) findViewById(R.id.virusPpmInput);
         contaminantPpmInput = (TextInputLayout) findViewById(R.id.contaminantPpmInput);
 
-        waterTypeSpinner = (Spinner) findViewById(R.id.waterTypeSpinner);
-        ArrayAdapter<WaterType> waterTypeArrayAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, WaterType.values());
-        waterTypeArrayAdapter.setDropDownViewResource(
-                android.R.layout.simple_spinner_dropdown_item);
-        waterTypeSpinner.setAdapter(waterTypeArrayAdapter);
-
-        waterConditionSpinner = (Spinner) findViewById(R.id.waterConditionSpinner);
-        ArrayAdapter<WaterCondition> adapter2 = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, WaterCondition.values());
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        waterConditionSpinner.setAdapter(adapter2);
 
     }
 
@@ -67,35 +56,77 @@ public class CreatePurityReportActivity extends AppCompatActivity {
      * @param view the button initiating this method
      */
     public void attemptSubmitReport(View view) {
+        String sLongitude;
+        String sLatitude;
+        String sVirusPpm;
+        String sContaminantPpm;
+
+        double longitude = 0;
+        double latitude = 0;
+        float virusPpm = 0;
+        float contaminantPpm = 0;
+
         ReportManager manager = ReportManager.getInstance();
 
-        double longitude = Double.parseDouble(longitudeInput.getEditText().getText().toString());
-        double latitude = Double.parseDouble(latitudeInput.getEditText().getText().toString());
+        // Get String Versions of Every Field, Empty fields are == ""
+        sLongitude = longitudeInput.getEditText().getText().toString();
+        sLatitude = latitudeInput.getEditText().getText().toString();
+        sVirusPpm = virusPpmInput.getEditText().getText().toString();
+        sContaminantPpm = contaminantPpmInput.getEditText().getText().toString();
 
-        float virusPpm = Float.parseFloat(virusPpmInput.getEditText().getText().toString());
-        float contaminantPpm = Float.parseFloat(contaminantPpmInput.getEditText().getText().toString());
-
-        if ((longitude > 180 || longitude < -180) || (latitude > 90 || latitude < -90)) {
-            // Invalid coords
-            Toast.makeText(getBaseContext(), "Invalid coordinates!", Toast.LENGTH_SHORT).show();
-        } else if (virusPpm < 0) {
-            // Negative Virus PPM
-            Toast.makeText(getBaseContext(), "Invalid Virus PPM!", Toast.LENGTH_SHORT).show();
-        } else if (contaminantPpm < 0) {
-            // Negative Contaminant PPM
-            Toast.makeText(getBaseContext(), "Invalid Contaminant PPM!", Toast.LENGTH_SHORT).show();
+        // Make sure all fields are inputted
+        if (sLongitude.equalsIgnoreCase("") || sLatitude.equalsIgnoreCase("")
+                || sVirusPpm.equalsIgnoreCase("") || sContaminantPpm.equalsIgnoreCase("")) {
+            // At least one blank input! User must give input for all fields
+            Toast.makeText(getBaseContext(), "Fields cannot be blank!", Toast.LENGTH_SHORT).show();
         } else {
-            // Success!
-            WaterPurityCondition purityCondition = (WaterPurityCondition) waterPurityConditionSpinner.getSelectedItem();
-            WaterCondition condition = (WaterCondition) waterConditionSpinner.getSelectedItem();
-            WaterType waterType = (WaterType) waterTypeSpinner.getSelectedItem();
+            // Yay no blank fields!
 
-            manager.createPurityReport(UserSession.currentSession().getCurrentUser().getUsername(),
-                    latitude, longitude, waterType, condition, purityCondition, virusPpm, contaminantPpm);
+            Log.d("state", "Entering no blank fields else");
 
-            Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG).show();
-            finish();
+            Log.d("sLongitude", sLongitude);
+            Log.d("sLatitude", sLatitude);
+            Log.d("sVirus", sVirusPpm);
+            Log.d("sContaminant", sContaminantPpm);
+
+            longitude = Double.parseDouble(sLongitude);
+            latitude = Double.parseDouble(sLatitude);
+            virusPpm = Float.parseFloat(sVirusPpm);
+            contaminantPpm = Float.parseFloat(sContaminantPpm);
+
+            Log.d("val", "Long: " + longitude);
+            Log.d("val", "Lat: " + latitude);
+            Log.d("val", "virus: " + virusPpm);
+            Log.d("val", "contam: " + contaminantPpm);
+
+            if ((longitude > 180 || longitude < -180) || (latitude > 90 || latitude < -90)) {
+                // Invalid coords
+                Toast.makeText(getBaseContext(), "Invalid coordinates!", Toast.LENGTH_SHORT).show();
+
+            } else if (virusPpm < 0) {
+                // Negative Virus PPM
+                Toast.makeText(getBaseContext(), "Invalid Virus PPM!", Toast.LENGTH_SHORT).show();
+
+            } else if (contaminantPpm < 0) {
+                // Negative Contaminant PPM
+                Toast.makeText(getBaseContext(), "Invalid Contaminant PPM!", Toast.LENGTH_SHORT).show();
+
+            } else {
+                // Success!
+                WaterPurityCondition purityCondition = (WaterPurityCondition) waterPurityConditionSpinner.getSelectedItem();
+                WaterCondition condition = WaterCondition.WASTE; // Placeholder value, need to remove later
+                WaterType waterType = WaterType.BOTTLED; // Placeholder value, need to remove later
+
+                manager.createPurityReport(UserSession.currentSession().getCurrentUser().getUsername(),
+                        latitude, longitude, waterType, condition, purityCondition, virusPpm, contaminantPpm);
+
+                Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG).show();
+                finish();
+            }
+
         }
+
+
     }
 
     /**
