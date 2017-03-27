@@ -71,7 +71,7 @@ public class ReportManager {
                 authorUsername, new Date(), latitude, longitude, waterType, condition,
                 waterPurityCondition, virusPPM, contaminantPPM);
 
-        waterSourceReports.put(nextReportId, potentialReport);
+        //waterSourceReports.put(nextReportId, potentialReport);
         waterPurityReports.put(nextReportId, potentialReport);
 
         nextReportId++;
@@ -88,6 +88,22 @@ public class ReportManager {
         Collections.sort(list,new Comparator<WaterSourceReport>() {
             @Override
             public int compare(WaterSourceReport o1, WaterSourceReport o2) {
+                return o1.getReportNumber() - o2.getReportNumber();
+            }
+        });
+
+        return list;
+    }
+
+    /**
+     * Returns a list of all PurityReports
+     * @return a list of all PurityReports
+     */
+    public List<WaterPurityReport> getWaterPurityReportList() {
+        List<WaterPurityReport> list = new ArrayList<>(waterPurityReports.values());
+        Collections.sort(list,new Comparator<WaterPurityReport>() {
+            @Override
+            public int compare(WaterPurityReport o1, WaterPurityReport o2) {
                 return o1.getReportNumber() - o2.getReportNumber();
             }
         });

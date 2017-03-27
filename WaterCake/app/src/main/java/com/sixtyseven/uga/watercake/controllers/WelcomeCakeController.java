@@ -71,8 +71,13 @@ public class WelcomeCakeController extends Activity {
     }
 
     public void createPurityReport(View view) {
-        Log.d("report", "go to Create Purity Report");
+        Log.d("purity report", "go to Create Purity Report");
         startActivity(new Intent(WelcomeCakeController.this, CreatePurityReportActivity.class));
+    }
+
+    public void viewPurityReports(View view) {
+        Log.d("purity report", "go to View Purity Report");
+        startActivity(new Intent(WelcomeCakeController.this, PurityReportListActivity.class));
     }
 
 }
