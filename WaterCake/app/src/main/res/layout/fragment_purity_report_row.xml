@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <TextView
+        android:id="@+id/reportNumberTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:text="100"
+        android:textColor="@android:color/black"
+        />
+
+    <TextView
+        android:id="@+id/usernameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/username"
+        android:layout_toEndOf="@+id/reportNumberTextView"
+        android:layout_marginStart="26dp"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:id="@+id/latitudeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/latitude"
+        android:layout_marginStart="31dp"
+        android:layout_alignBaseline="@+id/longitudeTextView"
+        android:layout_alignBottom="@+id/longitudeTextView"
+        android:layout_toEndOf="@+id/longitudeTextView"/>
+
+    <TextView
+        android:id="@+id/longitudeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/longitude"
+        android:layout_marginTop="11dp"
+        android:layout_below="@+id/reportNumberTextView"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:id="@+id/waterPurityConditionTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Purity Condition"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/virusPpmTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:text="Virus PPM"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"/>
+
+    <TextView
+        android:id="@+id/contaminantPpmTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contaminant PPM"
+        android:layout_alignBaseline="@+id/latitudeTextView"
+        android:layout_alignBottom="@+id/latitudeTextView"
+        android:layout_alignEnd="@+id/virusPpmTextView"/>
+
+</RelativeLayout>

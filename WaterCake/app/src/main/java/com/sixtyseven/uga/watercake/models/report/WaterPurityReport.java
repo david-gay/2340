@@ -52,11 +52,11 @@ public interface WaterPurityReport {
      * Returns the virus PPM, if isWaterPurityReport() is true.
      * @return the virus PPM
      */
-    float getVirusPPM();
+    float getVirusPpm();
 
     /**
      * Returns the virus PPM, if isWaterPurityReport() is true.
      * @return the virus PPM
      */
-    float getContaminantPPM();
+    float getContaminantPpm();
 }

@@ -41,14 +41,14 @@ class WaterSourceReportImpl implements WaterSourceReport, WaterPurityReport {
      * @param waterType the type of water
      * @param condition the condition of the water
      * @param waterPurityCondition the overall purity of the water
-     * @param virusPPM the virus parts per million
-     * @param contaminantPPM the contaminant parts per million
+     * @param virusPpm the virus parts per million
+     * @param contaminantPpm the contaminant parts per million
      */
     WaterSourceReportImpl(int reportNumber, String authorUsername, Date dataAndTime,
             double latitude, double longitude, WaterType waterType, WaterCondition condition,
-            WaterPurityCondition waterPurityCondition, float virusPPM, float contaminantPPM) {
+            WaterPurityCondition waterPurityCondition, float virusPpm, float contaminantPpm) {
         this(reportNumber, authorUsername, dataAndTime, latitude, longitude, waterType, condition,
-                new WaterPurityDetails(waterPurityCondition, virusPPM, contaminantPPM));
+                new WaterPurityDetails(waterPurityCondition, virusPpm, contaminantPpm));
     }
 
     /**
@@ -58,8 +58,8 @@ class WaterSourceReportImpl implements WaterSourceReport, WaterPurityReport {
      * @param dataAndTime the time and date that the report was submitted
      * @param waterType the type of water
      * @param condition the condition of the water
-     * @param waterPurityDetails the WaterPurityDetails that contains waterPurityCondition, virusPPM
-     * and contaminantPPM
+     * @param waterPurityDetails the WaterPurityDetails that contains waterPurityCondition, virusPpm
+     * and contaminantPpm
      */
     private WaterSourceReportImpl(int reportNumber, String authorUsername, Date dataAndTime,
             double latitude, double longitude, WaterType waterType, WaterCondition condition,
@@ -143,37 +143,37 @@ class WaterSourceReportImpl implements WaterSourceReport, WaterPurityReport {
     }
 
     @Override
-    public float getVirusPPM() {
+    public float getVirusPpm() {
         if (isWaterPurityReport()) {
-            return waterPurityDetails.getVirusPPM();
+            return waterPurityDetails.getVirusPpm();
         }
         throw new UnsupportedOperationException(
-                "getVirusPPM() is unsupported when " + "isWaterPurityReport() is false.");
+                "getVirusPpm() is unsupported when " + "isWaterPurityReport() is false.");
     }
 
 
-    public void setVirusPPM(float ppm) {
+    public void setVirusPpm(float Ppm) {
         if (isWaterPurityReport()) {
-            waterPurityDetails.setVirusPPM(ppm);
+            waterPurityDetails.setVirusPpm(Ppm);
         }
         throw new UnsupportedOperationException(
-                "setVirusPPM() is unsupported when " + "isWaterPurityReport() is false.");
+                "setVirusPpm() is unsupported when " + "isWaterPurityReport() is false.");
     }
 
     @Override
-    public float getContaminantPPM() {
+    public float getContaminantPpm() {
         if (isWaterPurityReport()) {
-            return waterPurityDetails.getContaminantPPM();
+            return waterPurityDetails.getContaminantPpm();
         }
         throw new UnsupportedOperationException(
-                "getContaminantPPM() is unsupported when " + "isWaterPurityReport() is false.");
+                "getContaminantPpm() is unsupported when " + "isWaterPurityReport() is false.");
     }
 
-    public void setContaminantPPM(float ppm) {
+    public void setContaminantPpm(float Ppm) {
         if (isWaterPurityReport()) {
-            waterPurityDetails.setContaminantPPM(ppm);
+            waterPurityDetails.setContaminantPpm(Ppm);
         }
         throw new UnsupportedOperationException(
-                "setContaminantPPM() is unsupported when " + "isWaterPurityReport() is false.");
+                "setContaminantPpm() is unsupported when " + "isWaterPurityReport() is false.");
     }
 }

@@ -18,7 +18,7 @@ public class PurityReportAdapter extends ArrayAdapter<WaterPurityReport> {
     List<WaterPurityReport> reports;
 
     public PurityReportAdapter(Context context, List<WaterPurityReport> reports) {
-        super(context, R.layout.fragment_report_row, reports);
+        super(context, R.layout.fragment_purity_report_row, reports);
 
         this.reports = reports;
     }
@@ -33,7 +33,7 @@ public class PurityReportAdapter extends ArrayAdapter<WaterPurityReport> {
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(
                     Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.fragment_report_row, null);
+            view = inflater.inflate(R.layout.fragment_purity_report_row, null);
         }
 
         WaterPurityReport report = reports.get(position);
@@ -72,15 +72,21 @@ public class PurityReportAdapter extends ArrayAdapter<WaterPurityReport> {
                 }
             }
 
-            TextView waterTypeText = (TextView) view.findViewById(R.id.waterTypeTextView);
-            if (waterTypeText != null) {
-                waterTypeText.setText(report.getWaterType().toString());
+            TextView waterPurityConditionText = (TextView) view.findViewById(R.id.waterPurityConditionTextView);
+            if (waterPurityConditionText != null) {
+                waterPurityConditionText.setText(report.getWaterPurityCondition().toString());
             }
 
-            TextView waterConditionText = (TextView) view.findViewById(R.id.waterConditionTextView);
-            if (waterConditionText!=null) {
-                waterConditionText.setText(report.getCondition().toString());
+            TextView virusPpmText = (TextView) view.findViewById(R.id.virusPpmTextView);
+            if (virusPpmText != null) {
+                virusPpmText.setText("Virus PPM: " + Float.toString(report.getVirusPpm()));
             }
+
+            TextView contaminantPpmText = (TextView) view.findViewById(R.id.contaminantPpmTextView);
+            if (contaminantPpmText != null) {
+                contaminantPpmText.setText("Cont PPM: " + Float.toString(report.getContaminantPpm()));
+            }
+
         }
 
         // the view must be returned to our activity

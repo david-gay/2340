@@ -88,7 +88,7 @@
         android:text="Map"/>
 
     <Button
-        android:id="@+id/ViewQualityReportsButton"
+        android:id="@+id/ViewPurityReportButton"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
         android:layout_below="@+id/createPurityReportButton"
         android:onClick="viewPurityReports"
         android:text="view quality reports"
-        android:visibility="visible"/>
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/createPurityReportButton"

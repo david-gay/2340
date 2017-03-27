@@ -27,12 +27,20 @@ public class WelcomeCakeController extends Activity {
         ((TextView) findViewById(R.id.welcomeText)).setText("Welcome, "
                 + UserSession.currentSession().getCurrentUser().getUsername() + "!");
 
-        // Hide Purity Report Buttons unless Worker+
-        Button purityReportButton = (Button)findViewById(R.id.createPurityReportButton);
+        // Hide Purity Create Report Buttons unless Worker+
+        Button createPurityReportButton = (Button)findViewById(R.id.createPurityReportButton);
         UserType userType = UserSession.currentSession().getCurrentUser().getUserType();
-        if (userType != UserType.CONTRIBUTOR) // Only show the button if above a Contributor
-        {
-            purityReportButton.setVisibility(View.VISIBLE); //SHOW the button
+        // Only show the button if above a Contributor
+        if (userType != UserType.CONTRIBUTOR) {
+            createPurityReportButton.setVisibility(View.VISIBLE); //SHOW the button
+        }
+
+        // Hide Purity View Report Buttons unless Manager+
+        Button viewPurityReportButton = (Button)findViewById(R.id.ViewPurityReportButton);
+        UserType userType2 = UserSession.currentSession().getCurrentUser().getUserType();
+        // Only show the button if above a Worker
+        if ((userType2 != UserType.CONTRIBUTOR) && (userType2 != UserType.WORKER)) {
+            viewPurityReportButton.setVisibility(View.VISIBLE); //SHOW the button
         }
 
         Log.d("welcomecake controller", "welcomecake controller created");
