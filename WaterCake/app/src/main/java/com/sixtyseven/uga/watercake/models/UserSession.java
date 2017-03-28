@@ -6,6 +6,7 @@ import com.sixtyseven.uga.watercake.models.response.LoginResult;
 import com.sixtyseven.uga.watercake.models.user.User;
 import com.sixtyseven.uga.watercake.models.user.UserProfileError;
 import com.sixtyseven.uga.watercake.models.user.UserProfileField;
+import com.sixtyseven.uga.watercake.models.user.UserType;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -34,6 +35,10 @@ public class UserSession {
     private UserSession() {
         users = new HashMap<>();
         users.put("user", new User("user", "pass"));
+
+        User manager =  new User("manager", "manager");
+        manager.setUserType(UserType.MANAGER);
+        users.put(manager.getUsername(),manager);
 
         currentUser = null;
     }
