@@ -126,7 +126,7 @@ public class CreatePurityReportActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG).show();
                     finish();
                 }
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 Toast.makeText(getBaseContext(), "Invalid field input!", Toast.LENGTH_SHORT).show();
             }
 

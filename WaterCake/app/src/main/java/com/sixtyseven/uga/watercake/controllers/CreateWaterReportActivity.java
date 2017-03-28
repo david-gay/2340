@@ -55,21 +55,25 @@ public class CreateWaterReportActivity extends AppCompatActivity {
     public void attemptSubmitReport(View view) {
         ReportManager manager = ReportManager.getInstance();
 
-        double longitude = Double.parseDouble(longitudeInput.getEditText().getText().toString());
-        double latitude = Double.parseDouble(latitudeInput.getEditText().getText().toString());
+        try {
+            double longitude = Double.parseDouble(longitudeInput.getEditText().getText().toString());
+            double latitude = Double.parseDouble(latitudeInput.getEditText().getText().toString());
 
-        if ((longitude > 180 || longitude < -180) || (latitude > 90 || latitude < -90)) {
-            // we can literally only fail because the coords were invalid:
-            Toast.makeText(getBaseContext(), "Invalid coordinates!", Toast.LENGTH_SHORT).show();
-        } else {
-            WaterType type = (WaterType) waterTypeSpinner.getSelectedItem();
-            WaterCondition condition = (WaterCondition) waterConditionSpinner.getSelectedItem();
+            if ((longitude > 180 || longitude < -180) || (latitude > 90 || latitude < -90)) {
+                // we can literally only fail because the coords were invalid:
+                Toast.makeText(getBaseContext(), "Invalid coordinates!", Toast.LENGTH_SHORT).show();
+            } else {
+                WaterType type = (WaterType) waterTypeSpinner.getSelectedItem();
+                WaterCondition condition = (WaterCondition) waterConditionSpinner.getSelectedItem();
 
-            manager.createWaterReport(UserSession.currentSession().getCurrentUser().getUsername(),
-                    latitude, longitude, type, condition);
+                manager.createWaterReport(UserSession.currentSession().getCurrentUser().getUsername(),
+                        latitude, longitude, type, condition);
 
-            Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG).show();
-            finish();
+                Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        } catch(NumberFormatException e) {
+            Toast.makeText(getBaseContext(), "Invalid field input!", Toast.LENGTH_SHORT).show();
         }
 
 
