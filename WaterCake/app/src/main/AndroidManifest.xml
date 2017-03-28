@@ -48,6 +48,10 @@
         </activity>
         <activity android:name=".controllers.ReportListActivity">
         </activity>
+        <activity android:name=".controllers.CreatePurityReportActivity">
+        </activity>
+        <activity android:name=".controllers.PurityReportListActivity">
+        </activity>
     </application>
 
 </manifest>
