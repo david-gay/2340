@@ -89,39 +89,44 @@ public class CreatePurityReportActivity extends AppCompatActivity {
             Log.d("sVirus", sVirusPpm);
             Log.d("sContaminant", sContaminantPpm);
 
-            longitude = Double.parseDouble(sLongitude);
-            latitude = Double.parseDouble(sLatitude);
-            virusPpm = Float.parseFloat(sVirusPpm);
-            contaminantPpm = Float.parseFloat(sContaminantPpm);
+            // Kludgy last-minute implementation of the try-catch to handle non-character input
+            try {
+                longitude = Double.parseDouble(sLongitude);
+                latitude = Double.parseDouble(sLatitude);
+                virusPpm = Float.parseFloat(sVirusPpm);
+                contaminantPpm = Float.parseFloat(sContaminantPpm);
 
-            Log.d("val", "Long: " + longitude);
-            Log.d("val", "Lat: " + latitude);
-            Log.d("val", "virus: " + virusPpm);
-            Log.d("val", "contam: " + contaminantPpm);
+                Log.d("val", "Long: " + longitude);
+                Log.d("val", "Lat: " + latitude);
+                Log.d("val", "virus: " + virusPpm);
+                Log.d("val", "contam: " + contaminantPpm);
 
-            if ((longitude > 180 || longitude < -180) || (latitude > 90 || latitude < -90)) {
-                // Invalid coords
-                Toast.makeText(getBaseContext(), "Invalid coordinates!", Toast.LENGTH_SHORT).show();
+                if ((longitude > 180 || longitude < -180) || (latitude > 90 || latitude < -90)) {
+                    // Invalid coords
+                    Toast.makeText(getBaseContext(), "Invalid coordinates!", Toast.LENGTH_SHORT).show();
 
-            } else if (virusPpm < 0) {
-                // Negative Virus PPM
-                Toast.makeText(getBaseContext(), "Invalid Virus PPM!", Toast.LENGTH_SHORT).show();
+                } else if (virusPpm < 0) {
+                    // Negative Virus PPM
+                    Toast.makeText(getBaseContext(), "Invalid Virus PPM!", Toast.LENGTH_SHORT).show();
 
-            } else if (contaminantPpm < 0) {
-                // Negative Contaminant PPM
-                Toast.makeText(getBaseContext(), "Invalid Contaminant PPM!", Toast.LENGTH_SHORT).show();
+                } else if (contaminantPpm < 0) {
+                    // Negative Contaminant PPM
+                    Toast.makeText(getBaseContext(), "Invalid Contaminant PPM!", Toast.LENGTH_SHORT).show();
 
-            } else {
-                // Success!
-                WaterPurityCondition purityCondition = (WaterPurityCondition) waterPurityConditionSpinner.getSelectedItem();
-                WaterCondition condition = WaterCondition.WASTE; // Placeholder value, need to remove later
-                WaterType waterType = WaterType.BOTTLED; // Placeholder value, need to remove later
+                } else {
+                    // Success!
+                    WaterPurityCondition purityCondition = (WaterPurityCondition) waterPurityConditionSpinner.getSelectedItem();
+                    WaterCondition condition = WaterCondition.WASTE; // Placeholder value, need to remove later
+                    WaterType waterType = WaterType.BOTTLED; // Placeholder value, need to remove later
 
-                manager.createPurityReport(UserSession.currentSession().getCurrentUser().getUsername(),
-                        latitude, longitude, waterType, condition, purityCondition, virusPpm, contaminantPpm);
+                    manager.createPurityReport(UserSession.currentSession().getCurrentUser().getUsername(),
+                            latitude, longitude, waterType, condition, purityCondition, virusPpm, contaminantPpm);
 
-                Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG).show();
-                finish();
+                    Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            } catch (Exception e) {
+                Toast.makeText(getBaseContext(), "Invalid field input!", Toast.LENGTH_SHORT).show();
             }
 
         }
