@@ -31,6 +31,9 @@ public class ReportManager {
         return ourInstance;
     }
 
+    /**
+     * Constructor
+     */
     private ReportManager() {
         waterSourceReports = new HashMap<>();
         waterPurityReports = new HashMap<>();

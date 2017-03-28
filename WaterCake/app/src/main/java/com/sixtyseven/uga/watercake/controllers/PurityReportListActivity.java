@@ -11,6 +11,9 @@ import com.sixtyseven.uga.watercake.models.report.WaterPurityReport;
 
 import java.util.List;
 
+/**
+ * Activity for displaying Purity Reports
+ */
 public class PurityReportListActivity extends AppCompatActivity {
     ListView listView;
 

@@ -17,6 +17,9 @@ import com.sixtyseven.uga.watercake.models.user.UserProfileField;
 import java.util.EnumSet;
 import java.util.Map;
 
+/**
+ * Activity for editing an existing User Profile
+ */
 public class EditProfileActivity extends FragmentActivity {
     UserPropertiesFragment properties;
 
