@@ -16,6 +16,10 @@ public class MarkerWindowAdapter implements InfoWindowAdapter {
     private View markerWindow = null;
     private LayoutInflater inflater = null;
 
+    /**
+     * Internal constructor
+     * @param inflater the LayoutInflater to use for inflating the marker window
+     */
     MarkerWindowAdapter(LayoutInflater inflater) {
         this.inflater=inflater;
     }

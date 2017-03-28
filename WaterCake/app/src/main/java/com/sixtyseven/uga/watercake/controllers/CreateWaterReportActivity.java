@@ -14,6 +14,9 @@ import com.sixtyseven.uga.watercake.models.report.ReportManager;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
 
+/**
+ * Activity for creating Water Reports
+ */
 public class CreateWaterReportActivity extends AppCompatActivity {
 
     TextInputLayout longitudeInput;

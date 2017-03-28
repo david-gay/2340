@@ -1,5 +1,6 @@
 package com.sixtyseven.uga.watercake.controllers;
 
+import android.net.ParseException;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +18,7 @@ import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition
 import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
 
 /**
- * 2017-03-23 Susannah Doss
+ * Activity for creating Purity reports.
  */
 public class CreatePurityReportActivity extends AppCompatActivity {
 

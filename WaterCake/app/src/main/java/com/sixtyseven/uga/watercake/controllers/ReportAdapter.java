@@ -13,9 +13,17 @@ import com.sixtyseven.uga.watercake.models.report.WaterSourceReport;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Report Adapter for displaying Water Source Reports
+ */
 public class ReportAdapter extends ArrayAdapter<WaterSourceReport> {
     List<WaterSourceReport> reports;
 
+    /**
+     * Constructor
+     * @param context the Context using the adapter
+     * @param reports the list of reports to display
+     */
     public ReportAdapter(Context context, List<WaterSourceReport> reports) {
         super(context, R.layout.fragment_report_row, reports);
 

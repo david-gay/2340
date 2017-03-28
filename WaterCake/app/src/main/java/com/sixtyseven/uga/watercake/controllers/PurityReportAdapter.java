@@ -14,9 +14,17 @@ import com.sixtyseven.uga.watercake.models.report.WaterSourceReport;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Array Adapter for displaying Purity Reports in a List View
+ */
 public class PurityReportAdapter extends ArrayAdapter<WaterPurityReport> {
     List<WaterPurityReport> reports;
 
+    /**
+     * Constructor
+     * @param context the context displaying the contents of this adapter
+     * @param reports a list of reports to display
+     */
     public PurityReportAdapter(Context context, List<WaterPurityReport> reports) {
         super(context, R.layout.fragment_purity_report_row, reports);
 

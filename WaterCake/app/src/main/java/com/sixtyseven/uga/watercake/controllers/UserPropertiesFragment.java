@@ -17,6 +17,9 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Fragment for handling editable user profile fields.
+ */
 public class UserPropertiesFragment extends Fragment {
     TextInputLayout passwordInput;
     TextInputLayout repeatPasswordInput;

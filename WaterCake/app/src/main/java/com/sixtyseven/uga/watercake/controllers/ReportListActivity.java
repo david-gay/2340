@@ -11,6 +11,9 @@ import com.sixtyseven.uga.watercake.models.report.WaterSourceReport;
 
 import java.util.List;
 
+/**
+ * Activity for listing Water Source Reports
+ */
 public class ReportListActivity extends AppCompatActivity {
     ListView listView;
 
