@@ -7,9 +7,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Button;
 
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
+import com.sixtyseven.uga.watercake.models.user.UserType;
 
 /**
  * Welcome screen Controller
@@ -24,6 +26,23 @@ public class WelcomeCakeController extends Activity {
         mImageView.setImageResource(R.mipmap.water_cat_cake);
         ((TextView) findViewById(R.id.welcomeText)).setText("Welcome, "
                 + UserSession.currentSession().getCurrentUser().getUsername() + "!");
+
+        // Hide Purity Create Report Buttons unless Worker+
+        Button createPurityReportButton = (Button)findViewById(R.id.createPurityReportButton);
+        UserType userType = UserSession.currentSession().getCurrentUser().getUserType();
+        // Only show the button if above a Contributor
+        if (userType != UserType.CONTRIBUTOR) {
+            createPurityReportButton.setVisibility(View.VISIBLE); //SHOW the button
+        }
+
+        // Hide Purity View Report Buttons unless Manager+
+        Button viewPurityReportButton = (Button)findViewById(R.id.ViewPurityReportButton);
+        UserType userType2 = UserSession.currentSession().getCurrentUser().getUserType();
+        // Only show the button if above a Worker
+        if ((userType2 != UserType.CONTRIBUTOR) && (userType2 != UserType.WORKER)) {
+            viewPurityReportButton.setVisibility(View.VISIBLE); //SHOW the button
+        }
+
         Log.d("welcomecake controller", "welcomecake controller created");
 
     }
@@ -58,4 +77,15 @@ public class WelcomeCakeController extends Activity {
         Log.d("map", "go to map");
         startActivity(new Intent(WelcomeCakeController.this, MapsActivity.class));
     }
+
+    public void createPurityReport(View view) {
+        Log.d("purity report", "go to Create Purity Report");
+        startActivity(new Intent(WelcomeCakeController.this, CreatePurityReportActivity.class));
+    }
+
+    public void viewPurityReports(View view) {
+        Log.d("purity report", "go to View Purity Report");
+        startActivity(new Intent(WelcomeCakeController.this, PurityReportListActivity.class));
+    }
+
 }

@@ -8,19 +8,19 @@ import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition
  */
 class WaterPurityDetails {
     private WaterPurityCondition condition;
-    private float virusPPM;
-    private float contaminantPPM;
+    private float virusPpm;
+    private float contaminantPpm;
 
     /**
      * Constructor taking the condition, virusPPM, and contaminant PPM
      * @param condition the WaterPurityCondition for the water source corresponding to this object
-     * @param virusPPM the virusPPM for the water source corresponding to this object
-     * @param contaminantPPM the contaminantPPM for the water source corresponding to this object
+     * @param virusPpm the virusPPM for the water source corresponding to this object
+     * @param contaminantPpm the contaminantPPM for the water source corresponding to this object
      */
-    WaterPurityDetails(WaterPurityCondition condition, float virusPPM, float contaminantPPM) {
+    WaterPurityDetails(WaterPurityCondition condition, float virusPpm, float contaminantPpm) {
         this.condition = condition;
-        this.virusPPM = virusPPM;
-        this.contaminantPPM = contaminantPPM;
+        this.virusPpm = virusPpm;
+        this.contaminantPpm = contaminantPpm;
     }
 
     /**
@@ -43,31 +43,31 @@ class WaterPurityDetails {
      * Returns the virus parts per million
      * @return the virus parts per million
      */
-    float getVirusPPM() {
-        return virusPPM;
+    float getVirusPpm() {
+        return virusPpm;
     }
 
     /**
      * Sets the virus parts per million
-     * @param virusPPM the new virus parts per million
+     * @param virusPpm the new virus parts per million
      */
-    void setVirusPPM(float virusPPM) {
-        this.virusPPM = virusPPM;
+    void setVirusPpm(float virusPpm) {
+        this.virusPpm = virusPpm;
     }
 
     /**
      * Returns the contaminant parts per million
      * @return the contaminant parts per million
      */
-    float getContaminantPPM() {
-        return contaminantPPM;
+    float getContaminantPpm() {
+        return contaminantPpm;
     }
 
     /**
      * Sets the contaminant parts per million
-     * @param contaminantPPM the new contaminant parts per million
+     * @param contaminantPpm the new contaminant parts per million
      */
-    void setContaminantPPM(float contaminantPPM) {
-        this.contaminantPPM = contaminantPPM;
+    void setContaminantPpm(float contaminantPpm) {
+        this.contaminantPpm = contaminantPpm;
     }
 }
