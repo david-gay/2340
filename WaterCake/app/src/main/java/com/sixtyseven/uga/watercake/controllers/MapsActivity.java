@@ -1,6 +1,9 @@
 package com.sixtyseven.uga.watercake.controllers;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -60,6 +63,19 @@ public class MapsActivity extends AppCompatActivity implements OnInfoWindowClick
         mUiSettings.setScrollGesturesEnabled(true);
         mUiSettings.setZoomGesturesEnabled((true));
         mUiSettings.setRotateGesturesEnabled(true);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Check Permissions Now; get them if we need them
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},2);
+        }
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            // permission has been granted, continue as usual
+            mMap.setMyLocationEnabled(true);
+        }
 
         // place markers
         List<WaterSourceReport> reports = ReportManager.getInstance().getWaterSourceReportList();
