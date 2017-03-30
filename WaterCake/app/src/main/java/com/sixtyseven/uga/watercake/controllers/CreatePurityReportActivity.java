@@ -47,8 +47,6 @@ public class CreatePurityReportActivity extends AppCompatActivity {
 
         virusPpmInput = (TextInputLayout) findViewById(R.id.virusPpmInput);
         contaminantPpmInput = (TextInputLayout) findViewById(R.id.contaminantPpmInput);
-
-
     }
 
     /**
@@ -67,7 +65,7 @@ public class CreatePurityReportActivity extends AppCompatActivity {
         float virusPpm = 0;
         float contaminantPpm = 0;
 
-        ReportManager manager = ReportManager.getInstance();
+        ReportManager manager = ReportManager.getInstance(this.getApplicationContext());
 
         // Get String Versions of Every Field, Empty fields are == ""
         sLongitude = longitudeInput.getEditText().getText().toString();
@@ -76,8 +74,8 @@ public class CreatePurityReportActivity extends AppCompatActivity {
         sContaminantPpm = contaminantPpmInput.getEditText().getText().toString();
 
         // Make sure all fields are inputted
-        if (sLongitude.equalsIgnoreCase("") || sLatitude.equalsIgnoreCase("")
-                || sVirusPpm.equalsIgnoreCase("") || sContaminantPpm.equalsIgnoreCase("")) {
+        if (sLongitude.equalsIgnoreCase("") || sLatitude.equalsIgnoreCase("") || sVirusPpm
+                .equalsIgnoreCase("") || sContaminantPpm.equalsIgnoreCase("")) {
             // At least one blank input! User must give input for all fields
             Toast.makeText(getBaseContext(), "Fields cannot be blank!", Toast.LENGTH_SHORT).show();
         } else {
@@ -104,35 +102,38 @@ public class CreatePurityReportActivity extends AppCompatActivity {
 
                 if ((longitude > 180 || longitude < -180) || (latitude > 90 || latitude < -90)) {
                     // Invalid coords
-                    Toast.makeText(getBaseContext(), "Invalid coordinates!", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(getBaseContext(), "Invalid coordinates!", Toast.LENGTH_SHORT)
+                            .show();
                 } else if (virusPpm < 0) {
                     // Negative Virus PPM
-                    Toast.makeText(getBaseContext(), "Invalid Virus PPM!", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(getBaseContext(), "Invalid Virus PPM!", Toast.LENGTH_SHORT)
+                            .show();
                 } else if (contaminantPpm < 0) {
                     // Negative Contaminant PPM
-                    Toast.makeText(getBaseContext(), "Invalid Contaminant PPM!", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(getBaseContext(), "Invalid Contaminant PPM!", Toast.LENGTH_SHORT)
+                            .show();
                 } else {
                     // Success!
-                    WaterPurityCondition purityCondition = (WaterPurityCondition) waterPurityConditionSpinner.getSelectedItem();
-                    WaterCondition condition = WaterCondition.WASTE; // Placeholder value, need to remove later
-                    WaterType waterType = WaterType.BOTTLED; // Placeholder value, need to remove later
+                    WaterPurityCondition purityCondition =
+                            (WaterPurityCondition) waterPurityConditionSpinner.getSelectedItem();
+                    WaterCondition condition =
+                            WaterCondition.WASTE; // Placeholder value, need to remove later
+                    WaterType waterType =
+                            WaterType.BOTTLED; // Placeholder value, need to remove later
 
-                    manager.createPurityReport(UserSession.currentSession().getCurrentUser().getUsername(),
-                            latitude, longitude, waterType, condition, purityCondition, virusPpm, contaminantPpm);
+                    manager.createPurityReport(
+                            UserSession.currentSession().getCurrentUser().getUsername(), latitude,
+                            longitude, waterType, condition, purityCondition, virusPpm,
+                            contaminantPpm);
 
-                    Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG)
+                            .show();
                     finish();
                 }
             } catch (NumberFormatException e) {
                 Toast.makeText(getBaseContext(), "Invalid field input!", Toast.LENGTH_SHORT).show();
             }
-
         }
-
-
     }
 
     /**

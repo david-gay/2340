@@ -53,7 +53,7 @@ public class LoginController extends Activity {
      * @param view the button that initiated this event
      */
     public void attemptLogin(View view) {
-        RestManager.getInstance(this.getApplicationContext()).makeTestRequest();
+        //RestManager.getInstance(this.getApplicationContext()).makeTestRequest();
         TextInputLayout usernameInput = (TextInputLayout) findViewById(R.id.usernameInputLayout);
         TextInputLayout passwordInput = (TextInputLayout) findViewById(R.id.passwordInputLayout);
 

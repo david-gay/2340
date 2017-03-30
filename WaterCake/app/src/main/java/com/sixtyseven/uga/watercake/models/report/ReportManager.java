@@ -1,8 +1,24 @@
 package com.sixtyseven.uga.watercake.models.report;
 
+import android.content.Context;
+import android.icu.text.RelativeDateTimeFormatter;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.sixtyseven.uga.watercake.models.dataManagement.RestManager;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,28 +32,119 @@ import java.util.Map;
  * Manager singleton for all WaterSourceReports.
  */
 public class ReportManager {
-
+    private static Context context;
     private Map<Integer, WaterSourceReport> waterSourceReports;
     private Map<Integer, WaterPurityReport> waterPurityReports;
     private int nextReportId;
 
-    private static ReportManager ourInstance = new ReportManager();
+    private static ReportManager ourInstance;
 
     /**
      * Gets the ReportManager instance
      * @return the ReportManager instance
      */
-    public static ReportManager getInstance() {
+    public static ReportManager getInstance(Context context) {
+        if (ourInstance == null) {
+            ourInstance = new ReportManager(context);
+        }
         return ourInstance;
     }
 
     /**
      * Constructor
      */
-    private ReportManager() {
+    private ReportManager(Context context) {
+        this.context = context;
         waterSourceReports = new HashMap<>();
         waterPurityReports = new HashMap<>();
-        nextReportId = 1;
+
+        nextReportId = 2; // TODO get rid of this when you do POST
+    }
+
+    public void fetchAllReports() {
+        getWaterReportsFromServer();
+        getPurityReportsFromServer();
+    }
+
+    public void getWaterReportsFromServer() {
+
+        waterSourceReports = new HashMap<>();
+
+        String url = "http://10.0.2.2:8080/water-reports";
+        JsonArrayRequest getAllWaterReportsRequest = new JsonArrayRequest(Request.Method.GET, url,
+                null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject entry = response.getJSONObject(i);
+                        int id = entry.getInt("id");
+                        Date d = new Date(); // TODO fix date from ZonedDateTime
+                        double lat = entry.getDouble("latitude");
+                        double lng = entry.getDouble("longitude");
+                        WaterType wt = WaterType.valueOf(entry.getString("waterType"));
+                        WaterCondition wc = WaterCondition.valueOf(
+                                entry.getString("waterCondition"));
+                        String author = entry.getString("owner");
+                        waterSourceReports.put(id,
+                                new WaterSourceReportImpl(id, author, d, lat, lng, wt, wc));
+                    } catch (JSONException ex) {
+                        Log.d("water reports request", ex.getMessage());
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        RestManager.getInstance(context).addToRequestQueue(getAllWaterReportsRequest);
+    }
+
+    public void getPurityReportsFromServer() {
+
+        waterPurityReports = new HashMap<>();
+
+        String url = "http://10.0.2.2:8080/water-reports";
+        JsonArrayRequest getAllWaterReportsRequest = new JsonArrayRequest(Request.Method.GET, url,
+                null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject entry = response.getJSONObject(i);
+                        int id = entry.getInt("id");
+                        Date d = new Date(); // TODO fix date from ZonedDateTime
+                        double lat = entry.getDouble("latitude");
+                        double lng = entry.getDouble("longitude");
+                        WaterType wt = WaterType.valueOf(entry.getString("waterType"));
+                        WaterCondition wc = WaterCondition.valueOf(
+                                entry.getString("waterCondition"));
+                        String author = entry.getString("owner");
+                        WaterPurityCondition wpc = WaterPurityCondition.valueOf(
+                                entry.getString("waterPurityCondition"));
+                        float vppm = Float.parseFloat(entry.getString("virusPPM"));
+                        float cppm = Float.parseFloat(entry.getString("contaminantPPM"));
+                        waterPurityReports.put(id,
+                                new WaterSourceReportImpl(id, author, d, lat, lng, wt, wc, wpc,
+                                        vppm, cppm));
+                    } catch (JSONException ex) {
+                        Log.d("water reports request", ex.getMessage());
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        RestManager.getInstance(context).addToRequestQueue(getAllWaterReportsRequest);
     }
 
     /**
@@ -87,8 +194,11 @@ public class ReportManager {
      * @return a list of all WaterSourceReports
      */
     public List<WaterSourceReport> getWaterSourceReportList() {
+        //Toast.makeText(context.getApplicationContext(), "HELLOW", Toast.LENGTH_LONG).show();
+        //Log.d("server water report", "hello");
+        //getWaterReportsFromServer();
         List<WaterSourceReport> list = new ArrayList<>(waterSourceReports.values());
-        Collections.sort(list,new Comparator<WaterSourceReport>() {
+        Collections.sort(list, new Comparator<WaterSourceReport>() {
             @Override
             public int compare(WaterSourceReport o1, WaterSourceReport o2) {
                 return o1.getReportNumber() - o2.getReportNumber();
@@ -104,7 +214,7 @@ public class ReportManager {
      */
     public List<WaterPurityReport> getWaterPurityReportList() {
         List<WaterPurityReport> list = new ArrayList<>(waterPurityReports.values());
-        Collections.sort(list,new Comparator<WaterPurityReport>() {
+        Collections.sort(list, new Comparator<WaterPurityReport>() {
             @Override
             public int compare(WaterPurityReport o1, WaterPurityReport o2) {
                 return o1.getReportNumber() - o2.getReportNumber();

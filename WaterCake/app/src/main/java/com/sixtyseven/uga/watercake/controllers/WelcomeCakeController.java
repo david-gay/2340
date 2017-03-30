@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
+import com.sixtyseven.uga.watercake.models.report.ReportManager;
 import com.sixtyseven.uga.watercake.models.user.UserType;
 
 /**
@@ -24,11 +25,11 @@ public class WelcomeCakeController extends Activity {
         ImageView mImageView;
         mImageView = (ImageView) findViewById(R.id.imageView);
         mImageView.setImageResource(R.mipmap.water_cat_cake);
-        ((TextView) findViewById(R.id.welcomeText)).setText("Welcome, "
-                + UserSession.currentSession().getCurrentUser().getUsername() + "!");
+        ((TextView) findViewById(R.id.welcomeText)).setText(
+                "Welcome, " + UserSession.currentSession().getCurrentUser().getUsername() + "!");
 
         // Hide Purity Create Report Buttons unless Worker+
-        Button createPurityReportButton = (Button)findViewById(R.id.createPurityReportButton);
+        Button createPurityReportButton = (Button) findViewById(R.id.createPurityReportButton);
         UserType userType = UserSession.currentSession().getCurrentUser().getUserType();
         // Only show the button if above a Contributor
         if (userType != UserType.CONTRIBUTOR) {
@@ -36,7 +37,7 @@ public class WelcomeCakeController extends Activity {
         }
 
         // Hide Purity View Report Buttons unless Manager+
-        Button viewPurityReportButton = (Button)findViewById(R.id.ViewPurityReportButton);
+        Button viewPurityReportButton = (Button) findViewById(R.id.ViewPurityReportButton);
         UserType userType2 = UserSession.currentSession().getCurrentUser().getUserType();
         // Only show the button if above a Worker
         if ((userType2 != UserType.CONTRIBUTOR) && (userType2 != UserType.WORKER)) {
@@ -44,7 +45,7 @@ public class WelcomeCakeController extends Activity {
         }
 
         Log.d("welcomecake controller", "welcomecake controller created");
-
+        ReportManager.getInstance(this.getApplicationContext()).fetchAllReports();
     }
 
     /**
@@ -60,7 +61,6 @@ public class WelcomeCakeController extends Activity {
     public void editProfile(View view) {
         Log.d("WelcomeCakeController", "Clicked Edit Profile.");
         startActivity(new Intent(WelcomeCakeController.this, EditProfileActivity.class));
-
     }
 
     public void createWaterReport(View view) {
@@ -87,5 +87,4 @@ public class WelcomeCakeController extends Activity {
         Log.d("purity report", "go to View Purity Report");
         startActivity(new Intent(WelcomeCakeController.this, PurityReportListActivity.class));
     }
-
 }

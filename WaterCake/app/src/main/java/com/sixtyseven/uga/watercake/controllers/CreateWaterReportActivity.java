@@ -53,10 +53,11 @@ public class CreateWaterReportActivity extends AppCompatActivity {
      * @param view the button initiating this method
      */
     public void attemptSubmitReport(View view) {
-        ReportManager manager = ReportManager.getInstance();
+        ReportManager manager = ReportManager.getInstance(this.getApplicationContext());
 
         try {
-            double longitude = Double.parseDouble(longitudeInput.getEditText().getText().toString());
+            double longitude = Double.parseDouble(
+                    longitudeInput.getEditText().getText().toString());
             double latitude = Double.parseDouble(latitudeInput.getEditText().getText().toString());
 
             if ((longitude > 180 || longitude < -180) || (latitude > 90 || latitude < -90)) {
@@ -66,17 +67,16 @@ public class CreateWaterReportActivity extends AppCompatActivity {
                 WaterType type = (WaterType) waterTypeSpinner.getSelectedItem();
                 WaterCondition condition = (WaterCondition) waterConditionSpinner.getSelectedItem();
 
-                manager.createWaterReport(UserSession.currentSession().getCurrentUser().getUsername(),
-                        latitude, longitude, type, condition);
+                manager.createWaterReport(
+                        UserSession.currentSession().getCurrentUser().getUsername(), latitude,
+                        longitude, type, condition);
 
                 Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG).show();
                 finish();
             }
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             Toast.makeText(getBaseContext(), "Invalid field input!", Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     /**

@@ -24,10 +24,10 @@ public class ReportListActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.reportList);
 
-        List<WaterSourceReport> reports = ReportManager.getInstance().getWaterSourceReportList();
+        List<WaterSourceReport> reports = ReportManager.getInstance(this.getApplicationContext())
+                .getWaterSourceReportList();
 
-        ListAdapter adapter = new ReportAdapter(getApplicationContext(),reports);
+        ListAdapter adapter = new ReportAdapter(getApplicationContext(), reports);
         listView.setAdapter(adapter);
-
     }
 }

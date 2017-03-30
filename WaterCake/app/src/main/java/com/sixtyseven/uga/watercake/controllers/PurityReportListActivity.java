@@ -24,10 +24,10 @@ public class PurityReportListActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.reportList);
 
-        List<WaterPurityReport> reports = ReportManager.getInstance().getWaterPurityReportList();
+        List<WaterPurityReport> reports = ReportManager.getInstance(this.getApplicationContext())
+                .getWaterPurityReportList();
 
-        ListAdapter adapter = new PurityReportAdapter(getApplicationContext(),reports);
+        ListAdapter adapter = new PurityReportAdapter(getApplicationContext(), reports);
         listView.setAdapter(adapter);
-
     }
 }
