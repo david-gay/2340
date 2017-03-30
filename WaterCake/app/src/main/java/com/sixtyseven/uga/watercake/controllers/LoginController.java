@@ -10,7 +10,14 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
 import com.sixtyseven.uga.watercake.models.response.LoginResult;
@@ -38,6 +45,36 @@ public class LoginController extends Activity {
             }
         });
         Log.d("login controller", "login controller created");
+
+        testVolley();
+    }
+
+    private void testVolley() {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://10.0.2.2:8080/water-reports";
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 20 characters of the response string.
+                        Toast.makeText(getApplicationContext(),
+                                "Response is: " + response.substring(0, 100), Toast.LENGTH_LONG)
+                                .show();
+                        //mTextView.setText("Response is: "+ response.substring(0,500));
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "That didn't work!!!", Toast.LENGTH_LONG)
+                        .show();
+                Log.d("volley test", error.getMessage());
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
     /**
@@ -51,13 +88,12 @@ public class LoginController extends Activity {
         EditText usernameEditText = usernameInput.getEditText();
         EditText passwordEditText = passwordInput.getEditText();
 
-        Log.d("login", "login attempted." +
-                " username: " + usernameEditText.getText() +
-                " password: " + passwordEditText.getText());
+        Log.d("login",
+                "login attempted." + " username: " + usernameEditText.getText() + " password: "
+                        + passwordEditText.getText());
 
         LoginResult response = UserSession.currentSession().tryLogin(
-                usernameEditText.getText().toString(),
-                passwordEditText.getText().toString());
+                usernameEditText.getText().toString(), passwordEditText.getText().toString());
 
         if (response.equals(LoginResult.SUCCESS)) {
             startActivity(new Intent(LoginController.this, WelcomeCakeController.class));
