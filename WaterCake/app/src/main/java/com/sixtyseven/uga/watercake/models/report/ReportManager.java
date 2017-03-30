@@ -40,11 +40,14 @@ public class ReportManager {
         nextReportId = 1;
     }
 
+
     /**
      * Generates a Water Source Report and stores it
      * @param authorUsername the username of the report author
+     * @param latitude the latitude for the report
+     * @param longitude the longitude for the report
      * @param waterType the type of water reported
-     * @param condition the condition of that water
+     * @param condition the condition of that water\
      * @return true if the report is created and added
      */
     public boolean createWaterReport(String authorUsername, double latitude, double longitude,
