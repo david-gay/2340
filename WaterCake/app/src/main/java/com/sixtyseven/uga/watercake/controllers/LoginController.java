@@ -20,6 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
+import com.sixtyseven.uga.watercake.models.dataManagement.RestManager;
 import com.sixtyseven.uga.watercake.models.response.LoginResult;
 
 /**
@@ -45,36 +46,6 @@ public class LoginController extends Activity {
             }
         });
         Log.d("login controller", "login controller created");
-
-        testVolley();
-    }
-
-    private void testVolley() {
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8080/water-reports";
-
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 20 characters of the response string.
-                        Toast.makeText(getApplicationContext(),
-                                "Response is: " + response.substring(0, 100), Toast.LENGTH_LONG)
-                                .show();
-                        //mTextView.setText("Response is: "+ response.substring(0,500));
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "That didn't work!!!", Toast.LENGTH_LONG)
-                        .show();
-                Log.d("volley test", error.getMessage());
-            }
-        });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
     }
 
     /**
@@ -82,6 +53,7 @@ public class LoginController extends Activity {
      * @param view the button that initiated this event
      */
     public void attemptLogin(View view) {
+        RestManager.getInstance(this.getApplicationContext()).makeTestRequest();
         TextInputLayout usernameInput = (TextInputLayout) findViewById(R.id.usernameInputLayout);
         TextInputLayout passwordInput = (TextInputLayout) findViewById(R.id.passwordInputLayout);
 
