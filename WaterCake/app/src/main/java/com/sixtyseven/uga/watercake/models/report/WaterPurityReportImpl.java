@@ -1,5 +1,6 @@
 package com.sixtyseven.uga.watercake.models.report;
 
+import com.google.gson.annotations.Expose;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
 
 import java.util.Date;
@@ -9,8 +10,10 @@ import java.util.Date;
  * water source.
  */
 class WaterPurityReportImpl implements WaterPurityReport {
+    @Expose(serialize = false)
     private final int id;
     private final String authorUsername;
+    @Expose(serialize = false)
     private final Date postDate;
     private double latitude;
     private double longitude;

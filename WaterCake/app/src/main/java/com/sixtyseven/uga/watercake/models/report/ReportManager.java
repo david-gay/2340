@@ -17,6 +17,7 @@ import com.sixtyseven.uga.watercake.models.dataManagement.RestManager;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
+import com.sixtyseven.uga.watercake.models.report.helpers.GsonRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -121,28 +122,72 @@ public class ReportManager {
      */
     public boolean createWaterReport(String authorUsername, double latitude, double longitude,
             WaterType waterType, WaterCondition condition) {
+        try {
+            JSONObject sourceReportStub = new JSONObject(new Gson()
+                    .toJson(new WaterSourceReportImpl(0, "dimitar", null, latitude, longitude,
+                            waterType, condition)));
+            // TODO change dimitar to authorUsername when login is done
+            // you can also do CurrentSession.get username or whatever and remove the param
+            String url = "http://10.0.2.2:8080/dimitar/water-reports";
+            JsonObjectRequest createWaterSourceReportRequest = new JsonObjectRequest(
+                    Request.Method.POST, url, sourceReportStub,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            waterSourceReports.add(new Gson()
+                                    .fromJson(response.toString(), WaterSourceReportImpl.class));
+                            // TODO add callback to show the user that the addition was successful -- i don't like this return true thing for async
+                        }
+                    }, new Response.ErrorListener() {
 
-        waterSourceReports.add(
-                new WaterSourceReportImpl(nextReportId, authorUsername, new Date(), latitude,
-                        longitude, waterType, condition));
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // TODO Auto-generated method stub
+                }
+            });
 
-        nextReportId++;
+            RestManager.getInstance(context).addToRequestQueue(createWaterSourceReportRequest);
 
-        return true;
+            return true;
+        } catch (JSONException ex) {
+            Log.d("sourceReportPOST", ex.getMessage());
+        }
+        return false;
     }
 
     public boolean createPurityReport(String authorUsername, double latitude, double longitude,
             WaterPurityCondition waterPurityCondition, float virusPPM, float contaminantPPM) {
+        try {
+            JSONObject purityReportStub = new JSONObject(new Gson()
+                    .toJson(new WaterPurityReportImpl(0, "dimitar", null, latitude, longitude,
+                            waterPurityCondition, virusPPM, contaminantPPM)));
+            // TODO change dimitar to authorUsername when login is done
+            // you can also do CurrentSession.get username or whatever and remove the param
+            String url = "http://10.0.2.2:8080/dimitar/purity-reports";
+            JsonObjectRequest createWaterPurityReportRequest = new JsonObjectRequest(
+                    Request.Method.POST, url, purityReportStub,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            waterPurityReports.add(new Gson()
+                                    .fromJson(response.toString(), WaterPurityReportImpl.class));
+                            // TODO add callback to show the user that the addition was successful -- i don't like this return true thing for async
+                        }
+                    }, new Response.ErrorListener() {
 
-        WaterPurityReportImpl potentialReport = new WaterPurityReportImpl(nextReportId,
-                authorUsername, new Date(), latitude, longitude, waterPurityCondition, virusPPM,
-                contaminantPPM);
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // TODO Auto-generated method stub
+                }
+            });
 
-        waterPurityReports.add(potentialReport);
+            RestManager.getInstance(context).addToRequestQueue(createWaterPurityReportRequest);
 
-        nextReportId++;
-
-        return true;
+            return true;
+        } catch (JSONException ex) {
+            Log.d("sourceReportPOST", ex.getMessage());
+        }
+        return false;
     }
 
     /**
