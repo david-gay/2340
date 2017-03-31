@@ -117,14 +117,13 @@ public class CreatePurityReportActivity extends AppCompatActivity {
                     WaterPurityCondition purityCondition =
                             (WaterPurityCondition) waterPurityConditionSpinner.getSelectedItem();
                     WaterCondition condition =
-                            WaterCondition.WASTE; // Placeholder value, need to remove later
+                            WaterCondition.WASTE; // TODO Placeholder value, need to remove later
                     WaterType waterType =
-                            WaterType.BOTTLED; // Placeholder value, need to remove later
+                            WaterType.BOTTLED; // TODO Placeholder value, need to remove later
 
                     manager.createPurityReport(
                             UserSession.currentSession().getCurrentUser().getUsername(), latitude,
-                            longitude, waterType, condition, purityCondition, virusPpm,
-                            contaminantPpm);
+                            longitude, purityCondition, virusPpm, contaminantPpm);
 
                     Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG)
                             .show();

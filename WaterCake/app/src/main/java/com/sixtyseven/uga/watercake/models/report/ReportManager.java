@@ -62,11 +62,11 @@ public class ReportManager {
     }
 
     public void fetchAllReports() {
-        getWaterReportsFromServer();
-        getPurityReportsFromServer();
+        getWaterSourceReportsFromServer();
+        getWaterPurityReportsFromServer();
     }
 
-    public void getWaterReportsFromServer() {
+    public void getWaterSourceReportsFromServer() {
 
         waterSourceReports = new HashMap<>();
 
@@ -104,13 +104,13 @@ public class ReportManager {
         RestManager.getInstance(context).addToRequestQueue(getAllWaterReportsRequest);
     }
 
-    public void getPurityReportsFromServer() {
+    public void getWaterPurityReportsFromServer() {
 
         waterPurityReports = new HashMap<>();
 
         String url = "http://10.0.2.2:8080/water-reports";
-        JsonArrayRequest getAllWaterReportsRequest = new JsonArrayRequest(Request.Method.GET, url,
-                null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest getAllWaterPurityReportsRequest = new JsonArrayRequest(Request.Method.GET,
+                url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 for (int i = 0; i < response.length(); i++) {
@@ -120,17 +120,14 @@ public class ReportManager {
                         Date d = new Date(); // TODO fix date from ZonedDateTime
                         double lat = entry.getDouble("latitude");
                         double lng = entry.getDouble("longitude");
-                        WaterType wt = WaterType.valueOf(entry.getString("waterType"));
-                        WaterCondition wc = WaterCondition.valueOf(
-                                entry.getString("waterCondition"));
                         String author = entry.getString("owner");
                         WaterPurityCondition wpc = WaterPurityCondition.valueOf(
                                 entry.getString("waterPurityCondition"));
                         float vppm = Float.parseFloat(entry.getString("virusPPM"));
                         float cppm = Float.parseFloat(entry.getString("contaminantPPM"));
                         waterPurityReports.put(id,
-                                new WaterSourceReportImpl(id, author, d, lat, lng, wt, wc, wpc,
-                                        vppm, cppm));
+                                new WaterPurityReportImpl(id, author, d, lat, lng, wpc, vppm,
+                                        cppm));
                     } catch (JSONException ex) {
                         Log.d("water reports request", ex.getMessage());
                     }
@@ -144,7 +141,7 @@ public class ReportManager {
             }
         });
 
-        RestManager.getInstance(context).addToRequestQueue(getAllWaterReportsRequest);
+        RestManager.getInstance(context).addToRequestQueue(getAllWaterPurityReportsRequest);
     }
 
     /**
@@ -166,22 +163,13 @@ public class ReportManager {
         return true;
     }
 
-    /**
-     * Generates a Water Purity Report and stores it
-     * @param authorUsername the username of the report author
-     * @param waterType the type of water reported
-     * @param condition the condition of that water
-     * @return true if the report is created and added
-     */
     public boolean createPurityReport(String authorUsername, double latitude, double longitude,
-            WaterType waterType, WaterCondition condition,
             WaterPurityCondition waterPurityCondition, float virusPPM, float contaminantPPM) {
 
-        WaterSourceReportImpl potentialReport = new WaterSourceReportImpl(nextReportId,
-                authorUsername, new Date(), latitude, longitude, waterType, condition,
-                waterPurityCondition, virusPPM, contaminantPPM);
+        WaterPurityReportImpl potentialReport = new WaterPurityReportImpl(nextReportId,
+                authorUsername, new Date(), latitude, longitude, waterPurityCondition, virusPPM,
+                contaminantPPM);
 
-        //waterSourceReports.put(nextReportId, potentialReport);
         waterPurityReports.put(nextReportId, potentialReport);
 
         nextReportId++;
@@ -194,9 +182,6 @@ public class ReportManager {
      * @return a list of all WaterSourceReports
      */
     public List<WaterSourceReport> getWaterSourceReportList() {
-        //Toast.makeText(context.getApplicationContext(), "HELLOW", Toast.LENGTH_LONG).show();
-        //Log.d("server water report", "hello");
-        //getWaterReportsFromServer();
         List<WaterSourceReport> list = new ArrayList<>(waterSourceReports.values());
         Collections.sort(list, new Comparator<WaterSourceReport>() {
             @Override
