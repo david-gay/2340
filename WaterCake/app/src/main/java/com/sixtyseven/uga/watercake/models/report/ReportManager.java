@@ -11,6 +11,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sixtyseven.uga.watercake.models.dataManagement.RestManager;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
@@ -25,6 +27,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +36,8 @@ import java.util.Map;
  */
 public class ReportManager {
     private static Context context;
-    private Map<Integer, WaterSourceReport> waterSourceReports;
-    private Map<Integer, WaterPurityReport> waterPurityReports;
+    private List<WaterSourceReport> waterSourceReports;
+    private List<WaterPurityReport> waterPurityReports;
     private int nextReportId;
 
     private static ReportManager ourInstance;
@@ -55,8 +58,8 @@ public class ReportManager {
      */
     private ReportManager(Context context) {
         this.context = context;
-        waterSourceReports = new HashMap<>();
-        waterPurityReports = new HashMap<>();
+        waterSourceReports = new LinkedList<>();
+        waterPurityReports = new LinkedList<>();
 
         nextReportId = 2; // TODO get rid of this when you do POST
     }
@@ -67,31 +70,14 @@ public class ReportManager {
     }
 
     public void getWaterSourceReportsFromServer() {
-
-        waterSourceReports = new HashMap<>();
-
         String url = "http://10.0.2.2:8080/water-reports";
         JsonArrayRequest getAllWaterReportsRequest = new JsonArrayRequest(Request.Method.GET, url,
                 null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        JSONObject entry = response.getJSONObject(i);
-                        int id = entry.getInt("id");
-                        Date d = new Date(); // TODO fix date from ZonedDateTime
-                        double lat = entry.getDouble("latitude");
-                        double lng = entry.getDouble("longitude");
-                        WaterType wt = WaterType.valueOf(entry.getString("waterType"));
-                        WaterCondition wc = WaterCondition.valueOf(
-                                entry.getString("waterCondition"));
-                        String author = entry.getString("owner");
-                        waterSourceReports.put(id,
-                                new WaterSourceReportImpl(id, author, d, lat, lng, wt, wc));
-                    } catch (JSONException ex) {
-                        Log.d("source request", ex.getMessage());
-                    }
-                }
+                waterSourceReports = new Gson().fromJson(response.toString(),
+                        new TypeToken<LinkedList<WaterSourceReportImpl>>() {
+                        }.getType());
             }
         }, new Response.ErrorListener() {
 
@@ -106,33 +92,14 @@ public class ReportManager {
 
     public void getWaterPurityReportsFromServer() {
 
-        waterPurityReports = new HashMap<>();
-
         String url = "http://10.0.2.2:8080/purity-reports";
         JsonArrayRequest getAllWaterPurityReportsRequest = new JsonArrayRequest(Request.Method.GET,
                 url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        Log.d("waterPurityC", "water purity report #" + i);
-                        JSONObject entry = response.getJSONObject(i);
-                        int id = entry.getInt("id");
-                        Date d = new Date(); // TODO fix date from ZonedDateTime
-                        double lat = entry.getDouble("latitude");
-                        double lng = entry.getDouble("longitude");
-                        String author = entry.getString("owner");
-                        WaterPurityCondition wpc = WaterPurityCondition.valueOf(
-                                entry.getString("waterPurityCondition"));
-                        float vppm = Float.parseFloat(entry.getString("virusPPM"));
-                        float cppm = Float.parseFloat(entry.getString("contaminantPPM"));
-                        waterPurityReports.put(id,
-                                new WaterPurityReportImpl(id, author, d, lat, lng, wpc, vppm,
-                                        cppm));
-                    } catch (JSONException ex) {
-                        Log.d("purity request", ex.getMessage());
-                    }
-                }
+                waterPurityReports = new Gson().fromJson(response.toString(),
+                        new TypeToken<LinkedList<WaterPurityReportImpl>>() {
+                        }.getType());
             }
         }, new Response.ErrorListener() {
 
@@ -155,7 +122,7 @@ public class ReportManager {
     public boolean createWaterReport(String authorUsername, double latitude, double longitude,
             WaterType waterType, WaterCondition condition) {
 
-        waterSourceReports.put(nextReportId,
+        waterSourceReports.add(
                 new WaterSourceReportImpl(nextReportId, authorUsername, new Date(), latitude,
                         longitude, waterType, condition));
 
@@ -171,7 +138,7 @@ public class ReportManager {
                 authorUsername, new Date(), latitude, longitude, waterPurityCondition, virusPPM,
                 contaminantPPM);
 
-        waterPurityReports.put(nextReportId, potentialReport);
+        waterPurityReports.add(potentialReport);
 
         nextReportId++;
 
@@ -183,15 +150,16 @@ public class ReportManager {
      * @return a list of all WaterSourceReports
      */
     public List<WaterSourceReport> getWaterSourceReportList() {
-        List<WaterSourceReport> list = new ArrayList<>(waterSourceReports.values());
-        Collections.sort(list, new Comparator<WaterSourceReport>() {
-            @Override
-            public int compare(WaterSourceReport o1, WaterSourceReport o2) {
-                return o1.getReportNumber() - o2.getReportNumber();
-            }
-        });
-
-        return list;
+        //        List<WaterSourceReport> list = new ArrayList<>(waterSourceReports.values());
+        //        Collections.sort(list, new Comparator<WaterSourceReport>() {
+        //            @Override
+        //            public int compare(WaterSourceReport o1, WaterSourceReport o2) {
+        //                return o1.getReportNumber() - o2.getReportNumber();
+        //            }
+        //        });
+        //
+        //        return list;
+        return waterSourceReports;
     }
 
     /**
@@ -199,15 +167,16 @@ public class ReportManager {
      * @return a list of all PurityReports
      */
     public List<WaterPurityReport> getWaterPurityReportList() {
-        List<WaterPurityReport> list = new ArrayList<>(waterPurityReports.values());
-        Collections.sort(list, new Comparator<WaterPurityReport>() {
-            @Override
-            public int compare(WaterPurityReport o1, WaterPurityReport o2) {
-                return o1.getReportNumber() - o2.getReportNumber();
-            }
-        });
-
-        return list;
+        //        List<WaterPurityReport> list = new ArrayList<>(waterPurityReports.values());
+        //        Collections.sort(list, new Comparator<WaterPurityReport>() {
+        //            @Override
+        //            public int compare(WaterPurityReport o1, WaterPurityReport o2) {
+        //                return o1.getReportNumber() - o2.getReportNumber();
+        //            }
+        //        });
+        //
+        //        return list;
+        return waterPurityReports;
     }
 
     /**
@@ -216,10 +185,12 @@ public class ReportManager {
      * @return the WaterSourceReportImpl; null if no such report exists
      */
     public WaterSourceReport getReportById(int id) {
-        if (!waterSourceReports.containsKey(id)) {
-            return null;
+        for (WaterSourceReport wsr : waterSourceReports) {
+            if (wsr.getReportNumber() == id) {
+                return wsr;
+            }
         }
-        return waterSourceReports.get(id);
+        return null;
     }
 
     /**
@@ -228,10 +199,12 @@ public class ReportManager {
      * @return the WaterSourceReportImpl; null if no such report exists
      */
     public WaterPurityReport getPurityReportById(int id) {
-        if (!waterPurityReports.containsKey(id)) {
-            return null;
+        for (WaterPurityReport wpr : waterPurityReports) {
+            if (wpr.getReportNumber() == id) {
+                return wpr;
+            }
         }
-        return waterPurityReports.get(id);
+        return null;
     }
 
     /**
@@ -240,11 +213,22 @@ public class ReportManager {
      * @return true if a report was delete; false otherwise
      */
     public boolean deleteReportById(int id) {
-        if (waterSourceReports.containsKey(id) || waterPurityReports.containsKey(id)) {
-            waterSourceReports.remove(id);
-            waterPurityReports.remove(id);
-            return true;
+        boolean deleted = false;
+
+        for (int i = 0; i < waterSourceReports.size(); i++) {
+            if (waterSourceReports.get(i).getReportNumber() == id) {
+                waterSourceReports.remove(i);
+                deleted = true;
+            }
         }
-        return false;
+
+        for (int i = 0; i < waterPurityReports.size(); i++) {
+            if (waterPurityReports.get(i).getReportNumber() == id) {
+                waterPurityReports.remove(i);
+                deleted = true;
+            }
+        }
+
+        return deleted;
     }
 }

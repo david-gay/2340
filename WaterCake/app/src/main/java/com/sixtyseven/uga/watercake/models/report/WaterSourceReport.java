@@ -22,7 +22,7 @@ public interface WaterSourceReport {
      * Returns a DateTime object with the creation date and time
      * @return a DateTime object with the creation date and time
      */
-    Date getDataAndTime();
+    Date getPostDate();
 
     /**
      * Returns the water type
@@ -34,7 +34,7 @@ public interface WaterSourceReport {
      * Returns the water condition
      * @return the water condition
      */
-    WaterCondition getCondition();
+    WaterCondition getWaterCondition();
 
     /**
      * Returns the latitude

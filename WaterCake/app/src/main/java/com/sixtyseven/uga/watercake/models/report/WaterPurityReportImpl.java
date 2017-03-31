@@ -9,7 +9,7 @@ import java.util.Date;
  * water source.
  */
 class WaterPurityReportImpl implements WaterPurityReport {
-    private final int reportNumber;
+    private final int id;
     private final String authorUsername;
     private final Date postDate;
     private double latitude;
@@ -33,7 +33,7 @@ class WaterPurityReportImpl implements WaterPurityReport {
     WaterPurityReportImpl(int reportNumber, String authorUsername, Date postDate, double latitude,
             double longitude, WaterPurityCondition waterPurityCondition, float virusPpm,
             float contaminantPpm) {
-        this.reportNumber = reportNumber;
+        this.id = reportNumber;
         this.authorUsername = authorUsername;
         this.postDate = postDate;
         this.latitude = latitude;
@@ -45,7 +45,7 @@ class WaterPurityReportImpl implements WaterPurityReport {
 
     @Override
     public int getReportNumber() {
-        return reportNumber;
+        return id;
     }
 
     @Override

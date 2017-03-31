@@ -10,36 +10,36 @@ import java.util.Date;
  * water source.
  */
 class WaterSourceReportImpl implements WaterSourceReport {
-    private final int reportNumber;
+    private final int id;
     private final String authorUsername;
-    private final Date dataAndTime;
+    private final Date postDate;
     private double latitude;
     private double longitude;
     private WaterType waterType;
-    private WaterCondition condition;
+    private WaterCondition waterCondition;
 
     /**
      * Constructor for a WaterSourceReportImpl that takes in a WaterPurityDetails.
      * @param reportNumber the reportNumber
      * @param authorUsername the author's username
-     * @param dataAndTime the time and date that the report was submitted
+     * @param postDate the time and date that the report was submitted
      * @param waterType the type of water
-     * @param condition the condition of the water
+     * @param waterCondition the condition of the water
      */
-    WaterSourceReportImpl(int reportNumber, String authorUsername, Date dataAndTime,
-            double latitude, double longitude, WaterType waterType, WaterCondition condition) {
-        this.reportNumber = reportNumber;
+    WaterSourceReportImpl(int reportNumber, String authorUsername, Date postDate, double latitude,
+            double longitude, WaterType waterType, WaterCondition waterCondition) {
+        this.id = reportNumber;
         this.authorUsername = authorUsername;
-        this.dataAndTime = dataAndTime;
+        this.postDate = postDate;
         this.latitude = latitude;
         this.longitude = longitude;
         this.waterType = waterType;
-        this.condition = condition;
+        this.waterCondition = waterCondition;
     }
 
     @Override
     public int getReportNumber() {
-        return reportNumber;
+        return id;
     }
 
     @Override
@@ -48,8 +48,8 @@ class WaterSourceReportImpl implements WaterSourceReport {
     }
 
     @Override
-    public Date getDataAndTime() {
-        return dataAndTime;
+    public Date getPostDate() {
+        return postDate;
     }
 
     @Override
@@ -68,7 +68,7 @@ class WaterSourceReportImpl implements WaterSourceReport {
     }
 
     @Override
-    public WaterCondition getCondition() {
-        return condition;
+    public WaterCondition getWaterCondition() {
+        return waterCondition;
     }
 }

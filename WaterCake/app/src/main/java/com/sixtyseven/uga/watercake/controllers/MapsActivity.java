@@ -101,9 +101,9 @@ public class MapsActivity extends AppCompatActivity
             mMap.addMarker(new MarkerOptions().position(new LatLng(report.
                     getLatitude(), report.getLongitude()))
                     .title("Report Number: " + report.getReportNumber()).snippet(
-                            "Created: " + report.getDataAndTime() + "\nAuthor: " + report
+                            "Created: " + report.getPostDate() + "\nAuthor: " + report
                                     .getAuthorUsername() + "\nType: " + report.getWaterType()
-                                    + "\nCondition: " + report.getCondition()));
+                                    + "\nCondition: " + report.getWaterCondition()));
         }
 
         //set info window adapter and clickListener

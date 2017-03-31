@@ -86,7 +86,7 @@ public class ReportAdapter extends ArrayAdapter<WaterSourceReport> {
 
             TextView waterConditionText = (TextView) view.findViewById(R.id.waterConditionTextView);
             if (waterConditionText!=null) {
-                waterConditionText.setText(report.getCondition().toString());
+                waterConditionText.setText(report.getWaterCondition().toString());
             }
         }
 
