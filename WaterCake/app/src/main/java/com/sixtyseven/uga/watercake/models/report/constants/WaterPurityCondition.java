@@ -6,5 +6,5 @@ package com.sixtyseven.uga.watercake.models.report.constants;
 public enum WaterPurityCondition {
     SAFE,
     TREATABLE,
-    UNSAFE;
+    UNSAFE
 }

@@ -89,7 +89,7 @@ public class ReportManager {
                         waterSourceReports.put(id,
                                 new WaterSourceReportImpl(id, author, d, lat, lng, wt, wc));
                     } catch (JSONException ex) {
-                        Log.d("water reports request", ex.getMessage());
+                        Log.d("source request", ex.getMessage());
                     }
                 }
             }
@@ -108,13 +108,14 @@ public class ReportManager {
 
         waterPurityReports = new HashMap<>();
 
-        String url = "http://10.0.2.2:8080/water-reports";
+        String url = "http://10.0.2.2:8080/purity-reports";
         JsonArrayRequest getAllWaterPurityReportsRequest = new JsonArrayRequest(Request.Method.GET,
                 url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 for (int i = 0; i < response.length(); i++) {
                     try {
+                        Log.d("waterPurityC", "water purity report #" + i);
                         JSONObject entry = response.getJSONObject(i);
                         int id = entry.getInt("id");
                         Date d = new Date(); // TODO fix date from ZonedDateTime
@@ -129,7 +130,7 @@ public class ReportManager {
                                 new WaterPurityReportImpl(id, author, d, lat, lng, wpc, vppm,
                                         cppm));
                     } catch (JSONException ex) {
-                        Log.d("water reports request", ex.getMessage());
+                        Log.d("purity request", ex.getMessage());
                     }
                 }
             }
