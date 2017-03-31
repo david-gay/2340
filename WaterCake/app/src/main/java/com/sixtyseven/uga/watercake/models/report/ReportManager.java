@@ -1,47 +1,36 @@
 package com.sixtyseven.uga.watercake.models.report;
 
 import android.content.Context;
-import android.icu.text.RelativeDateTimeFormatter;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sixtyseven.uga.watercake.models.dataManagement.RestManager;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
-import com.sixtyseven.uga.watercake.models.report.helpers.GsonRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Manager singleton for all WaterSourceReports.
  */
 public class ReportManager {
+    private static ReportManager ourInstance;
+
     private static Context context;
     private List<WaterSourceReport> waterSourceReports;
     private List<WaterPurityReport> waterPurityReports;
-    private int nextReportId;
-
-    private static ReportManager ourInstance;
 
     /**
      * Gets the ReportManager instance
@@ -61,17 +50,22 @@ public class ReportManager {
         this.context = context;
         waterSourceReports = new LinkedList<>();
         waterPurityReports = new LinkedList<>();
-
-        nextReportId = 2; // TODO get rid of this when you do POST
     }
 
+    /**
+     * Fetches all Water Source Reports and Water Purity Reports from the server.
+     */
     public void fetchAllReports() {
         getWaterSourceReportsFromServer();
         getWaterPurityReportsFromServer();
     }
 
+    /**
+     * Fetches all Water Source Reports from the server.
+     */
     public void getWaterSourceReportsFromServer() {
         String url = "http://10.0.2.2:8080/water-reports";
+        // TODO add ServerManager that takes care of generating urls for the server requests
         JsonArrayRequest getAllWaterReportsRequest = new JsonArrayRequest(Request.Method.GET, url,
                 null, new Response.Listener<JSONArray>() {
             @Override
@@ -91,8 +85,10 @@ public class ReportManager {
         RestManager.getInstance(context).addToRequestQueue(getAllWaterReportsRequest);
     }
 
+    /**
+     * Fetches all Water Purity Reports from the server.
+     */
     public void getWaterPurityReportsFromServer() {
-
         String url = "http://10.0.2.2:8080/purity-reports";
         JsonArrayRequest getAllWaterPurityReportsRequest = new JsonArrayRequest(Request.Method.GET,
                 url, null, new Response.Listener<JSONArray>() {
@@ -116,6 +112,8 @@ public class ReportManager {
     /**
      * Generates a Water Source Report and stores it
      * @param authorUsername the username of the report author
+     * @param latitude the latitude coordinate of the report
+     * @param longitude the longitude coordinate of the report
      * @param waterType the type of water reported
      * @param condition the condition of that water
      * @return true if the report is created and added
@@ -155,6 +153,16 @@ public class ReportManager {
         return false;
     }
 
+    /**
+     * Generates a Water Purity Report and stores it
+     * @param authorUsername the username of the report author
+     * @param latitude the latitude coordinate of the report
+     * @param longitude the longitude coordinate of the report
+     * @param waterPurityCondition the purity condition of the water
+     * @param virusPPM the virus parts per million in the water
+     * @param contaminantPPM the contaminants parts per million in the water
+     * @return true if the report is created and added
+     */
     public boolean createPurityReport(String authorUsername, double latitude, double longitude,
             WaterPurityCondition waterPurityCondition, float virusPPM, float contaminantPPM) {
         try {
@@ -195,15 +203,6 @@ public class ReportManager {
      * @return a list of all WaterSourceReports
      */
     public List<WaterSourceReport> getWaterSourceReportList() {
-        //        List<WaterSourceReport> list = new ArrayList<>(waterSourceReports.values());
-        //        Collections.sort(list, new Comparator<WaterSourceReport>() {
-        //            @Override
-        //            public int compare(WaterSourceReport o1, WaterSourceReport o2) {
-        //                return o1.getReportNumber() - o2.getReportNumber();
-        //            }
-        //        });
-        //
-        //        return list;
         return waterSourceReports;
     }
 
@@ -212,15 +211,6 @@ public class ReportManager {
      * @return a list of all PurityReports
      */
     public List<WaterPurityReport> getWaterPurityReportList() {
-        //        List<WaterPurityReport> list = new ArrayList<>(waterPurityReports.values());
-        //        Collections.sort(list, new Comparator<WaterPurityReport>() {
-        //            @Override
-        //            public int compare(WaterPurityReport o1, WaterPurityReport o2) {
-        //                return o1.getReportNumber() - o2.getReportNumber();
-        //            }
-        //        });
-        //
-        //        return list;
         return waterPurityReports;
     }
 

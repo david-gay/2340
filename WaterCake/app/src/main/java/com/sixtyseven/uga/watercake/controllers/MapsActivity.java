@@ -8,33 +8,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.sixtyseven.uga.watercake.R;
-
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.UiSettings;
-import com.sixtyseven.uga.watercake.models.dataManagement.RestManager;
+import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.report.ReportManager;
 import com.sixtyseven.uga.watercake.models.report.WaterSourceReport;
-import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
-import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -42,9 +27,6 @@ import java.util.List;
  */
 public class MapsActivity extends AppCompatActivity
         implements OnInfoWindowClickListener, OnMapReadyCallback {
-
-    private GoogleMap mMap;
-    private UiSettings mUiSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +50,13 @@ public class MapsActivity extends AppCompatActivity
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
 
-        mUiSettings = mMap.getUiSettings();
+        UiSettings uiSettings = googleMap.getUiSettings();
 
-        mUiSettings.setZoomControlsEnabled(true);
-        mUiSettings.setScrollGesturesEnabled(true);
-        mUiSettings.setZoomGesturesEnabled((true));
-        mUiSettings.setRotateGesturesEnabled(true);
+        uiSettings.setZoomControlsEnabled(true);
+        uiSettings.setScrollGesturesEnabled(true);
+        uiSettings.setZoomGesturesEnabled((true));
+        uiSettings.setRotateGesturesEnabled(true);
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -87,18 +68,18 @@ public class MapsActivity extends AppCompatActivity
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             // permission has been granted, continue as usual
-            mMap.setMyLocationEnabled(true);
+            googleMap.setMyLocationEnabled(true);
         }
 
         // place markers
         List<WaterSourceReport> reports = ReportManager.getInstance(this.getApplicationContext())
                 .getWaterSourceReportList();
         Toast.makeText(getApplicationContext(), "Water Reports: " + reports.size(),
-                Toast.LENGTH_LONG);
+                Toast.LENGTH_LONG).show();
         Log.d("reportsNUM", "" + reports.size());
         for (WaterSourceReport report : reports) {
             Log.d("reportsNUM", "" + report.getReportNumber());
-            mMap.addMarker(new MarkerOptions().position(new LatLng(report.
+            googleMap.addMarker(new MarkerOptions().position(new LatLng(report.
                     getLatitude(), report.getLongitude()))
                     .title("Report Number: " + report.getReportNumber()).snippet(
                             "Created: " + report.getPostDate() + "\nAuthor: " + report
@@ -107,8 +88,8 @@ public class MapsActivity extends AppCompatActivity
         }
 
         //set info window adapter and clickListener
-        mMap.setInfoWindowAdapter(new MarkerWindowAdapter(getLayoutInflater()));
-        mMap.setOnInfoWindowClickListener(this);
+        googleMap.setInfoWindowAdapter(new MarkerWindowAdapter(getLayoutInflater()));
+        googleMap.setOnInfoWindowClickListener(this);
     }
 
     @Override

@@ -10,17 +10,9 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
-import com.sixtyseven.uga.watercake.models.dataManagement.RestManager;
 import com.sixtyseven.uga.watercake.models.response.LoginResult;
 
 /**
@@ -32,7 +24,7 @@ public class LoginController extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-
+        
         EditText editText = (EditText) findViewById(R.id.passwordTextbox);
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
