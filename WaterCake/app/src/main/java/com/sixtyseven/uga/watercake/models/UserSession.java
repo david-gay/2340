@@ -1,7 +1,10 @@
 package com.sixtyseven.uga.watercake.models;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.sixtyseven.uga.watercake.models.dataManagement.RestManager;
 import com.sixtyseven.uga.watercake.models.response.LoginResult;
 import com.sixtyseven.uga.watercake.models.user.User;
 import com.sixtyseven.uga.watercake.models.user.UserProfileError;
@@ -17,7 +20,8 @@ import java.util.Map;
  * user.
  */
 public class UserSession {
-    private static UserSession ourInstance = new UserSession();
+    private static UserSession ourInstance;
+    private static Context context;
     private Map<String, User> users;
     private User currentUser;
 
@@ -25,20 +29,29 @@ public class UserSession {
      * Returns the current UserSession
      * @return the current UserSession
      */
-    public static UserSession currentSession() {
+    public static UserSession currentSession(Context context) {
+        if (ourInstance == null) {
+            ourInstance = new UserSession(context);
+        }
         return ourInstance;
     }
 
     /**
      * Default constructor; should normally only be called once at startup.
      */
-    private UserSession() {
+    private UserSession(Context context) {
+        this.context = context;
+
         users = new HashMap<>();
         users.put("user", new User("user", "pass"));
 
-        User manager =  new User("manager", "manager");
+        User manager = new User("manager", "manager");
         manager.setUserType(UserType.MANAGER);
-        users.put(manager.getUsername(),manager);
+        users.put(manager.getUsername(), manager);
+
+        User dimitar = new User("dimitar", "pass");
+        dimitar.setUserType(UserType.ADMINISTRATOR);
+        users.put(dimitar.getUsername(), dimitar);
 
         currentUser = null;
     }
@@ -58,7 +71,8 @@ public class UserSession {
      * @return LoginResult.SUCCESS if successful; LoginResult corresponding with the problem
      * otherwise.
      */
-    public LoginResult tryLogin(String username, String password) {
+    public LoginResult tryLogin(String username, String password,
+            final LoginCallback loginCallback) {
         LoginResult result;
         username = username.toLowerCase();
         if (!users.containsKey(username)) {
@@ -69,6 +83,30 @@ public class UserSession {
             currentUser = users.get(username);
             result = LoginResult.SUCCESS;
         }
+
+        RestManager.getInstance(context).validateUser(username, password,
+                new RestManager.Callback<Integer>() {
+                    @Override
+                    public void onSuccess(Integer response) {
+                        switch (response) {
+                            case 204:
+                                loginCallback.onSuccess();
+                                break;
+                            case 401:
+                                loginCallback.onWrongPassword();
+                                break;
+                            case 404:
+                                loginCallback.onUserNotFound();
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
         Log.d("login", result.getMessage());
         return result;
     }
@@ -79,8 +117,6 @@ public class UserSession {
     public void logout() {
         currentUser = null;
     }
-
-
 
     /**
      * Attempts to register a user and returns an EnumSet of any registration errors present.
@@ -160,5 +196,13 @@ public class UserSession {
             currentUser.setFieldsFromFieldsMap(fieldMap);
         }
         return results;
+    }
+
+    public interface LoginCallback {
+        void onSuccess();
+
+        void onWrongPassword();
+
+        void onUserNotFound();
     }
 }

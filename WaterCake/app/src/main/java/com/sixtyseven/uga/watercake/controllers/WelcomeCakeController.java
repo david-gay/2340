@@ -26,11 +26,13 @@ public class WelcomeCakeController extends Activity {
         mImageView = (ImageView) findViewById(R.id.imageView);
         mImageView.setImageResource(R.mipmap.water_cat_cake);
         ((TextView) findViewById(R.id.welcomeText)).setText(
-                "Welcome, " + UserSession.currentSession().getCurrentUser().getUsername() + "!");
+                "Welcome, " + UserSession.currentSession(this.getApplicationContext())
+                        .getCurrentUser().getUsername() + "!");
 
         // Hide Purity Create Report Buttons unless Worker+
         Button createPurityReportButton = (Button) findViewById(R.id.createPurityReportButton);
-        UserType userType = UserSession.currentSession().getCurrentUser().getUserType();
+        UserType userType = UserSession.currentSession(this.getApplicationContext())
+                .getCurrentUser().getUserType();
         // Only show the button if above a Contributor
         if (userType != UserType.CONTRIBUTOR) {
             createPurityReportButton.setVisibility(View.VISIBLE); //SHOW the button
@@ -38,7 +40,8 @@ public class WelcomeCakeController extends Activity {
 
         // Hide Purity View Report Buttons unless Manager+
         Button viewPurityReportButton = (Button) findViewById(R.id.ViewPurityReportButton);
-        UserType userType2 = UserSession.currentSession().getCurrentUser().getUserType();
+        UserType userType2 = UserSession.currentSession(this.getApplicationContext())
+                .getCurrentUser().getUserType();
         // Only show the button if above a Worker
         if ((userType2 != UserType.CONTRIBUTOR) && (userType2 != UserType.WORKER)) {
             viewPurityReportButton.setVisibility(View.VISIBLE); //SHOW the button
@@ -54,7 +57,7 @@ public class WelcomeCakeController extends Activity {
      */
     public void logout(View view) {
         Log.d("logout", "water cake view logout");
-        UserSession.currentSession().logout();
+        UserSession.currentSession(this.getApplicationContext()).logout();
         finish();
     }
 

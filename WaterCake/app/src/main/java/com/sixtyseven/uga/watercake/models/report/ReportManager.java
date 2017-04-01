@@ -9,6 +9,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sixtyseven.uga.watercake.models.UserSession;
 import com.sixtyseven.uga.watercake.models.dataManagement.RestManager;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
@@ -62,20 +63,16 @@ public class ReportManager {
      * Fetches all Water Source Reports from the server.
      */
     public void getWaterSourceReportsFromServer() {
-        //        RestManager.getInstance(context).getAllWaterSourceReports(new RestManager.Callback() {
-        //            @Override
-        //            public void onSuccess(String jsonString) {
-        //                waterSourceReports = new Gson().fromJson(jsonString,
-        //                        new TypeToken<LinkedList<WaterSourceReportImpl>>() {
-        //                        }.getType());
-        //            }
-        //        }, waterSourceReports.getClass());
-
         RestManager.getInstance(context).getAllWaterSourceReports(
                 new RestManager.Callback<List<WaterSourceReport>>() {
                     @Override
                     public void onSuccess(List<WaterSourceReport> response) {
                         waterSourceReports = response;
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+
                     }
                 }, new TypeToken<LinkedList<WaterSourceReportImpl>>() {
                 }.getType());
@@ -92,47 +89,31 @@ public class ReportManager {
                     public void onSuccess(List<WaterPurityReport> response) {
                         waterPurityReports = response;
                     }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+
+                    }
                 }, new TypeToken<LinkedList<WaterPurityReportImpl>>() {
                 }.getType());
-
-        //        String url = "http://10.0.2.2:8080/purity-reports";
-        //        JsonArrayRequest getAllWaterPurityReportsRequest = new JsonArrayRequest(Request.Method.GET,
-        //                url, null, new Response.Listener<JSONArray>() {
-        //            @Override
-        //            public void onResponse(JSONArray response) {
-        //                waterPurityReports = new Gson().fromJson(response.toString(),
-        //                        new TypeToken<LinkedList<WaterPurityReportImpl>>() {
-        //                        }.getType());
-        //            }
-        //        }, new Response.ErrorListener() {
-        //
-        //            @Override
-        //            public void onErrorResponse(VolleyError error) {
-        //                // TODO Auto-generated method stub
-        //            }
-        //        });
-        //
-        //        RestManager.getInstance(context).addToRequestQueue(getAllWaterPurityReportsRequest);
     }
 
     /**
      * Generates a Water Source Report and stores it
-     * @param authorUsername the username of the report author
      * @param latitude the latitude coordinate of the report
      * @param longitude the longitude coordinate of the report
      * @param waterType the type of water reported
      * @param condition the condition of that water
      * @return true if the report is created and added
      */
-    public boolean createWaterReport(String authorUsername, double latitude, double longitude,
-            WaterType waterType, WaterCondition condition) {
+    public boolean createWaterReport(double latitude, double longitude, WaterType waterType,
+            WaterCondition condition) {
         try {
+            String username = UserSession.currentSession(context).getCurrentUser().getUsername();
             JSONObject sourceReportStub = new JSONObject(new Gson()
-                    .toJson(new WaterSourceReportImpl(0, "dimitar", null, latitude, longitude,
+                    .toJson(new WaterSourceReportImpl(0, username, null, latitude, longitude,
                             waterType, condition)));
-            // TODO change dimitar to authorUsername when login is done
-            // you can also do CurrentSession.get username or whatever and remove the param
-            String url = "http://10.0.2.2:8080/dimitar/water-reports";
+            String url = "http://10.0.2.2:8080/" + username + "/water-reports";
             JsonObjectRequest createWaterSourceReportRequest = new JsonObjectRequest(
                     Request.Method.POST, url, sourceReportStub,
                     new Response.Listener<JSONObject>() {
@@ -161,7 +142,6 @@ public class ReportManager {
 
     /**
      * Generates a Water Purity Report and stores it
-     * @param authorUsername the username of the report author
      * @param latitude the latitude coordinate of the report
      * @param longitude the longitude coordinate of the report
      * @param waterPurityCondition the purity condition of the water
@@ -169,15 +149,14 @@ public class ReportManager {
      * @param contaminantPPM the contaminants parts per million in the water
      * @return true if the report is created and added
      */
-    public boolean createPurityReport(String authorUsername, double latitude, double longitude,
+    public boolean createPurityReport(double latitude, double longitude,
             WaterPurityCondition waterPurityCondition, float virusPPM, float contaminantPPM) {
         try {
+            String username = UserSession.currentSession(context).getCurrentUser().getUsername();
             JSONObject purityReportStub = new JSONObject(new Gson()
-                    .toJson(new WaterPurityReportImpl(0, "dimitar", null, latitude, longitude,
+                    .toJson(new WaterPurityReportImpl(0, username, null, latitude, longitude,
                             waterPurityCondition, virusPPM, contaminantPPM)));
-            // TODO change dimitar to authorUsername when login is done
-            // you can also do CurrentSession.get username or whatever and remove the param
-            String url = "http://10.0.2.2:8080/dimitar/purity-reports";
+            String url = "http://10.0.2.2:8080/" + username + "/purity-reports";
             JsonObjectRequest createWaterPurityReportRequest = new JsonObjectRequest(
                     Request.Method.POST, url, purityReportStub,
                     new Response.Listener<JSONObject>() {

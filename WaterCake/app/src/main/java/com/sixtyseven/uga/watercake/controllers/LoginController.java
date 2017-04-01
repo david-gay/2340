@@ -24,7 +24,7 @@ public class LoginController extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        
+
         EditText editText = (EditText) findViewById(R.id.passwordTextbox);
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -45,31 +45,40 @@ public class LoginController extends Activity {
      * @param view the button that initiated this event
      */
     public void attemptLogin(View view) {
-        TextInputLayout usernameInput = (TextInputLayout) findViewById(R.id.usernameInputLayout);
-        TextInputLayout passwordInput = (TextInputLayout) findViewById(R.id.passwordInputLayout);
+        final TextInputLayout usernameInput = (TextInputLayout) findViewById(
+                R.id.usernameInputLayout);
+        final TextInputLayout passwordInput = (TextInputLayout) findViewById(
+                R.id.passwordInputLayout);
 
-        EditText usernameEditText = usernameInput.getEditText();
-        EditText passwordEditText = passwordInput.getEditText();
+        final EditText usernameEditText = usernameInput.getEditText();
+        final EditText passwordEditText = passwordInput.getEditText();
 
         Log.d("login",
                 "login attempted." + " username: " + usernameEditText.getText() + " password: "
                         + passwordEditText.getText());
 
-        LoginResult response = UserSession.currentSession().tryLogin(
-                usernameEditText.getText().toString(), passwordEditText.getText().toString());
+        UserSession.currentSession(this.getApplicationContext()).tryLogin(
+                usernameEditText.getText().toString(), passwordEditText.getText().toString(),
+                new UserSession.LoginCallback() {
+                    @Override
+                    public void onSuccess() {
+                        startActivity(
+                                new Intent(LoginController.this, WelcomeCakeController.class));
+                    }
 
-        if (response.equals(LoginResult.SUCCESS)) {
-            startActivity(new Intent(LoginController.this, WelcomeCakeController.class));
-        } else {
-            if (response == LoginResult.USER_DOES_NOT_EXIST) {
-                usernameInput.setError(response.getMessage());
-                usernameEditText.requestFocus();
-            } else if (response == LoginResult.WRONG_PASSWORD) {
-                passwordInput.setError(response.getMessage());
-                passwordEditText.requestFocus();
-                passwordInput.getEditText().setText("");
-            }
-        }
+                    @Override
+                    public void onWrongPassword() {
+                        passwordInput.setError(LoginResult.WRONG_PASSWORD.getMessage());
+                        passwordEditText.requestFocus();
+                        passwordInput.getEditText().setText("");
+                    }
+
+                    @Override
+                    public void onUserNotFound() {
+                        usernameInput.setError(LoginResult.USER_DOES_NOT_EXIST.getMessage());
+                        usernameEditText.requestFocus();
+                    }
+                });
     }
 
     public void goToRegistration(View view) {

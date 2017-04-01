@@ -88,7 +88,7 @@ public class RegistrationController extends FragmentActivity {
         fieldMap.put(UserProfileField.USER_TYPE, ((UserType) userTypeSpinner.getSelectedItem())
                 .name());
 
-        EnumSet<UserProfileError> errors = UserSession.currentSession()
+        EnumSet<UserProfileError> errors = UserSession.currentSession(this.getApplicationContext())
                 .registerUser(fieldMap);
 
         if (errors.isEmpty()) { //No errors = success

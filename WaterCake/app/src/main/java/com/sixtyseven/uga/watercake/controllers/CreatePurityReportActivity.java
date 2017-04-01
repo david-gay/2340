@@ -1,21 +1,17 @@
 package com.sixtyseven.uga.watercake.controllers;
 
-import android.net.ParseException;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.util.Log;
 
 import com.sixtyseven.uga.watercake.R;
-import com.sixtyseven.uga.watercake.models.UserSession;
 import com.sixtyseven.uga.watercake.models.report.ReportManager;
-import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
-import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
 
 /**
  * Activity for creating Purity reports.
@@ -27,8 +23,6 @@ public class CreatePurityReportActivity extends AppCompatActivity {
     Spinner waterPurityConditionSpinner;
     TextInputLayout virusPpmInput;
     TextInputLayout contaminantPpmInput;
-    Spinner waterTypeSpinner;
-    Spinner waterConditionSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,14 +110,9 @@ public class CreatePurityReportActivity extends AppCompatActivity {
                     // Success!
                     WaterPurityCondition purityCondition =
                             (WaterPurityCondition) waterPurityConditionSpinner.getSelectedItem();
-                    WaterCondition condition =
-                            WaterCondition.WASTE; // TODO Placeholder value, need to remove later
-                    WaterType waterType =
-                            WaterType.BOTTLED; // TODO Placeholder value, need to remove later
 
-                    manager.createPurityReport(
-                            UserSession.currentSession().getCurrentUser().getUsername(), latitude,
-                            longitude, purityCondition, virusPpm, contaminantPpm);
+                    manager.createPurityReport(latitude, longitude, purityCondition, virusPpm,
+                            contaminantPpm);
 
                     Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG)
                             .show();

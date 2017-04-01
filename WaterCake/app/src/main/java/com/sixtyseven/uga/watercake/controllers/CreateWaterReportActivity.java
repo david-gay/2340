@@ -9,7 +9,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.R;
-import com.sixtyseven.uga.watercake.models.UserSession;
 import com.sixtyseven.uga.watercake.models.report.ReportManager;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
@@ -67,9 +66,7 @@ public class CreateWaterReportActivity extends AppCompatActivity {
                 WaterType type = (WaterType) waterTypeSpinner.getSelectedItem();
                 WaterCondition condition = (WaterCondition) waterConditionSpinner.getSelectedItem();
 
-                manager.createWaterReport(
-                        UserSession.currentSession().getCurrentUser().getUsername(), latitude,
-                        longitude, type, condition);
+                manager.createWaterReport(latitude, longitude, type, condition);
 
                 Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG).show();
                 finish();

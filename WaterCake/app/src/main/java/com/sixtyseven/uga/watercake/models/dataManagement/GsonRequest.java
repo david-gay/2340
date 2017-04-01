@@ -22,6 +22,7 @@ public class GsonRequest<T> extends Request<T> {
     private final Type type;
     private final Map<String, String> headers;
     private final Response.Listener<T> listener;
+    private int statusCode;
 
     /**
      * Make a GET request and return a parsed object from JSON.
@@ -38,6 +39,16 @@ public class GsonRequest<T> extends Request<T> {
         this.type = type;
         this.headers = headers;
         this.listener = listener;
+        this.statusCode = 0;
+    }
+
+    /**
+     * A method to expose the status code that came with the response. Should only be used inside
+     * the response listener or the error listener.
+     * @return the status code that came with the response
+     */
+    public int getStatusCode() {
+        return statusCode;
     }
 
     @Override

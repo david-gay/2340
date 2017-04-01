@@ -4,12 +4,19 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
 
@@ -105,8 +112,43 @@ public class RestManager implements IDataManager {
         getRequestQueue().add(req);
     }
 
+    public void validateUser(String username, String password, final Callback<Integer> callback) {
+        String url = "http://10.0.2.2:8080/login";
+        String requestBody = new Gson().toJson(new Credentials(username, password));
+        LoginRequest req = new LoginRequest(Request.Method.POST, url, requestBody,
+                new Response.Listener<Integer>() {
+                    @Override
+                    public void onResponse(Integer response) {
+                        Log.d("validateUser", "" + "Response: " + response);
+                        callback.onSuccess(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                String message = null;
+                if (error instanceof NetworkError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                } else if (error instanceof ServerError) {
+                    message = "The server could not be found. Please try again after some time!!";
+                } else if (error instanceof AuthFailureError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                } else if (error instanceof ParseError) {
+                    message = "Parsing error! Please try again after some time!!";
+                } else if (error instanceof NoConnectionError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                } else if (error instanceof TimeoutError) {
+                    message = "Connection TimeOut! Please check your internet connection.";
+                }
+                Log.d("validateUser", "error: " + message);
+                callback.onFailure(message);
+            }
+        });
+        getRequestQueue().add(req);
+    }
+
     public interface Callback<T> {
         void onSuccess(T response);
-        //void onFailure();
+
+        void onFailure(String errorMessage);
     }
 }

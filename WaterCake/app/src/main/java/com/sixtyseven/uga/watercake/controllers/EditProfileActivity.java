@@ -56,8 +56,8 @@ public class EditProfileActivity extends FragmentActivity {
                     });
         }
 
-        Map<UserProfileField, String> fieldsMap =
-                UserSession.currentSession().getCurrentUser().getFieldsMap();
+        Map<UserProfileField, String> fieldsMap = UserSession.currentSession(
+                this.getApplicationContext()).getCurrentUser().getFieldsMap();
 
         ((TextView) findViewById(R.id.usernameTextView)).setText(
                 "Username: " + fieldsMap.get(UserProfileField.USERNAME));
@@ -88,8 +88,8 @@ public class EditProfileActivity extends FragmentActivity {
             fieldsMap.remove(UserProfileField.PASSWORD);
         }
 
-        EnumSet<UserProfileError> results = UserSession.currentSession().updateUserFields(
-                fieldsMap);
+        EnumSet<UserProfileError> results = UserSession.currentSession(this.getApplicationContext())
+                .updateUserFields(fieldsMap);
 
         if (results.isEmpty()) {
             Log.d("EditProfileActivity", "Profile Updated");
