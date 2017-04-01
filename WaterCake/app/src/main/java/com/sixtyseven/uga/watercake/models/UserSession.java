@@ -2,7 +2,6 @@ package com.sixtyseven.uga.watercake.models;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.models.dataManagement.RestManager;
 import com.sixtyseven.uga.watercake.models.response.LoginResult;
@@ -103,7 +102,7 @@ public class UserSession {
 
                     @Override
                     public void onFailure(String errorMessage) {
-                        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                        loginCallback.onError(errorMessage);
                     }
                 });
 
@@ -204,5 +203,7 @@ public class UserSession {
         void onWrongPassword();
 
         void onUserNotFound();
+
+        void onError(String errorMessage);
     }
 }

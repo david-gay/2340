@@ -25,4 +25,5 @@
     <string name="view_water_reports">View Water Reports</string>
     <string name="water_condition">Water Condition</string>
     <string name="water_type">Water Type</string>
+    <string name="CheckingYouUp">Checking you up...</string>
 </resources>

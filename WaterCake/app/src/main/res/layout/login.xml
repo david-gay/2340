@@ -25,7 +25,7 @@
             android:maxLines="1"
             android:nextFocusDown="@+id/passwordTextbox">
 
-            <requestFocus />
+            <requestFocus/>
         </EditText>
     </android.support.design.widget.TextInputLayout>
 
@@ -45,11 +45,11 @@
             android:hint="@string/password"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
-            android:maxLines="1" />
+            android:maxLines="1"/>
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/btnLogin"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,10 +58,10 @@
         android:layout_marginTop="30dp"
         android:onClick="attemptLogin"
         android:text="@string/login"
-        android:visibility="visible" />
+        android:visibility="visible"/>
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/btnRegister"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,5 +69,5 @@
         android:layout_marginRight="20dp"
         android:onClick="goToRegistration"
         android:text="@string/register"
-        android:visibility="visible" />
+        android:visibility="visible"/>
 </LinearLayout>
