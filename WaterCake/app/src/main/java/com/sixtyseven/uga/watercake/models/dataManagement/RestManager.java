@@ -11,6 +11,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.lang.reflect.Type;
+
 public class RestManager implements IDataManager {
     private static RestManager instance;
     private static Context context;
@@ -71,5 +73,40 @@ public class RestManager implements IDataManager {
         });
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
+    }
+
+    public <T> void getAllWaterSourceReports(final Callback<T> callback, Type type) {
+        String url = "http://10.0.2.2:8080/water-reports";
+        // TODO add ServerManager that takes care of generating urls for the server requests
+
+        getReportByType(callback, type, url);
+    }
+
+    public <T> void getAllWaterPurityReports(final Callback<T> callback, Type type) {
+        String url = "http://10.0.2.2:8080/purity-reports";
+        // TODO add ServerManager that takes care of generating urls for the server requests
+
+        getReportByType(callback, type, url);
+    }
+
+    private <T> void getReportByType(final Callback<T> callback, Type type, String url) {
+        GsonRequest<T> req = new GsonRequest<>(Request.Method.GET, url, type, null,
+                new Response.Listener<T>() {
+                    @Override
+                    public void onResponse(T response) {
+                        callback.onSuccess(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        getRequestQueue().add(req);
+    }
+
+    public interface Callback<T> {
+        void onSuccess(T response);
+        //void onFailure();
     }
 }

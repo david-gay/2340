@@ -6,7 +6,6 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -15,7 +14,6 @@ import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -64,49 +62,57 @@ public class ReportManager {
      * Fetches all Water Source Reports from the server.
      */
     public void getWaterSourceReportsFromServer() {
-        String url = "http://10.0.2.2:8080/water-reports";
-        // TODO add ServerManager that takes care of generating urls for the server requests
-        JsonArrayRequest getAllWaterReportsRequest = new JsonArrayRequest(Request.Method.GET, url,
-                null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                waterSourceReports = new Gson().fromJson(response.toString(),
-                        new TypeToken<LinkedList<WaterSourceReportImpl>>() {
-                        }.getType());
-            }
-        }, new Response.ErrorListener() {
+        //        RestManager.getInstance(context).getAllWaterSourceReports(new RestManager.Callback() {
+        //            @Override
+        //            public void onSuccess(String jsonString) {
+        //                waterSourceReports = new Gson().fromJson(jsonString,
+        //                        new TypeToken<LinkedList<WaterSourceReportImpl>>() {
+        //                        }.getType());
+        //            }
+        //        }, waterSourceReports.getClass());
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // TODO Auto-generated method stub
-            }
-        });
-
-        RestManager.getInstance(context).addToRequestQueue(getAllWaterReportsRequest);
+        RestManager.getInstance(context).getAllWaterSourceReports(
+                new RestManager.Callback<List<WaterSourceReport>>() {
+                    @Override
+                    public void onSuccess(List<WaterSourceReport> response) {
+                        waterSourceReports = response;
+                    }
+                }, new TypeToken<LinkedList<WaterSourceReportImpl>>() {
+                }.getType());
     }
 
     /**
      * Fetches all Water Purity Reports from the server.
      */
     public void getWaterPurityReportsFromServer() {
-        String url = "http://10.0.2.2:8080/purity-reports";
-        JsonArrayRequest getAllWaterPurityReportsRequest = new JsonArrayRequest(Request.Method.GET,
-                url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                waterPurityReports = new Gson().fromJson(response.toString(),
-                        new TypeToken<LinkedList<WaterPurityReportImpl>>() {
-                        }.getType());
-            }
-        }, new Response.ErrorListener() {
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // TODO Auto-generated method stub
-            }
-        });
+        RestManager.getInstance(context).getAllWaterPurityReports(
+                new RestManager.Callback<List<WaterPurityReport>>() {
+                    @Override
+                    public void onSuccess(List<WaterPurityReport> response) {
+                        waterPurityReports = response;
+                    }
+                }, new TypeToken<LinkedList<WaterPurityReportImpl>>() {
+                }.getType());
 
-        RestManager.getInstance(context).addToRequestQueue(getAllWaterPurityReportsRequest);
+        //        String url = "http://10.0.2.2:8080/purity-reports";
+        //        JsonArrayRequest getAllWaterPurityReportsRequest = new JsonArrayRequest(Request.Method.GET,
+        //                url, null, new Response.Listener<JSONArray>() {
+        //            @Override
+        //            public void onResponse(JSONArray response) {
+        //                waterPurityReports = new Gson().fromJson(response.toString(),
+        //                        new TypeToken<LinkedList<WaterPurityReportImpl>>() {
+        //                        }.getType());
+        //            }
+        //        }, new Response.ErrorListener() {
+        //
+        //            @Override
+        //            public void onErrorResponse(VolleyError error) {
+        //                // TODO Auto-generated method stub
+        //            }
+        //        });
+        //
+        //        RestManager.getInstance(context).addToRequestQueue(getAllWaterPurityReportsRequest);
     }
 
     /**
