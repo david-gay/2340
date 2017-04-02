@@ -2,6 +2,7 @@ package com.sixtyseven.uga.watercake.models.report;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -67,12 +68,16 @@ public class ReportManager {
                 new RestManager.Callback<List<WaterSourceReport>>() {
                     @Override
                     public void onSuccess(List<WaterSourceReport> response) {
+
+                        Toast.makeText(context,
+                                "wsr size:" + response.size() + response.get(0).getAuthorUsername(),
+                                Toast.LENGTH_SHORT).show();
                         waterSourceReports = response;
                     }
 
                     @Override
                     public void onFailure(String errorMessage) {
-
+                        Log.d("ReportManagerError", errorMessage);
                     }
                 }, new TypeToken<LinkedList<WaterSourceReportImpl>>() {
                 }.getType());

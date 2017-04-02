@@ -8,6 +8,7 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
@@ -23,15 +24,21 @@ import java.util.List;
 import java.util.Map;
 
 // TODO add Log.d() everywhere, just so that we know what's going on at all times
-public class VolleyRequestBuilder {
+public class VolleyRequestBuilder<T> {
 
     //    public class HTTPMethod implements Request.Method {
     //    }
 
-    public interface VolleyRequestCallback {
-        void onSuccess(Object response);
+    public interface VolleyRequestCallback<T> {
+        void onSuccess(T response);
 
         void onFailure(Integer httpStatusCode, String errorMessage);
+    }
+
+    public interface VolleyResponseStatusCodeCallback {
+        void onExpectedStatusCode(Integer expectedStatusCode);
+
+        void onUnexpectedStatusCode(Integer unexpectedStatusCode, String errorMessage);
     }
 
     public enum HTTPMethod {
@@ -56,9 +63,10 @@ public class VolleyRequestBuilder {
     private Integer method;
     private String url;
 
-    private Response.Listener responseListener;
+    private Response.Listener<T> responseListener;
     private Response.ErrorListener errorListener;
-    private VolleyRequestCallback callback; // this is not really needed... I think
+    private VolleyRequestCallback<T> requestCallback; // this is not really needed... I think
+    private VolleyResponseStatusCodeCallback statusCodeCallback;
 
     private List<Integer> expectedStatusCodes;
     private Map<String, String> headers;
@@ -70,12 +78,16 @@ public class VolleyRequestBuilder {
     private Type responseType; // this is for GET
 
     public VolleyRequestBuilder() {
+
         method = null;
         url = null;
 
         responseListener = null;
         errorListener = null;
-        callback = null;
+        makeErrorListener();
+        requestCallback = null;
+        makeResponseListener();
+        statusCodeCallback = null;
 
         expectedStatusCodes = null;
         headers = null;
@@ -90,27 +102,45 @@ public class VolleyRequestBuilder {
     // region Builder Tools
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    public VolleyRequestBuilder withHttpMethod(HTTPMethod method) {
+    public VolleyRequestBuilder<T> withHttpMethod(HTTPMethod method) {
         this.method = method.value;
         return this;
     }
 
-    public VolleyRequestBuilder withUrl(String url) {
+    public VolleyRequestBuilder<T> withUrl(String url) {
         this.url = url;
         return this;
     }
 
-    public VolleyRequestBuilder withCallback(final VolleyRequestCallback callback) {
+    public VolleyRequestBuilder<T> withCallback(final VolleyRequestCallback<T> callback) {
+        this.requestCallback = callback;
+        return this;
+    }
 
+    // TODO don't really need the reponse listener -- you can call requestCallback.OnSuccess directly
+    private void makeResponseListener() {
+        this.responseListener = new Response.Listener<T>() {
+            @Override
+            public void onResponse(T response) {
+                if (requestCallback != null) {
+                    requestCallback.onSuccess(response);
+                }
+            }
+        };
+    }
+
+    private void makeErrorListener() {
         this.errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                // TODO something smart to parse VolleyError into .onFailure()
                 Integer statusCode = null;
                 if (error.networkResponse != null) {
                     statusCode = error.networkResponse.statusCode;
                 }
                 String errorMessage = null;
+                // TODO refactor these messages
+                // list of all VolleyErrors:
+                // http://afzaln.com/volley/com/android/volley/class-use/VolleyError.html
                 if (error.getMessage() != null) {
                     errorMessage = error.getMessage();
                 } else if (error instanceof NetworkError) {
@@ -127,39 +157,44 @@ public class VolleyRequestBuilder {
                 } else if (error instanceof TimeoutError) {
                     errorMessage = "Connection TimeOut! Please check your internet connection.";
                 }
-                callback.onFailure(statusCode, errorMessage);
+                if (requestCallback != null) {
+                    requestCallback.onFailure(statusCode, errorMessage);
+                }
+                if (statusCodeCallback != null) {
+                    if (expectedStatusCodes == null) {
+                        statusCodeCallback.onExpectedStatusCode(statusCode);
+                    } else {
+                        if (expectedStatusCodes.contains(statusCode)) {
+                            statusCodeCallback.onExpectedStatusCode(statusCode);
+                        } else {
+                            statusCodeCallback.onUnexpectedStatusCode(statusCode, errorMessage);
+                        }
+                    }
+                }
             }
         };
-
-        this.responseListener = new Response.Listener() {
-            @Override
-            public void onResponse(Object response) {
-                // TODO use Gson to convert the response from JSON to object
-                callback.onSuccess(response);
-            }
-        };
-
-        this.callback = callback; // saving this for Justin Case
-        return this;
     }
 
-    public VolleyRequestBuilder withExpectedStatusCodes(List<Integer> expectedStatusCodes) {
+    public VolleyRequestBuilder<T> withStatusCodeCallback(List<Integer> expectedStatusCodes,
+            final VolleyResponseStatusCodeCallback statusCodeCallback) {
+
         this.expectedStatusCodes = expectedStatusCodes;
+        this.statusCodeCallback = statusCodeCallback;
         return this;
     }
 
-    public VolleyRequestBuilder withHeaders(Map<String, String> headers) {
+    public VolleyRequestBuilder<T> withHeaders(Map<String, String> headers) {
         this.headers = headers;
         return this;
     }
 
-    public VolleyRequestBuilder withJsonStringBody(String body) {
+    public VolleyRequestBuilder<T> withJsonStringBody(String body) {
         this.jsonStringRequestBody = body;
         return this;
     }
 
     // TODO this body type might need to know the body for Gson to work properly
-    public VolleyRequestBuilder withObjectBody(Object body) {
+    public VolleyRequestBuilder<T> withObjectBody(Object body) {
         this.objectRequestBody = body;
         return this;
     }
@@ -169,7 +204,7 @@ public class VolleyRequestBuilder {
     //        return this;
     //    }
 
-    public VolleyRequestBuilder withResponseType(Type responseType) {
+    public VolleyRequestBuilder<T> withResponseType(Type responseType) {
         this.responseType = responseType;
         return this;
     }
@@ -177,22 +212,22 @@ public class VolleyRequestBuilder {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // endregion
 
-    public Request build() {
+    public Request<T> build() {
         try {
             assertBuildable();
 
-            return new Request(method, url, errorListener) {
+            return new Request<T>(method, url, errorListener) {
                 // region Network Response
                 ///////////////////////////////////////////////////////////////////////////////////////
 
                 // this is for GET requests
                 @Override
-                protected Response parseNetworkResponse(NetworkResponse response) {
-                    if (responseType == null) { // response is just a HTTP Status Code
+                protected Response<T> parseNetworkResponse(NetworkResponse response) {
+                    // TODO make it so that you can have both types of callbacks
+                    if (statusCodeCallback != null) { // response is just a HTTP Status Code
                         Log.d("VolleyRequestBuilder",
                                 "parseNetworkResponse: statusCode=" + response.statusCode);
-                        return Response.success(response.statusCode,
-                                HttpHeaderParser.parseCacheHeaders(response));
+                        return Response.error(new VolleyError(response));
                     } else { // response is JSON => parse it
                         try {
                             //gets the JSON string from the network response
@@ -200,7 +235,8 @@ public class VolleyRequestBuilder {
                                     HttpHeaderParser.parseCharset(response.headers));
                             Log.d("VolleyRequestBuilder",
                                     "parseNetworkResponse: JSON response string=" + jsonString);
-                            return Response.success(new Gson().fromJson(jsonString, responseType),
+                            return (Response<T>) Response.success(
+                                    new Gson().fromJson(jsonString, responseType),
                                     HttpHeaderParser.parseCacheHeaders(response));
                         } catch (UnsupportedEncodingException e) {
                             return Response.error(new ParseError(e));
@@ -211,49 +247,21 @@ public class VolleyRequestBuilder {
                 }
 
                 @Override
-                protected void deliverResponse(Object response) {
-                    Log.d("VolleyRequestBuilder",
-                            "deliverResponse: response type=" + (response instanceof Integer ?
-                                    "int" : "response object type"));
-                    //TODO don't really need the response Listener -- you can just call callback.onSuccess
+                protected void deliverResponse(T response) {
+                    //TODO don't really need the response Listener -- you can just call requestCallback.onSuccess
                     responseListener.onResponse(response);
                 }
 
                 @Override
                 public void deliverError(VolleyError error) {
-                    if (error.networkResponse != null) {
-                        Integer statusCode = error.networkResponse.statusCode;
-                        if (expectedStatusCodes.contains(statusCode)) {
-                            Log.d("VolleyRequestBuilder",
-                                    "deliverError: expected statusCode=" + statusCode);
-                            responseListener.onResponse(statusCode);
-                        } else {
-                            // TODO some more graceful handling pls
-                            // unexpected status code
-                            Log.d("VolleyRequestBuilder",
-                                    "deliverError: unexpected statusCode=" + statusCode);
-                            super.deliverError(error);
-                        }
-                    } else {
-                        // TODO some more graceful handling pls -- might be done in the error listener
-                        // no response from the network was received
-                        Log.d("VolleyRequestBuilder", "deliverError: network response is null");
-                        super.deliverError(error);
-                    }
+                    Log.d("VolleyRequestBuilder", "deliverError: " + error.getMessage());
+                    super.deliverError(error);
                 }
                 ///////////////////////////////////////////////////////////////////////////////////////
                 // endregion
 
                 // region methods for POST and PUT requests
                 ///////////////////////////////////////////////////////////////////////////////////////
-
-                /**
-                 * @deprecated Use {@link #getBodyContentType()}.
-                 */
-                @Override
-                public String getPostBodyContentType() {
-                    return getBodyContentType();
-                }
 
                 // this is for POST and PUT requests
                 @Override
@@ -263,14 +271,6 @@ public class VolleyRequestBuilder {
                         return "application/json; charset=utf-8";
                     }
                     return super.getBodyContentType();
-                }
-
-                /**
-                 * @deprecated Use {@link #getBody()}.
-                 */
-                @Override
-                public byte[] getPostBody() throws AuthFailureError {
-                    return getBody();
                 }
 
                 @Override
@@ -316,9 +316,13 @@ public class VolleyRequestBuilder {
         if (url == null) {
             throw new Exception("VolleyRequestBuilder needs an URL. Use .withUrl(String url)");
         }
-        if (callback == null) {
+        if (requestCallback == null && statusCodeCallback == null) {
             throw new Exception(
-                    "VolleyRequestBuilder needs a callback. Use .withCallback(final VolleyRequestCallback callback)");
+                    "VolleyRequestBuilder needs a requestCallback. Use .withCallback(final VolleyRequestCallback requestCallback) OR .withStatusCodeCallback(final VolleyResponseStatusCodeCallback statusCodeCallback)");
+        }
+        // TODO make it so that you can have both callbacks!!!
+        if (requestCallback != null && statusCodeCallback != null) {
+            throw new Exception("VolleyRequestBuilder needs EXACTLY ONE callback. You have two.");
         }
         if (method == HTTPMethod.POST.value || method == HTTPMethod.PUT.value) {
             if (jsonStringRequestBody == null && objectRequestBody == null) {
@@ -331,5 +335,9 @@ public class VolleyRequestBuilder {
                                 + ". Use EITHER .withJsonStringBody(String body) OR .withObjectBody(Object body), but not both.");
             }
         }
+    }
+
+    public void addToQueue(RequestQueue queue) {
+        queue.add(this.build());
     }
 }

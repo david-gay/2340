@@ -110,10 +110,10 @@ public class LoginController extends Activity {
 
                     @Override
                     public void onError(String errorMessage) {
-                        // beforeStart();
+                        beforeStart();
                         Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT)
                                 .show();
-                        // onFinish();
+                        onFinish();
                     }
 
                     private void beforeStart() {

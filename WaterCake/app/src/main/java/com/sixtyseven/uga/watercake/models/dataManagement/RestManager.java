@@ -1,14 +1,9 @@
 package com.sixtyseven.uga.watercake.models.dataManagement;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.sixtyseven.uga.watercake.models.user.User;
 
@@ -49,34 +44,6 @@ public class RestManager implements IDataManager {
         getRequestQueue().add(req);
     }
 
-    public void makeTestRequest() {
-        // Instantiate the RequestQueue.
-        RequestQueue queue = getRequestQueue();
-        String call = url + "water-reports";
-
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, call,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 20 characters of the response string.
-                        Toast.makeText(context.getApplicationContext(),
-                                "Response is: " + response.substring(0, 100), Toast.LENGTH_LONG)
-                                .show();
-                        //mTextView.setText("Response is: "+ response.substring(0,500));
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context.getApplicationContext(), "That didn't work!!!",
-                        Toast.LENGTH_LONG).show();
-                Log.d("volley test", error.getMessage());
-            }
-        });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-    }
-
     public <T> void getAllWaterSourceReports(final Callback<T> callback, Type type) {
         String url = "http://10.0.2.2:8080/water-reports";
         // TODO add ServerManager that takes care of generating urls for the server requests
@@ -92,51 +59,51 @@ public class RestManager implements IDataManager {
     }
 
     private <T> void getReportByType(final Callback<T> callback, Type type, String url) {
-        GsonRequest<T> req = new GsonRequest<>(Request.Method.GET, url, type, null,
-                new Response.Listener<T>() {
-                    @Override
-                    public void onResponse(T response) {
-                        callback.onSuccess(response);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+        getRequestQueue().add(
+                new VolleyRequestBuilder<T>()
+                        .withUrl(url)
+                        .withHttpMethod(VolleyRequestBuilder.HTTPMethod.GET)
+                        .withResponseType(type)
+                        .withCallback(new VolleyRequestBuilder.VolleyRequestCallback<T>() {
+                            @Override
+                            public void onSuccess(T response) {
+                                callback.onSuccess(response);
+                            }
 
-            }
-        });
-        getRequestQueue().add(req);
+                            @Override
+                            public void onFailure(Integer httpStatusCode, String errorMessage) {
+                                callback.onFailure(errorMessage);
+                            }
+                        })
+                        .build());
     }
 
     public void validateUser(String username, String password, final Callback<Integer> callback) {
-        String url = "http://10.0.2.2:8080/login";
-
         getRequestQueue().add(
                 new VolleyRequestBuilder()
-                    .withUrl("http://10.0.2.2:8080/login")
-                    .withHttpMethod(VolleyRequestBuilder.HTTPMethod.POST)
-                    .withObjectBody(new Credentials(username, password))
-                    .withExpectedStatusCodes(Arrays.asList(204, 401, 404))
-                    .withCallback(new VolleyRequestBuilder.VolleyRequestCallback() {
-                        @Override
-                        public void onSuccess(Object response) {
-                            Log.d("validateUser", "" + "Response: " + response);
-                            callback.onSuccess((Integer) response);
-                        }
+                        .withUrl("http://10.0.2.2:8080/login")
+                        .withHttpMethod(VolleyRequestBuilder.HTTPMethod.POST)
+                        .withObjectBody(new Credentials(username, password))
+                        .withStatusCodeCallback(Arrays.asList(204, 401, 404),
+                                new VolleyRequestBuilder.VolleyResponseStatusCodeCallback() {
+                                    @Override
+                                    public void onExpectedStatusCode(Integer expectedStatusCode) {
+                                        callback.onSuccess(expectedStatusCode);
+                                    }
 
-                        @Override
-                        public void onFailure(Integer httpStatusCode, String errorMessage) {
-                            Log.d("validateUserError",
-                                    "http status code: " + httpStatusCode + "; error: " + errorMessage);
-                            callback.onFailure(errorMessage);
-                        }
-                    })
-                    .build());
+                                    @Override
+                                    public void onUnexpectedStatusCode(Integer unexpectedStatusCode,
+                                            String errorMessage) {
+                                        callback.onFailure(errorMessage);
+                                    }
+                                })
+                        .build());
 
         //        String requestBody = new Gson().toJson(new Credentials(username, password));
         //        LoginRequest req = new LoginRequest(Request.Method.POST, url, requestBody,
         //                Arrays.asList(204, 401, 404), new Response.Listener<Integer>() {
         //            @Override
-        //            public void onResponse(Integer response) {
+        //            public void onExpectedStatusCode(Integer response) {
         //                Log.d("validateUser", "Response: " + response);
         //                callback.onSuccess(response);
         //            }
