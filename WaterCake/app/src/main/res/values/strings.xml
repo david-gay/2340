@@ -25,4 +25,7 @@
     <string name="view_water_reports">View Water Reports</string>
     <string name="water_condition">Water Condition</string>
     <string name="water_type">Water Type</string>
+    <string name="year">Year</string>
+    <string name="generate_historical_report">Generate Historical Report</string>
+    <string name="get_water_report">Generate</string>
 </resources>

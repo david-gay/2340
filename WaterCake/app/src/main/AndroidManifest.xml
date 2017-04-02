@@ -44,6 +44,8 @@
         <activity android:name=".controllers.RegistrationController"/>
         <activity android:name=".controllers.WelcomeCakeController"/>
         <activity android:name=".controllers.EditProfileActivity"/>
+        <activity android:name=".controllers.GraphActivity"/>
+        <activity android:name=".controllers.GraphSettingsActivity"/>
         <activity android:name=".controllers.CreateWaterReportActivity">
         </activity>
         <activity android:name=".controllers.ReportListActivity">

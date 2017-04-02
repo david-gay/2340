@@ -71,8 +71,6 @@ public class CreateWaterReportActivity extends AppCompatActivity {
             Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG).show();
             finish();
         }
-
-
     }
 
     /**
