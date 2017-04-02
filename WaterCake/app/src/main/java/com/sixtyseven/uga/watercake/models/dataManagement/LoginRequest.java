@@ -1,14 +1,15 @@
 package com.sixtyseven.uga.watercake.models.dataManagement;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 public class LoginRequest extends Request<Integer> {
     /**
@@ -24,12 +25,15 @@ public class LoginRequest extends Request<Integer> {
 
     private final Listener<Integer> mListener;
     private final String mRequestBody;
+    private final List<Integer> mExpectedStatusCodes;
 
-    public LoginRequest(int method, String url, String requestBody, Listener<Integer> listener,
+    public LoginRequest(int method, String url, String requestBody,
+            List<Integer> expectedStatusCodes, Listener<Integer> listener,
             Response.ErrorListener errorListener) {
         super(method, url, errorListener);
         mListener = listener;
         mRequestBody = requestBody;
+        mExpectedStatusCodes = expectedStatusCodes;
     }
 
     @Override
@@ -41,7 +45,7 @@ public class LoginRequest extends Request<Integer> {
     public void deliverError(VolleyError error) {
         if (error.networkResponse != null) {
             Integer statusCode = error.networkResponse.statusCode;
-            if (statusCode == 204 || statusCode == 401 || statusCode == 404) {
+            if (mExpectedStatusCodes.contains(statusCode)) {
                 mListener.onResponse(statusCode);
             } else {
                 super.deliverError(error);
@@ -53,8 +57,8 @@ public class LoginRequest extends Request<Integer> {
 
     @Override
     protected Response<Integer> parseNetworkResponse(NetworkResponse response) {
-        return Response.error(new AuthFailureError(response));
-        //return Response.success(response.statusCode, HttpHeaderParser.parseCacheHeaders(response));
+        //return Response.error(new AuthFailureError(response));
+        return Response.success(response.statusCode, HttpHeaderParser.parseCacheHeaders(response));
     }
 
     @Override

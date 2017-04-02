@@ -9,7 +9,7 @@ import java.util.Map;
  * Core user class for representing any user with privileges determined by UserType
  */
 public class User {
-    private final String name;
+    private final String username;
     private String password;
     //defaults for when the user is created - can be updated through the profile changing option
     private String email = "";
@@ -26,10 +26,10 @@ public class User {
      */
     public static User generateUserFromFieldsMap(Map<UserProfileField, String> fieldsMap) {
         User output = null;
-        if (fieldsMap.containsKey(UserProfileField.USERNAME) && fieldsMap.containsKey
-                (UserProfileField.PASSWORD)) {
-            output = new User(fieldsMap.get(UserProfileField.USERNAME), fieldsMap.get
-                    (UserProfileField.PASSWORD));
+        if (fieldsMap.containsKey(UserProfileField.USERNAME) && fieldsMap.containsKey(
+                UserProfileField.PASSWORD)) {
+            output = new User(fieldsMap.get(UserProfileField.USERNAME),
+                    fieldsMap.get(UserProfileField.PASSWORD));
 
             output.setFieldsFromFieldsMap(fieldsMap);
         }
@@ -65,7 +65,7 @@ public class User {
      */
     public Map<UserProfileField, String> getFieldsMap() {
         Map<UserProfileField, String> fieldsMap = new HashMap<>();
-        fieldsMap.put(UserProfileField.USERNAME, name);
+        fieldsMap.put(UserProfileField.USERNAME, username);
         fieldsMap.put(UserProfileField.PASSWORD, password);
         fieldsMap.put(UserProfileField.EMAIL, email);
         fieldsMap.put(UserProfileField.TITLE, title);
@@ -81,9 +81,9 @@ public class User {
      * @param password the password that the user chooses
      */
     public User(String username, String password) {
-        Log.d("user instance", "Created instance of user " + username + " of type " + getUserType
-                ());
-        this.name = username;
+        Log.d("user instance",
+                "Created instance of user " + username + " of type " + getUserType());
+        this.username = username;
         this.password = password;
     }
 
@@ -93,8 +93,9 @@ public class User {
      * @return whether the password matches the one passed in
      */
     public boolean hasPassword(String password) {
-        Log.d("password", "User entered password " + password + ", which " + (password.equals
-                (this.password) ? "matches" : "does not match") + " the correct password");
+        Log.d("password",
+                "User entered password " + password + ", which " + (password.equals(this.password) ?
+                        "matches" : "does not match") + " the correct password");
         return this.password.equals(password);
     }
 
@@ -111,7 +112,7 @@ public class User {
      * @return the username
      */
     public String getUsername() {
-        return this.name;
+        return this.username;
     }
 
     /**
@@ -127,7 +128,7 @@ public class User {
      * @param email the email city
      */
     public void setEmail(String email) {
-        Log.d("profile change", name + "'s email was changed to " + email);
+        Log.d("profile change", username + "'s email was changed to " + email);
         this.email = email;
     }
 
@@ -144,7 +145,7 @@ public class User {
      * @param city the home city
      */
     public void setCity(String city) {
-        Log.d("profile change", name + "'s city was changed to " + city);
+        Log.d("profile change", username + "'s city was changed to " + city);
         this.city = city;
     }
 
@@ -161,7 +162,7 @@ public class User {
      * @param title the person's title
      */
     public void setTitle(String title) {
-        Log.d("profile change", name + "'s title was changed to " + title);
+        Log.d("profile change", username + "'s title was changed to " + title);
         this.title = title;
     }
 

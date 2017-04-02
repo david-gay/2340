@@ -83,33 +83,62 @@ public class LoginController extends Activity {
                     public void onSuccess() {
                         startActivity(
                                 new Intent(LoginController.this, WelcomeCakeController.class));
+                        // TODO move ALL of these to onPause
+                        beforeStart();
                         usernameEditText.getText().clear();
                         passwordEditText.getText().clear();
-                        loginButton.setText(R.string.login);
-                        loginButton.setEnabled(true);
-                        registerButton.setEnabled(true);
-                        usernameEditText.requestFocus();
+                        usernameEditText.requestFocus(); // TODO move this to onResume
+                        onFinish();
                     }
 
                     @Override
                     public void onWrongPassword() {
+                        beforeStart();
                         passwordInput.setError(LoginResult.WRONG_PASSWORD.getMessage());
                         passwordEditText.requestFocus();
                         passwordInput.getEditText().setText("");
+                        onFinish();
                     }
 
                     @Override
                     public void onUserNotFound() {
+                        beforeStart();
                         usernameInput.setError(LoginResult.USER_DOES_NOT_EXIST.getMessage());
                         usernameEditText.requestFocus();
+                        onFinish();
                     }
 
                     @Override
                     public void onError(String errorMessage) {
+                        // beforeStart();
                         Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT)
                                 .show();
+                        // onFinish();
+                    }
+
+                    private void beforeStart() {
+                        usernameInput.setErrorEnabled(false);
+                        passwordInput.setErrorEnabled(false);
+                    }
+
+                    private void onFinish() {
+                        loginButton.setText(R.string.login);
+                        loginButton.setEnabled(true);
+                        registerButton.setEnabled(true);
                     }
                 });
+    }
+
+    @Override
+    protected void onResume() {
+        // moved code goes here
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        // moved code goes here
+        super.onPause();
     }
 
     public void goToRegistration(View view) {

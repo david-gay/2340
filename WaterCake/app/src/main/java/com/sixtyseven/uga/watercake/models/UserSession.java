@@ -129,6 +129,8 @@ public class UserSession {
 
         String username = fieldMap.get(UserProfileField.USERNAME);
 
+        RestManager.getInstance(context).registerUser(User.generateUserFromFieldsMap(fieldMap));
+
         if (results.isEmpty()) { // if we had no problems, then go ahead and register
             users.put(username.toLowerCase(), User.generateUserFromFieldsMap(fieldMap));
         }
@@ -205,5 +207,9 @@ public class UserSession {
         void onUserNotFound();
 
         void onError(String errorMessage);
+    }
+
+    public interface RegisterCallback {
+
     }
 }

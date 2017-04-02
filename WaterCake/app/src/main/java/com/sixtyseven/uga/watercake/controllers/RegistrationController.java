@@ -36,13 +36,13 @@ public class RegistrationController extends FragmentActivity {
 
         setContentView(R.layout.register);
 
-        properties = (UserPropertiesFragment) getSupportFragmentManager().findFragmentById(R.id
-                .details_fragment);
+        properties = (UserPropertiesFragment) getSupportFragmentManager().findFragmentById(
+                R.id.details_fragment);
         usernameTextLayout = (TextInputLayout) findViewById(R.id.registrationUsernameInputLayout);
         userTypeSpinner = (Spinner) findViewById(R.id.userTypeSpinner);
 
-        ArrayAdapter<UserType> adapter = new ArrayAdapter<>(this, android.R.layout
-                .simple_spinner_item, UserType.values());
+        ArrayAdapter<UserType> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, UserType.values());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         userTypeSpinner.setAdapter(adapter);
 
@@ -52,19 +52,19 @@ public class RegistrationController extends FragmentActivity {
         if (textInputLayout != null && textInputLayout.getEditText() != null) {
             textInputLayout.getEditText().setImeOptions(EditorInfo.IME_ACTION_DONE);
 
-            textInputLayout.getEditText().setOnEditorActionListener(new TextView
-                    .OnEditorActionListener() {
+            textInputLayout.getEditText().setOnEditorActionListener(
+                    new TextView.OnEditorActionListener() {
 
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    boolean handled = false;
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        attemptRegistration(null);
-                        handled = true;
-                    }
-                    return handled;
-                }
-            });
+                        @Override
+                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                            boolean handled = false;
+                            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                                attemptRegistration(null);
+                                handled = true;
+                            }
+                            return handled;
+                        }
+                    });
         }
 
         Log.d("registration controller", "registration controller created");
@@ -77,16 +77,14 @@ public class RegistrationController extends FragmentActivity {
      * @param view the button that initiated this event
      */
     public void attemptRegistration(View view) {
-
         Log.d("registration controller", "attemptRegistration");
-
 
         Map<UserProfileField, String> fieldMap = properties.getFieldMap();
 
-        fieldMap.put(UserProfileField.USERNAME, usernameTextLayout.getEditText().getText()
-                .toString());
-        fieldMap.put(UserProfileField.USER_TYPE, ((UserType) userTypeSpinner.getSelectedItem())
-                .name());
+        fieldMap.put(UserProfileField.USERNAME,
+                usernameTextLayout.getEditText().getText().toString());
+        fieldMap.put(UserProfileField.USER_TYPE,
+                ((UserType) userTypeSpinner.getSelectedItem()).name());
 
         EnumSet<UserProfileError> errors = UserSession.currentSession(this.getApplicationContext())
                 .registerUser(fieldMap);
@@ -109,7 +107,6 @@ public class RegistrationController extends FragmentActivity {
 
             properties.setErrors(errors, !focusSet);
         }
-
     }
 
     private void setError(TextInputLayout target, UserProfileError error, boolean shouldFocus) {
