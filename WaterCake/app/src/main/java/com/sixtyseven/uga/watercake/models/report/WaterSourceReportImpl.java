@@ -30,7 +30,8 @@ class WaterSourceReportImpl implements WaterSourceReport, WaterPurityReport {
      */
     WaterSourceReportImpl(int reportNumber, String authorUsername, Date dataAndTime,
             double latitude, double longitude, WaterType waterType, WaterCondition condition) {
-        this(reportNumber, authorUsername, dataAndTime,  latitude,  longitude, waterType, condition, null);
+        this(reportNumber, authorUsername, dataAndTime, latitude, longitude, waterType, condition,
+                null);
     }
 
     /**
@@ -150,7 +151,6 @@ class WaterSourceReportImpl implements WaterSourceReport, WaterPurityReport {
         throw new UnsupportedOperationException(
                 "getVirusPpm() is unsupported when " + "isWaterPurityReport() is false.");
     }
-
 
     public void setVirusPpm(float Ppm) {
         if (isWaterPurityReport()) {

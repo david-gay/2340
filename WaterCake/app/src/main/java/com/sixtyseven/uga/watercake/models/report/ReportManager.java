@@ -91,7 +91,7 @@ public class ReportManager {
      */
     public List<WaterSourceReport> getWaterSourceReportList() {
         List<WaterSourceReport> list = new ArrayList<>(waterSourceReports.values());
-        Collections.sort(list,new Comparator<WaterSourceReport>() {
+        Collections.sort(list, new Comparator<WaterSourceReport>() {
             @Override
             public int compare(WaterSourceReport o1, WaterSourceReport o2) {
                 return o1.getReportNumber() - o2.getReportNumber();
@@ -107,7 +107,31 @@ public class ReportManager {
      */
     public List<WaterPurityReport> getWaterPurityReportList() {
         List<WaterPurityReport> list = new ArrayList<>(waterPurityReports.values());
-        Collections.sort(list,new Comparator<WaterPurityReport>() {
+        Collections.sort(list, new Comparator<WaterPurityReport>() {
+            @Override
+            public int compare(WaterPurityReport o1, WaterPurityReport o2) {
+                return o1.getReportNumber() - o2.getReportNumber();
+            }
+        });
+
+        return list;
+    }
+
+    /**
+     * Returns a list of the PurityReports that are in the passed in year and near the position
+     * @return a list of all PurityReports
+     */
+    public List<WaterPurityReport> filterWaterPurityReportList(int year, double latitude,
+            double longitude) {
+        List<WaterPurityReport> list = new ArrayList<>(waterPurityReports.size());
+        for (WaterPurityReport wpr : waterPurityReports.values()) {
+            if (wpr.getDataAndTime().getYear() + 1900 == year && Math.abs(
+                    wpr.getLatitude() - latitude) + Math.abs(wpr.getLongitude() - longitude)
+                    < 0.0001) {
+                list.add(wpr);
+            }
+        }
+        Collections.sort(list, new Comparator<WaterPurityReport>() {
             @Override
             public int compare(WaterPurityReport o1, WaterPurityReport o2) {
                 return o1.getReportNumber() - o2.getReportNumber();

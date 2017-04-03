@@ -75,8 +75,6 @@ public class CreateWaterReportActivity extends AppCompatActivity {
         } catch(NumberFormatException e) {
             Toast.makeText(getBaseContext(), "Invalid field input!", Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     /**

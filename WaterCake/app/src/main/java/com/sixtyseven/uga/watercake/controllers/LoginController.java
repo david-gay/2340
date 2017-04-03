@@ -96,12 +96,15 @@ public class LoginController extends Activity {
                 usernameEditText.getText().toString(), passwordEditText.getText().toString());
 
         if (response.equals(LoginResult.SUCCESS)) {
+            usernameInput.setError(null);
+            passwordInput.setError(null);
             startActivity(new Intent(LoginController.this, WelcomeCakeController.class));
         } else {
             if (response == LoginResult.USER_DOES_NOT_EXIST) {
                 usernameInput.setError(response.getMessage());
                 usernameEditText.requestFocus();
             } else if (response == LoginResult.WRONG_PASSWORD) {
+                usernameInput.setError(null);
                 passwordInput.setError(response.getMessage());
                 passwordEditText.requestFocus();
                 passwordInput.getEditText().setText("");

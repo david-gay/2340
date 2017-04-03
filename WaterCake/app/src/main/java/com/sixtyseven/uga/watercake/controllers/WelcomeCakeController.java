@@ -24,11 +24,11 @@ public class WelcomeCakeController extends Activity {
         ImageView mImageView;
         mImageView = (ImageView) findViewById(R.id.imageView);
         mImageView.setImageResource(R.mipmap.water_cat_cake);
-        ((TextView) findViewById(R.id.welcomeText)).setText("Welcome, "
-                + UserSession.currentSession().getCurrentUser().getUsername() + "!");
+        ((TextView) findViewById(R.id.welcomeText)).setText(
+                "Welcome, " + UserSession.currentSession().getCurrentUser().getUsername() + "!");
 
         // Hide Purity Create Report Buttons unless Worker+
-        Button createPurityReportButton = (Button)findViewById(R.id.createPurityReportButton);
+        Button createPurityReportButton = (Button) findViewById(R.id.createPurityReportButton);
         UserType userType = UserSession.currentSession().getCurrentUser().getUserType();
         // Only show the button if above a Contributor
         if (userType != UserType.CONTRIBUTOR) {
@@ -36,15 +36,21 @@ public class WelcomeCakeController extends Activity {
         }
 
         // Hide Purity View Report Buttons unless Manager+
-        Button viewPurityReportButton = (Button)findViewById(R.id.ViewPurityReportButton);
+        Button viewPurityReportButton = (Button) findViewById(R.id.ViewPurityReportButton);
         UserType userType2 = UserSession.currentSession().getCurrentUser().getUserType();
         // Only show the button if above a Worker
         if ((userType2 != UserType.CONTRIBUTOR) && (userType2 != UserType.WORKER)) {
             viewPurityReportButton.setVisibility(View.VISIBLE); //SHOW the button
         }
 
-        Log.d("welcomecake controller", "welcomecake controller created");
+        // Hide Historical Report Button unless Manager+
+        Button viewHistoricalReportButton = (Button) findViewById(R.id.viewHistoricalReportButton);
+        // Only show the button if above a Worker
+        if ((userType != UserType.CONTRIBUTOR) && (userType != UserType.WORKER)) {
+            viewHistoricalReportButton.setVisibility(View.VISIBLE); //SHOW the button
+        }
 
+        Log.d("welcomecake controller", "welcomecake controller created");
     }
 
     /**
@@ -60,7 +66,6 @@ public class WelcomeCakeController extends Activity {
     public void editProfile(View view) {
         Log.d("WelcomeCakeController", "Clicked Edit Profile.");
         startActivity(new Intent(WelcomeCakeController.this, EditProfileActivity.class));
-
     }
 
     public void createWaterReport(View view) {
@@ -88,4 +93,8 @@ public class WelcomeCakeController extends Activity {
         startActivity(new Intent(WelcomeCakeController.this, PurityReportListActivity.class));
     }
 
+    public void createHistoricalReport(View view) {
+        Log.d("historical report", "go to Create Historical Report");
+        startActivity(new Intent(WelcomeCakeController.this, GraphSettingsActivity.class));
+    }
 }

@@ -31,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/welcome"/>
+
         <fragment
             android:id="@+id/details_fragment"
             class="com.sixtyseven.uga.watercake.controllers.UserPropertiesFragment"
