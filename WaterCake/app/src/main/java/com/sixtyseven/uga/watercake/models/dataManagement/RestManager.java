@@ -5,6 +5,7 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.sixtyseven.uga.watercake.models.UserSession;
 import com.sixtyseven.uga.watercake.models.user.User;
 
 import java.lang.reflect.Type;
@@ -98,41 +99,27 @@ public class RestManager implements IDataManager {
                                     }
                                 })
                         .build());
-
-        //        String requestBody = new Gson().toJson(new Credentials(username, password));
-        //        LoginRequest req = new LoginRequest(Request.Method.POST, url, requestBody,
-        //                Arrays.asList(204, 401, 404), new Response.Listener<Integer>() {
-        //            @Override
-        //            public void onExpectedStatusCode(Integer response) {
-        //                Log.d("validateUser", "Response: " + response);
-        //                callback.onSuccess(response);
-        //            }
-        //        }, new Response.ErrorListener() {
-        //            @Override
-        //            public void onErrorResponse(VolleyError error) {
-        //                String message = null;
-        //                if (error instanceof NetworkError) {
-        //                    message = "Cannot connect to Internet...Please check your connection!";
-        //                } else if (error instanceof ServerError) {
-        //                    message = "The server could not be found. Please try again after some time!!";
-        //                } else if (error instanceof AuthFailureError) {
-        //                    message = "Cannot connect to Internet...Please check your connection!";
-        //                } else if (error instanceof ParseError) {
-        //                    message = "Parsing error! Please try again after some time!!";
-        //                } else if (error instanceof NoConnectionError) {
-        //                    message = "Cannot connect to Internet...Please check your connection!";
-        //                } else if (error instanceof TimeoutError) {
-        //                    message = "Connection TimeOut! Please check your internet connection.";
-        //                }
-        //                Log.d("validateUser", "error: " + message);
-        //                callback.onFailure(message);
-        //            }
-        //        });
-        //        getRequestQueue().add(req);
     }
 
-    public void registerUser(User user) {
+    public void registerUser(User user, final UserSession.RegisterCallback registerCallback) {
+        new VolleyRequestBuilder()
+                .withUrl("http://10.0.2.2:8080/accounts/")
+                .withHttpMethod(VolleyRequestBuilder.HTTPMethod.POST)
+                .withObjectBody(user)
+                .withStatusCodeCallback(Arrays.asList(201),
+                        new VolleyRequestBuilder.VolleyResponseStatusCodeCallback() {
+                            @Override
+                            public void onExpectedStatusCode(Integer expectedStatusCode) {
+                                registerCallback.onSuccess();
+                            }
 
+                            @Override
+                            public void onUnexpectedStatusCode(Integer unexpectedStatusCode,
+                                    String errorMessage) {
+                                registerCallback.onFailure(errorMessage);
+                            }
+                        })
+                .addToQueue(getRequestQueue());
     }
 
     public interface Callback<T> {

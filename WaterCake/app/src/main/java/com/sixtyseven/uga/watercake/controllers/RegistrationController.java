@@ -14,9 +14,9 @@ import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
-import com.sixtyseven.uga.watercake.models.user.UserType;
 import com.sixtyseven.uga.watercake.models.user.UserProfileError;
 import com.sixtyseven.uga.watercake.models.user.UserProfileField;
+import com.sixtyseven.uga.watercake.models.user.UserType;
 
 import java.util.EnumSet;
 import java.util.Map;
@@ -87,26 +87,54 @@ public class RegistrationController extends FragmentActivity {
                 ((UserType) userTypeSpinner.getSelectedItem()).name());
 
         EnumSet<UserProfileError> errors = UserSession.currentSession(this.getApplicationContext())
-                .registerUser(fieldMap);
+                .validateUserFields(fieldMap);
 
-        if (errors.isEmpty()) { //No errors = success
-            Toast.makeText(getBaseContext(), "Registration successful!", Toast.LENGTH_LONG).show();
-            finish();
-        } else {
+        if (errors.size() != 0) {
             Toast.makeText(getBaseContext(), "Registration failed!", Toast.LENGTH_SHORT).show();
-
             boolean focusSet = false;
-
-            // Handle username errors first, so that it takes focus
             for (UserProfileError error : errors) {
                 if (error.getField() == UserProfileField.USERNAME) {
                     setError(usernameTextLayout, error, !focusSet);
                     focusSet = true;
                 }
             }
-
             properties.setErrors(errors, !focusSet);
+        } else {
+            UserSession.currentSession(this.getApplicationContext()).registerUser(fieldMap,
+                    new UserSession.RegisterCallback() {
+                        @Override
+                        public void onSuccess() {
+                            // TODO explain to Dimitar what's the diff between baseContext and applicationContext
+                            Toast.makeText(getBaseContext(), "Registration successful!",
+                                    Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+
+                        @Override
+                        public void onFailure(String errorMessage) {
+                            Toast.makeText(getBaseContext(), "Registration failed: " + errorMessage,
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
         }
+        //        if (errors.isEmpty()) { //No errors = success
+        //            Toast.makeText(getBaseContext(), "Registration successful!", Toast.LENGTH_LONG).show();
+        //            finish();
+        //        } else {
+        //            Toast.makeText(getBaseContext(), "Registration failed!", Toast.LENGTH_SHORT).show();
+        //
+        //            boolean focusSet = false;
+        //
+        //            // Handle username errors first, so that it takes focus
+        //            for (UserProfileError error : errors) {
+        //                if (error.getField() == UserProfileField.USERNAME) {
+        //                    setError(usernameTextLayout, error, !focusSet);
+        //                    focusSet = true;
+        //                }
+        //            }
+        //
+        //            properties.setErrors(errors, !focusSet);
+        //        }
     }
 
     private void setError(TextInputLayout target, UserProfileError error, boolean shouldFocus) {

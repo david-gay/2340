@@ -124,30 +124,32 @@ public class UserSession {
      * @return an EnumSet of every error encountered in registration. Empty if registration was
      * successful.
      */
-    public EnumSet<UserProfileError> registerUser(Map<UserProfileField, String> fieldMap) {
-        EnumSet<UserProfileError> results = validateUserFields(fieldMap);
+    public void registerUser(Map<UserProfileField, String> fieldMap,
+            final RegisterCallback registerCallback) {
+        //EnumSet<UserProfileError> results = validateUserFields(fieldMap);
 
-        String username = fieldMap.get(UserProfileField.USERNAME);
+        //String username = fieldMap.get(UserProfileField.USERNAME);
 
-        RestManager.getInstance(context).registerUser(User.generateUserFromFieldsMap(fieldMap));
+        RestManager.getInstance(context).registerUser(User.generateUserFromFieldsMap(fieldMap),
+                registerCallback);
 
-        if (results.isEmpty()) { // if we had no problems, then go ahead and register
-            users.put(username.toLowerCase(), User.generateUserFromFieldsMap(fieldMap));
-        }
-
-        StringBuilder logOutput = new StringBuilder();
-        boolean first = true;
-        for (UserProfileError result : results) {
-            if (!first) {
-                logOutput.append(", ");
-            } else {
-                first = false;
-            }
-            logOutput.append(result.getMessage());
-        }
-
-        Log.d("register", logOutput.toString());
-        return results;
+        //        if (results.isEmpty()) { // if we had no problems, then go ahead and register
+        //            users.put(username.toLowerCase(), User.generateUserFromFieldsMap(fieldMap));
+        //        }
+        //
+        //        StringBuilder logOutput = new StringBuilder();
+        //        boolean first = true;
+        //        for (UserProfileError result : results) {
+        //            if (!first) {
+        //                logOutput.append(", ");
+        //            } else {
+        //                first = false;
+        //            }
+        //            logOutput.append(result.getMessage());
+        //        }
+        //
+        //        Log.d("register", logOutput.toString());
+        //        return results;
     }
 
     /**
@@ -210,6 +212,8 @@ public class UserSession {
     }
 
     public interface RegisterCallback {
+        void onSuccess();
 
+        void onFailure(String errorMessage);
     }
 }
