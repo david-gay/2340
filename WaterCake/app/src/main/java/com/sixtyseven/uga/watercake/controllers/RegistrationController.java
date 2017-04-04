@@ -112,6 +112,7 @@ public class RegistrationController extends FragmentActivity {
 
                         @Override
                         public void onFailure(String errorMessage) {
+                            setError(usernameTextLayout, UserProfileError.USERNAME_TAKEN, true);
                             Toast.makeText(getBaseContext(), "Registration failed: " + errorMessage,
                                     Toast.LENGTH_LONG).show();
                         }

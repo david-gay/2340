@@ -18,7 +18,6 @@ import java.util.Map;
 public class UserSession {
     private static UserSession ourInstance;
     private static Context context;
-    //private Map<String, User> users;
     private User currentUser;
 
     /**
@@ -37,18 +36,6 @@ public class UserSession {
      */
     private UserSession(Context context) {
         this.context = context;
-
-        //        users = new HashMap<>();
-        //        users.put("user", new User("user", "pass"));
-        //
-        //        User manager = new User("manager", "manager");
-        //        manager.setUserType(UserType.MANAGER);
-        //        users.put(manager.getUsername(), manager);
-        //
-        //        User dimitar = new User("dimitar", "pass");
-        //        dimitar.setUserType(UserType.ADMINISTRATOR);
-        //        users.put(dimitar.getUsername(), dimitar);
-
         currentUser = null;
     }
 
@@ -68,17 +55,7 @@ public class UserSession {
      * otherwise.
      */
     public void tryLogin(String username, String password, final LoginCallback loginCallback) {
-        //LoginResult result;
         username = username.toLowerCase();
-        //        if (!users.containsKey(username)) {
-        //            result = LoginResult.USER_DOES_NOT_EXIST;
-        //        } else if (!users.get(username).hasPassword(password)) {
-        //            result = LoginResult.WRONG_PASSWORD;
-        //        } else {
-        //            currentUser = users.get(username);
-        //            result = LoginResult.SUCCESS;
-        //        }
-
         final String finalUsername = username;
         RestManager.getInstance(context).validateUser(username, password,
                 new RestManager.Callback<Integer>() {
@@ -118,8 +95,6 @@ public class UserSession {
                         loginCallback.onError(errorMessage);
                     }
                 });
-
-        // return result;
     }
 
     /**
@@ -156,9 +131,6 @@ public class UserSession {
             if (username.equals("")) {
                 results.add(UserProfileError.INVALID_USERNAME);
             }
-            //            if (users.containsKey(username.toLowerCase())) {
-            //                results.add(UserProfileError.USERNAME_TAKEN);
-            //            }
         }
 
         if (fieldMap.containsKey(UserProfileField.PASSWORD)) {

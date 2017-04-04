@@ -131,13 +131,13 @@ public class LoginController extends Activity {
 
     @Override
     protected void onResume() {
-        // moved code goes here
+        // TODO moved code goes here
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        // moved code goes here
+        // TODO moved code goes here
         super.onPause();
     }
 
