@@ -118,6 +118,26 @@ public class RestManager implements IDataManager {
                 .addToQueue(getRequestQueue());
     }
 
+    public void getUser(final String username, final UserSession.UserCallback userCallback) {
+        getRequestQueue().add(
+                new VolleyRequestBuilder<User>()
+                        .withUrl("http://10.0.2.2:8080/accounts/" + username)
+                        .withHttpMethod(VolleyRequestBuilder.HTTPMethod.GET)
+                        .withResponseType(User.class)
+                        .withCallback(new VolleyRequestBuilder.VolleyRequestCallback<User>() {
+                            @Override
+                            public void onSuccess(User response) {
+                                userCallback.onSuccess(response);
+                            }
+
+                            @Override
+                            public void onFailure(Integer httpStatusCode, String errorMessage) {
+                                userCallback.onFailure(errorMessage);
+                            }
+                        })
+                        .build());
+    }
+
     public interface Callback<T> {
         void onSuccess(T response);
 

@@ -4,14 +4,11 @@ import android.content.Context;
 import android.util.Log;
 
 import com.sixtyseven.uga.watercake.models.dataManagement.RestManager;
-import com.sixtyseven.uga.watercake.models.response.LoginResult;
 import com.sixtyseven.uga.watercake.models.user.User;
 import com.sixtyseven.uga.watercake.models.user.UserProfileError;
 import com.sixtyseven.uga.watercake.models.user.UserProfileField;
-import com.sixtyseven.uga.watercake.models.user.UserType;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -21,7 +18,7 @@ import java.util.Map;
 public class UserSession {
     private static UserSession ourInstance;
     private static Context context;
-    private Map<String, User> users;
+    //private Map<String, User> users;
     private User currentUser;
 
     /**
@@ -41,16 +38,16 @@ public class UserSession {
     private UserSession(Context context) {
         this.context = context;
 
-        users = new HashMap<>();
-        users.put("user", new User("user", "pass"));
-
-        User manager = new User("manager", "manager");
-        manager.setUserType(UserType.MANAGER);
-        users.put(manager.getUsername(), manager);
-
-        User dimitar = new User("dimitar", "pass");
-        dimitar.setUserType(UserType.ADMINISTRATOR);
-        users.put(dimitar.getUsername(), dimitar);
+        //        users = new HashMap<>();
+        //        users.put("user", new User("user", "pass"));
+        //
+        //        User manager = new User("manager", "manager");
+        //        manager.setUserType(UserType.MANAGER);
+        //        users.put(manager.getUsername(), manager);
+        //
+        //        User dimitar = new User("dimitar", "pass");
+        //        dimitar.setUserType(UserType.ADMINISTRATOR);
+        //        users.put(dimitar.getUsername(), dimitar);
 
         currentUser = null;
     }
@@ -70,26 +67,41 @@ public class UserSession {
      * @return LoginResult.SUCCESS if successful; LoginResult corresponding with the problem
      * otherwise.
      */
-    public LoginResult tryLogin(String username, String password,
-            final LoginCallback loginCallback) {
-        LoginResult result;
+    public void tryLogin(String username, String password, final LoginCallback loginCallback) {
+        //LoginResult result;
         username = username.toLowerCase();
-        if (!users.containsKey(username)) {
-            result = LoginResult.USER_DOES_NOT_EXIST;
-        } else if (!users.get(username).hasPassword(password)) {
-            result = LoginResult.WRONG_PASSWORD;
-        } else {
-            currentUser = users.get(username);
-            result = LoginResult.SUCCESS;
-        }
+        //        if (!users.containsKey(username)) {
+        //            result = LoginResult.USER_DOES_NOT_EXIST;
+        //        } else if (!users.get(username).hasPassword(password)) {
+        //            result = LoginResult.WRONG_PASSWORD;
+        //        } else {
+        //            currentUser = users.get(username);
+        //            result = LoginResult.SUCCESS;
+        //        }
 
+        final String finalUsername = username;
         RestManager.getInstance(context).validateUser(username, password,
                 new RestManager.Callback<Integer>() {
                     @Override
                     public void onSuccess(Integer response) {
+                        Log.d("UserSession", "response code: " + response);
                         switch (response) {
                             case 204:
-                                loginCallback.onSuccess();
+                                RestManager.getInstance(context).getUser(finalUsername,
+                                        new UserCallback() {
+                                            @Override
+                                            public void onSuccess(User user) {
+                                                currentUser = user;
+                                                loginCallback.onSuccess();
+                                            }
+
+                                            @Override
+                                            public void onFailure(String errorMessage) {
+                                                Log.d("UserSession",
+                                                        "get user error: " + errorMessage);
+                                                loginCallback.onError(errorMessage);
+                                            }
+                                        });
                                 break;
                             case 401:
                                 loginCallback.onWrongPassword();
@@ -102,12 +114,12 @@ public class UserSession {
 
                     @Override
                     public void onFailure(String errorMessage) {
+                        Log.d("UserSession", "login error: " + errorMessage);
                         loginCallback.onError(errorMessage);
                     }
                 });
 
-        Log.d("login", result.getMessage());
-        return result;
+        // return result;
     }
 
     /**
@@ -144,9 +156,9 @@ public class UserSession {
             if (username.equals("")) {
                 results.add(UserProfileError.INVALID_USERNAME);
             }
-            if (users.containsKey(username.toLowerCase())) {
-                results.add(UserProfileError.USERNAME_TAKEN);
-            }
+            //            if (users.containsKey(username.toLowerCase())) {
+            //                results.add(UserProfileError.USERNAME_TAKEN);
+            //            }
         }
 
         if (fieldMap.containsKey(UserProfileField.PASSWORD)) {
@@ -177,6 +189,12 @@ public class UserSession {
             currentUser.setFieldsFromFieldsMap(fieldMap);
         }
         return results;
+    }
+
+    public interface UserCallback {
+        void onSuccess(User user);
+
+        void onFailure(String errorMessage);
     }
 
     /**
