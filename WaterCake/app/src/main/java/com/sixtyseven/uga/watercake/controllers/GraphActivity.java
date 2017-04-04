@@ -1,13 +1,11 @@
 package com.sixtyseven.uga.watercake.controllers;
 
-import java.util.ArrayList;
-
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -15,6 +13,7 @@ import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.report.ReportManager;
 import com.sixtyseven.uga.watercake.models.report.WaterPurityReport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GraphActivity extends FragmentActivity {
@@ -24,9 +23,9 @@ public class GraphActivity extends FragmentActivity {
         setContentView(R.layout.activity_graph);
         savedInstanceState = getIntent().getExtras();
         Log.d("GraphActivity", "Getting values to graph");
-        List<WaterPurityReport> reports = ReportManager.getInstance().filterWaterPurityReportList(
-                savedInstanceState.getInt("year"), savedInstanceState.getDouble("lat"),
-                savedInstanceState.getDouble("long"));
+        List<WaterPurityReport> reports = ReportManager.getInstance(this.getApplicationContext())
+                .filterWaterPurityReportList(savedInstanceState.getInt("year"),
+                        savedInstanceState.getDouble("lat"), savedInstanceState.getDouble("long"));
         LineChart lineChart = (LineChart) findViewById(R.id.chart);
 
         Log.d("GraphActivity", "Graphing values");
@@ -54,8 +53,8 @@ public class GraphActivity extends FragmentActivity {
         int[] count = new int[12];
         float[] total = new float[12];
         for (WaterPurityReport d : data) {
-            count[d.getDataAndTime().getMonth()]++;
-            total[d.getDataAndTime().getMonth()] += d.getVirusPpm();
+            count[d.getPostDate().getMonth()]++;
+            total[d.getPostDate().getMonth()] += d.getVirusPpm();
         }
         for (int i = 0; i < count.length; i++) {
             if (count[i] > 0) {
@@ -70,8 +69,8 @@ public class GraphActivity extends FragmentActivity {
         int[] count = new int[12];
         float[] total = new float[12];
         for (WaterPurityReport d : data) {
-            count[d.getDataAndTime().getMonth()]++;
-            total[d.getDataAndTime().getMonth()] += d.getContaminantPpm();
+            count[d.getPostDate().getMonth()]++;
+            total[d.getPostDate().getMonth()] += d.getContaminantPpm();
         }
         for (int i = 0; i < count.length; i++) {
             if (count[i] > 0) {

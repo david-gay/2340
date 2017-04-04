@@ -33,8 +33,8 @@ public class GraphSettingsActivity extends Activity {
      */
     public void attemptGenerateGraph(View view) {
         //checks if anything is formatted badly, just in case
-        if (!longitudeInput.getEditText().getText().toString().matches("\\d+\\.?\\d*")
-                || !latitudeInput.getEditText().getText().toString().matches("\\d+\\.?\\d*")
+        if (!longitudeInput.getEditText().getText().toString().matches("-?\\d+\\.?\\d*")
+                || !latitudeInput.getEditText().getText().toString().matches("-?\\d+\\.?\\d*")
                 || !yearInput.getEditText().getText().toString().matches("\\d+")) {
             Toast.makeText(getBaseContext(), "Invalid number format!", Toast.LENGTH_SHORT).show();
             Log.d("generateGraphFailure", "incorrect formatting of numbers");

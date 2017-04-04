@@ -19,9 +19,11 @@ import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Manager singleton for all WaterSourceReports.
@@ -114,7 +116,6 @@ public class ReportManager {
 
     /**
      * Generates a Water Source Report and stores it
-     * @param authorUsername the username of the report author
      * @param latitude the latitude for the report
      * @param longitude the longitude for the report
      * @param waterType the type of water reported
@@ -211,15 +212,8 @@ public class ReportManager {
      * @return a list of all PurityReports
      */
     public List<WaterPurityReport> getWaterPurityReportList() {
-        List<WaterPurityReport> list = new ArrayList<>(waterPurityReports.values());
-        Collections.sort(list, new Comparator<WaterPurityReport>() {
-            @Override
-            public int compare(WaterPurityReport o1, WaterPurityReport o2) {
-                return o1.getReportNumber() - o2.getReportNumber();
-            }
-        });
 
-        return list;
+        return waterPurityReports;
     }
 
     /**
@@ -228,22 +222,22 @@ public class ReportManager {
      */
     public List<WaterPurityReport> filterWaterPurityReportList(int year, double latitude,
             double longitude) {
-        List<WaterPurityReport> list = new ArrayList<>(waterPurityReports.size());
-        for (WaterPurityReport wpr : waterPurityReports.values()) {
-            if (wpr.getDataAndTime().getYear() + 1900 == year && Math.abs(
+        List<WaterPurityReport> filteredWaterPurityReports = new ArrayList<>(waterPurityReports.size());
+        for (WaterPurityReport wpr : waterPurityReports) {
+            if (wpr.getPostDate().getYear() + 1900 == year && Math.abs(
                     wpr.getLatitude() - latitude) + Math.abs(wpr.getLongitude() - longitude)
                     < 0.0001) {
-                list.add(wpr);
+                filteredWaterPurityReports.add(wpr);
             }
         }
-        Collections.sort(list, new Comparator<WaterPurityReport>() {
+        Collections.sort(filteredWaterPurityReports, new Comparator<WaterPurityReport>() {
             @Override
             public int compare(WaterPurityReport o1, WaterPurityReport o2) {
                 return o1.getReportNumber() - o2.getReportNumber();
             }
         });
 
-        return list;
+        return filteredWaterPurityReports;
     }
 
     /**
