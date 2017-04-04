@@ -63,6 +63,12 @@ public class WelcomeCakeController extends Activity {
                                 Toast.LENGTH_SHORT).show();
                     }
                 });
+        // Hide Historical Report Button unless Manager+
+        Button viewHistoricalReportButton = (Button) findViewById(R.id.viewHistoricalReportButton);
+        // Only show the button if above a Worker
+        if ((userType != UserType.CONTRIBUTOR) && (userType != UserType.WORKER)) {
+            viewHistoricalReportButton.setVisibility(View.VISIBLE); //SHOW the button
+        }
     }
 
     /**
@@ -105,9 +111,15 @@ public class WelcomeCakeController extends Activity {
         startActivity(new Intent(WelcomeCakeController.this, PurityReportListActivity.class));
     }
 
+    public void createHistoricalReport(View view) {
+        Log.d("historical report", "go to Create Historical Report");
+        startActivity(new Intent(WelcomeCakeController.this, GraphSettingsActivity.class));
+    }
+
     public interface FetchReportsCallback {
         void onSuccess();
 
         void onFailure(String errorMessage);
     }
+
 }
