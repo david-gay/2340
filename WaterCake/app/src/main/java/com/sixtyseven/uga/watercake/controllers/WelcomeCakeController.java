@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
@@ -47,8 +48,21 @@ public class WelcomeCakeController extends Activity {
             viewPurityReportButton.setVisibility(View.VISIBLE); //SHOW the button
         }
 
-        Log.d("welcomecake controller", "welcomecake controller created");
-        ReportManager.getInstance(this.getApplicationContext()).fetchAllReports();
+        Log.d("WelcomecakeController", "welcomecake controller created");
+        ReportManager.getInstance(this.getApplicationContext()).fetchAllReports(
+                new FetchReportsCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d("WelcomecakeController", "reports fetched successfully");
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        Log.d("WelcomecakeController", "failed to fetch reports: " + errorMessage);
+                        Toast.makeText(WelcomeCakeController.this, "Failed to fetch reports!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     /**
@@ -89,5 +103,11 @@ public class WelcomeCakeController extends Activity {
     public void viewPurityReports(View view) {
         Log.d("purity report", "go to View Purity Report");
         startActivity(new Intent(WelcomeCakeController.this, PurityReportListActivity.class));
+    }
+
+    public interface FetchReportsCallback {
+        void onSuccess();
+
+        void onFailure(String errorMessage);
     }
 }

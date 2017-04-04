@@ -9,6 +9,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sixtyseven.uga.watercake.controllers.WelcomeCakeController;
 import com.sixtyseven.uga.watercake.models.UserSession;
 import com.sixtyseven.uga.watercake.models.dataManagement.RestManager;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
@@ -53,29 +54,33 @@ public class ReportManager {
 
     /**
      * Fetches all Water Source Reports and Water Purity Reports from the server.
+     * @param fetchReportsCallback
      */
-    public void fetchAllReports() {
-        getWaterSourceReportsFromServer();
-        getWaterPurityReportsFromServer();
+    public void fetchAllReports(
+            final WelcomeCakeController.FetchReportsCallback fetchReportsCallback) {
+        getWaterSourceReportsFromServer(fetchReportsCallback);
+        getWaterPurityReportsFromServer(fetchReportsCallback);
     }
 
     /**
      * Fetches all Water Source Reports from the server.
+     * @param fetchReportsCallback
      */
-    public void getWaterSourceReportsFromServer() {
+    public void getWaterSourceReportsFromServer(
+            final WelcomeCakeController.FetchReportsCallback fetchReportsCallback) {
         RestManager.getInstance(context).getAllWaterSourceReports(
                 new RestManager.Callback<List<WaterSourceReport>>() {
                     @Override
                     public void onSuccess(List<WaterSourceReport> response) {
-
-                        //                        Toast.makeText(context,
-                        //                                "wsr size:" + response.size() + response.get(0).getAuthorUsername(),
-                        //                                Toast.LENGTH_SHORT).show();
+                        Log.d("ReportManager",
+                                "Received " + response.size() + " water source reports");
+                        fetchReportsCallback.onSuccess();
                         waterSourceReports = response;
                     }
 
                     @Override
                     public void onFailure(String errorMessage) {
+                        fetchReportsCallback.onFailure(errorMessage);
                         Log.d("ReportManagerError", errorMessage);
                     }
                 }, new TypeToken<LinkedList<WaterSourceReportImpl>>() {
@@ -84,19 +89,23 @@ public class ReportManager {
 
     /**
      * Fetches all Water Purity Reports from the server.
+     * @param fetchReportsCallback
      */
-    public void getWaterPurityReportsFromServer() {
+    public void getWaterPurityReportsFromServer(
+            final WelcomeCakeController.FetchReportsCallback fetchReportsCallback) {
 
         RestManager.getInstance(context).getAllWaterPurityReports(
                 new RestManager.Callback<List<WaterPurityReport>>() {
                     @Override
                     public void onSuccess(List<WaterPurityReport> response) {
+                        fetchReportsCallback.onSuccess();
                         waterPurityReports = response;
                     }
 
                     @Override
                     public void onFailure(String errorMessage) {
-
+                        fetchReportsCallback.onFailure(errorMessage);
+                        Log.d("ReportManagerError", errorMessage);
                     }
                 }, new TypeToken<LinkedList<WaterPurityReportImpl>>() {
                 }.getType());

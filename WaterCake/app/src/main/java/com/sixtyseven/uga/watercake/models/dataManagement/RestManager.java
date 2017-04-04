@@ -46,17 +46,13 @@ public class RestManager implements IDataManager {
     }
 
     public <T> void getAllWaterSourceReports(final Callback<T> callback, Type type) {
-        String url = "http://10.0.2.2:8080/water-reports";
         // TODO add ServerManager that takes care of generating urls for the server requests
-
-        getReportByType(callback, type, url);
+        getReportByType(callback, type, url + "water-reports");
     }
 
     public <T> void getAllWaterPurityReports(final Callback<T> callback, Type type) {
-        String url = "http://10.0.2.2:8080/purity-reports";
         // TODO add ServerManager that takes care of generating urls for the server requests
-
-        getReportByType(callback, type, url);
+        getReportByType(callback, type, url + "purity-reports");
     }
 
     private <T> void getReportByType(final Callback<T> callback, Type type, String url) {

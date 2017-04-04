@@ -117,24 +117,6 @@ public class RegistrationController extends FragmentActivity {
                         }
                     });
         }
-        //        if (errors.isEmpty()) { //No errors = success
-        //            Toast.makeText(getBaseContext(), "Registration successful!", Toast.LENGTH_LONG).show();
-        //            finish();
-        //        } else {
-        //            Toast.makeText(getBaseContext(), "Registration failed!", Toast.LENGTH_SHORT).show();
-        //
-        //            boolean focusSet = false;
-        //
-        //            // Handle username errors first, so that it takes focus
-        //            for (UserProfileError error : errors) {
-        //                if (error.getField() == UserProfileField.USERNAME) {
-        //                    setError(usernameTextLayout, error, !focusSet);
-        //                    focusSet = true;
-        //                }
-        //            }
-        //
-        //            properties.setErrors(errors, !focusSet);
-        //        }
     }
 
     private void setError(TextInputLayout target, UserProfileError error, boolean shouldFocus) {

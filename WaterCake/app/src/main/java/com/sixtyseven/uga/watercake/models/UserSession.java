@@ -126,30 +126,8 @@ public class UserSession {
      */
     public void registerUser(Map<UserProfileField, String> fieldMap,
             final RegisterCallback registerCallback) {
-        //EnumSet<UserProfileError> results = validateUserFields(fieldMap);
-
-        //String username = fieldMap.get(UserProfileField.USERNAME);
-
         RestManager.getInstance(context).registerUser(User.generateUserFromFieldsMap(fieldMap),
                 registerCallback);
-
-        //        if (results.isEmpty()) { // if we had no problems, then go ahead and register
-        //            users.put(username.toLowerCase(), User.generateUserFromFieldsMap(fieldMap));
-        //        }
-        //
-        //        StringBuilder logOutput = new StringBuilder();
-        //        boolean first = true;
-        //        for (UserProfileError result : results) {
-        //            if (!first) {
-        //                logOutput.append(", ");
-        //            } else {
-        //                first = false;
-        //            }
-        //            logOutput.append(result.getMessage());
-        //        }
-        //
-        //        Log.d("register", logOutput.toString());
-        //        return results;
     }
 
     /**
@@ -201,6 +179,9 @@ public class UserSession {
         return results;
     }
 
+    /**
+     * A login callback interface
+     */
     public interface LoginCallback {
         void onSuccess();
 
@@ -211,6 +192,9 @@ public class UserSession {
         void onError(String errorMessage);
     }
 
+    /**
+     * A register callback interface
+     */
     public interface RegisterCallback {
         void onSuccess();
 
