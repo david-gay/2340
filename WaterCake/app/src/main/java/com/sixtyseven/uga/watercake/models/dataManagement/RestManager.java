@@ -138,9 +138,5 @@ public class RestManager implements IDataManager {
                         .build());
     }
 
-    public interface Callback<T> {
-        void onSuccess(T response);
 
-        void onFailure(String errorMessage);
-    }
 }
