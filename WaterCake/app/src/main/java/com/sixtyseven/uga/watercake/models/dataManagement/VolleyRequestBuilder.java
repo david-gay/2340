@@ -1,7 +1,5 @@
 package com.sixtyseven.uga.watercake.models.dataManagement;
 
-import android.util.Log;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
 import com.android.volley.NetworkResponse;
@@ -225,16 +223,16 @@ public class VolleyRequestBuilder<T> {
                 protected Response<T> parseNetworkResponse(NetworkResponse response) {
                     // TODO make it so that you can have both types of callbacks
                     if (statusCodeCallback != null) { // response is just a HTTP Status Code
-                        Log.d("VolleyRequestBuilder",
-                                "parseNetworkResponse: statusCode=" + response.statusCode);
+                        //                        Log.d("VolleyRequestBuilder",
+                        //                                "parseNetworkResponse: statusCode=" + response.statusCode);
                         return Response.error(new VolleyError(response));
                     } else { // response is JSON => parse it
                         try {
                             //gets the JSON string from the network response
                             String jsonString = new String(response.data,
                                     HttpHeaderParser.parseCharset(response.headers));
-                            Log.d("VolleyRequestBuilder",
-                                    "parseNetworkResponse: JSON response string=" + jsonString);
+                            //                            Log.d("VolleyRequestBuilder",
+                            //                                    "parseNetworkResponse: JSON response string=" + jsonString);
                             return (Response<T>) Response.success(
                                     new Gson().fromJson(jsonString, responseType),
                                     HttpHeaderParser.parseCacheHeaders(response));
@@ -254,7 +252,7 @@ public class VolleyRequestBuilder<T> {
 
                 @Override
                 public void deliverError(VolleyError error) {
-                    Log.d("VolleyRequestBuilder", "deliverError: " + error.getMessage());
+                    //Log.d("VolleyRequestBuilder", "deliverError: " + error.getMessage());
                     super.deliverError(error);
                 }
                 ///////////////////////////////////////////////////////////////////////////////////////
@@ -303,12 +301,12 @@ public class VolleyRequestBuilder<T> {
                 // endregion
             };
         } catch (Exception e) {
-            Log.d("VolleyRequestBuilder", e.getMessage());
+            //Log.d("VolleyRequestBuilder", e.getMessage());
             return null;
         }
     }
 
-    private void assertBuildable() throws Exception {
+    public void assertBuildable() throws Exception {
         if (method == null) {
             throw new Exception(
                     "VolleyRequestBuilder needs an HTTPMethod. Use .withHttpMethod(HTTPMethod method)");
