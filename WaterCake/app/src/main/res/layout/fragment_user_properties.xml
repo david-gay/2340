@@ -10,7 +10,6 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/propertiesPasswordBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password"
@@ -23,7 +22,6 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/propertiesRepeatPasswordBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/repeat_password"
@@ -36,7 +34,6 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/propertiesEmailBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/email"
@@ -49,7 +46,6 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/propertiesCityBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/city"
@@ -62,7 +58,6 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/propertiesTitleBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/title"

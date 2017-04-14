@@ -35,7 +35,7 @@ public class UserSession {
      * Default constructor; should normally only be called once at startup.
      */
     private UserSession(Context context) {
-        this.context = context;
+        UserSession.context = context;
         currentUser = null;
     }
 
@@ -51,8 +51,6 @@ public class UserSession {
      * Attempts to log the user in with the supplied username and password.
      * @param username the username to login with
      * @param password the plaintext password to log in with
-     * @return LoginResult.SUCCESS if successful; LoginResult corresponding with the problem
-     * otherwise.
      */
     public void tryLogin(String username, String password, final LoginCallback loginCallback) {
         username = username.toLowerCase();
@@ -108,8 +106,6 @@ public class UserSession {
      * Attempts to register a user and returns an EnumSet of any registration errors present.
      * @param fieldMap a map of UserProfileFields to their associated data Strings to use for user
      * creation. Must have UserProfileField.USERNAME.
-     * @return an EnumSet of every error encountered in registration. Empty if registration was
-     * successful.
      */
     public void registerUser(Map<UserProfileField, String> fieldMap,
             final RegisterCallback registerCallback) {

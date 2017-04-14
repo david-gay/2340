@@ -18,11 +18,11 @@ import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition
  */
 public class CreatePurityReportActivity extends AppCompatActivity {
 
-    TextInputLayout latitudeInput;
-    TextInputLayout longitudeInput;
-    Spinner waterPurityConditionSpinner;
-    TextInputLayout virusPpmInput;
-    TextInputLayout contaminantPpmInput;
+    private TextInputLayout latitudeInput;
+    private TextInputLayout longitudeInput;
+    private Spinner waterPurityConditionSpinner;
+    private TextInputLayout virusPpmInput;
+    private TextInputLayout contaminantPpmInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +54,10 @@ public class CreatePurityReportActivity extends AppCompatActivity {
         String sVirusPpm;
         String sContaminantPpm;
 
-        double longitude = 0;
-        double latitude = 0;
-        float virusPpm = 0;
-        float contaminantPpm = 0;
+        double longitude;
+        double latitude;
+        float virusPpm;
+        float contaminantPpm;
 
         ReportManager manager = ReportManager.getInstance(this.getApplicationContext());
 

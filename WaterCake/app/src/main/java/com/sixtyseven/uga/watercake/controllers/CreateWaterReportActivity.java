@@ -18,10 +18,10 @@ import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
  */
 public class CreateWaterReportActivity extends AppCompatActivity {
 
-    TextInputLayout longitudeInput;
-    TextInputLayout latitudeInput;
-    Spinner waterTypeSpinner;
-    Spinner waterConditionSpinner;
+    private TextInputLayout longitudeInput;
+    private TextInputLayout latitudeInput;
+    private Spinner waterTypeSpinner;
+    private Spinner waterConditionSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

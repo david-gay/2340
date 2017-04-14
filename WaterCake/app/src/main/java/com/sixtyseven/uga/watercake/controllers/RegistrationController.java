@@ -25,10 +25,10 @@ import java.util.Map;
  * Controller for the Registration screen
  */
 public class RegistrationController extends FragmentActivity {
-    UserPropertiesFragment properties;
+    private UserPropertiesFragment properties;
 
-    TextInputLayout usernameTextLayout;
-    Spinner userTypeSpinner;
+    private TextInputLayout usernameTextLayout;
+    private Spinner userTypeSpinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

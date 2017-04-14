@@ -28,7 +28,7 @@ public class RestManager implements IDataManager {
     }
 
     private RestManager(Context context) {
-        this.context = context;
+        RestManager.context = context;
         this.requestQueue = getRequestQueue();
     }
 

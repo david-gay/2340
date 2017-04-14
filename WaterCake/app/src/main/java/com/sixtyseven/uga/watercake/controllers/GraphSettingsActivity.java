@@ -9,12 +9,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.R;
-import com.sixtyseven.uga.watercake.models.UserSession;
 
 public class GraphSettingsActivity extends Activity {
-    TextInputLayout longitudeInput;
-    TextInputLayout latitudeInput;
-    TextInputLayout yearInput;
+    private TextInputLayout longitudeInput;
+    private TextInputLayout latitudeInput;
+    private TextInputLayout yearInput;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -18,6 +18,7 @@ import com.sixtyseven.uga.watercake.models.user.UserType;
 /**
  * Welcome screen Controller
  */
+@SuppressWarnings("UnusedParameters")
 public class WelcomeCakeController extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {

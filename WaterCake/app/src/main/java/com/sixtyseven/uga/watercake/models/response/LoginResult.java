@@ -8,7 +8,7 @@ public enum LoginResult {
     USER_DOES_NOT_EXIST("User does not exist"),
     WRONG_PASSWORD("Wrong password");
 
-    private String message;
+    private final String message;
 
     LoginResult(String message) {
         this.message = message;

@@ -21,11 +21,11 @@ import java.util.Map;
  * Fragment for handling editable user profile fields.
  */
 public class UserPropertiesFragment extends Fragment {
-    TextInputLayout passwordInput;
-    TextInputLayout repeatPasswordInput;
-    TextInputLayout emailInput;
-    TextInputLayout cityInput;
-    TextInputLayout titleInput;
+    private TextInputLayout passwordInput;
+    private TextInputLayout repeatPasswordInput;
+    private TextInputLayout emailInput;
+    private TextInputLayout cityInput;
+    private TextInputLayout titleInput;
 
     /**
      * Factory method for getting new UserPropertiesFragment. Required for Android Fragments

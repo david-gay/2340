@@ -1,6 +1,7 @@
 package com.sixtyseven.uga.watercake.controllers;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import java.util.Locale;
  * Report Adapter for displaying Water Source Reports
  */
 class ReportAdapter extends ArrayAdapter<WaterSourceReport> {
-    private List<WaterSourceReport> reports;
+    private final List<WaterSourceReport> reports;
 
     /**
      * Constructor
@@ -30,8 +31,9 @@ class ReportAdapter extends ArrayAdapter<WaterSourceReport> {
         this.reports = reports;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
 
         // only inflate if we're not reusing a view

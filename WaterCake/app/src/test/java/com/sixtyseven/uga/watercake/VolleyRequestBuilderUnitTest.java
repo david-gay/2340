@@ -137,7 +137,7 @@ public class VolleyRequestBuilderUnitTest {
                         }
                     })
                     .withJsonStringBody("{\"test\":\"test\"}")
-                    .withObjectBody(new String("test"))
+                    .withObjectBody("test")
                     .assertBuildable();
             fail("Exception not thrown.");
         } catch (Exception ex) {

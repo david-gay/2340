@@ -15,14 +15,13 @@ import java.util.List;
  * Activity for displaying Purity Reports
  */
 public class PurityReportListActivity extends AppCompatActivity {
-    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_list);
 
-        listView = (ListView) findViewById(R.id.reportList);
+        ListView listView = (ListView) findViewById(R.id.reportList);
 
         List<WaterPurityReport> reports = ReportManager.getInstance(this.getApplicationContext())
                 .getWaterPurityReportList();

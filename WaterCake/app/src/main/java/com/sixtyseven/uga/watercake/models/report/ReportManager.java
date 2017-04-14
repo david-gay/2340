@@ -50,14 +50,14 @@ public class ReportManager {
      * Constructor
      */
     private ReportManager(Context context) {
-        this.context = context;
+        ReportManager.context = context;
         waterSourceReports = new LinkedList<>();
         waterPurityReports = new LinkedList<>();
     }
 
     /**
      * Fetches all Water Source Reports and Water Purity Reports from the server.
-     * @param fetchReportsCallback
+     * @param fetchReportsCallback the callback for reports fetching
      */
     public void fetchAllReports(
             final WelcomeCakeController.FetchReportsCallback fetchReportsCallback) {
@@ -67,7 +67,7 @@ public class ReportManager {
 
     /**
      * Fetches all Water Source Reports from the server.
-     * @param fetchReportsCallback
+     * @param fetchReportsCallback the callback for the report fetching
      */
     public void getWaterSourceReportsFromServer(
             final WelcomeCakeController.FetchReportsCallback fetchReportsCallback) {
@@ -92,7 +92,7 @@ public class ReportManager {
 
     /**
      * Fetches all Water Purity Reports from the server.
-     * @param fetchReportsCallback
+     * @param fetchReportsCallback the callback for reports fetching
      */
     public void getWaterPurityReportsFromServer(
             final WelcomeCakeController.FetchReportsCallback fetchReportsCallback) {

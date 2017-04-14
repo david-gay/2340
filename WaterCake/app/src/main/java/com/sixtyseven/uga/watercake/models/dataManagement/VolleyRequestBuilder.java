@@ -1,5 +1,7 @@
 package com.sixtyseven.uga.watercake.models.dataManagement;
 
+import android.support.annotation.Nullable;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
 import com.android.volley.NetworkResponse;
@@ -135,26 +137,7 @@ public class VolleyRequestBuilder<T> {
                 if (error.networkResponse != null) {
                     statusCode = error.networkResponse.statusCode;
                 }
-                String errorMessage = null;
-                // TODO refactor these messages
-                // list of all VolleyErrors:
-                // http://afzaln.com/volley/com/android/volley/class-use/VolleyError.html
-                if (error.getMessage() != null) {
-                    errorMessage = error.getMessage();
-                } else if (error instanceof NetworkError) {
-                    errorMessage = "Cannot connect to Internet...Please check your connection!";
-                } else if (error instanceof ServerError) {
-                    errorMessage =
-                            "The server could not be found. Please try again after some time!!";
-                } else if (error instanceof AuthFailureError) {
-                    errorMessage = "Cannot connect to Internet...Please check your connection!";
-                } else if (error instanceof ParseError) {
-                    errorMessage = "Parsing error! Please try again after some time!!";
-                } else if (error instanceof NoConnectionError) {
-                    errorMessage = "Cannot connect to Internet...Please check your connection!";
-                } else if (error instanceof TimeoutError) {
-                    errorMessage = "Connection TimeOut! Please check your internet connection.";
-                }
+                String errorMessage = getErrorMessage(error);
                 if (requestCallback != null) {
                     requestCallback.onFailure(statusCode, errorMessage);
                 }
@@ -171,6 +154,31 @@ public class VolleyRequestBuilder<T> {
                 }
             }
         };
+    }
+
+    @Nullable
+    public String getErrorMessage(VolleyError error) {
+        String errorMessage = null;
+        // TODO refactor these messages
+        // list of all VolleyErrors:
+        // http://afzaln.com/volley/com/android/volley/class-use/VolleyError.html
+        if (error.getMessage() != null) {
+            errorMessage = error.getMessage();
+        } else if (error instanceof NetworkError) {
+            errorMessage = "Cannot connect to Internet...Please check your connection!";
+        } else if (error instanceof ServerError) {
+            errorMessage =
+                    "The server could not be found. Please try again after some time!!";
+        } else if (error instanceof AuthFailureError) {
+            errorMessage = "Cannot connect to Internet...Please check your connection!";
+        } else if (error instanceof ParseError) {
+            errorMessage = "Parsing error! Please try again after some time!!";
+        } else if (error instanceof NoConnectionError) {
+            errorMessage = "Cannot connect to Internet...Please check your connection!";
+        } else if (error instanceof TimeoutError) {
+            errorMessage = "Connection TimeOut! Please check your internet connection.";
+        }
+        return errorMessage;
     }
 
     public VolleyRequestBuilder<T> withStatusCodeCallback(List<Integer> expectedStatusCodes,
