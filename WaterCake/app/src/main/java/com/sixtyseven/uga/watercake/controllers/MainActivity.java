@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("MainActivity", "create started");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         currentUser = UserSession.currentSession(getApplicationContext()).getCurrentUser();
@@ -59,6 +60,12 @@ public class MainActivity extends AppCompatActivity
         fetchAllReports();
         initMap();
         initFAB();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mNavigationView.setCheckedItem(R.id.nav_water_sources);
     }
 
     private void initFAB() {
@@ -340,12 +347,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onInfoWindowClick(Marker marker) {
         Toast.makeText(this, marker.getTitle(), Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mNavigationView.setCheckedItem(R.id.nav_water_sources);
     }
 
     public interface FetchReportsCallback {

@@ -81,14 +81,8 @@ public class LoginController extends Activity {
                 new UserSession.LoginCallback() {
                     @Override
                     public void onSuccess() {
-                        startActivity(
-                                new Intent(LoginController.this, MainActivity.class));
-                        // TODO move ALL of these to onPause
-                        beforeStart();
-                        usernameEditText.getText().clear();
-                        passwordEditText.getText().clear();
-                        usernameEditText.requestFocus(); // TODO move this to onResume
-                        onFinish();
+                        startActivity(new Intent(LoginController.this, MainActivity.class));
+                        Log.d("MainActivity", "go to MainActivity");
                     }
 
                     @Override
@@ -131,13 +125,26 @@ public class LoginController extends Activity {
 
     @Override
     protected void onResume() {
-        // TODO moved code goes here
         super.onResume();
+        Button loginButton = (Button) findViewById(R.id.btnLogin);
+        Button registerButton = (Button) findViewById(R.id.btnRegister);
+        TextInputLayout usernameInput = (TextInputLayout) findViewById(R.id.usernameInputLayout);
+        TextInputLayout passwordInput = (TextInputLayout) findViewById(R.id.passwordInputLayout);
+        EditText usernameEditText = usernameInput.getEditText();
+        EditText passwordEditText = passwordInput.getEditText();
+        usernameEditText.requestFocus();
+        loginButton.setText(R.string.login);
+        loginButton.setEnabled(true);
+
+        registerButton.setEnabled(true);
+        usernameEditText.getText().clear();
+        passwordEditText.getText().clear();
+        usernameInput.setErrorEnabled(false);
+        passwordInput.setErrorEnabled(false);
     }
 
     @Override
     protected void onPause() {
-        // TODO moved code goes here
         super.onPause();
     }
 
