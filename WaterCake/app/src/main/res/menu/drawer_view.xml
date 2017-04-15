@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/grp1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_water_sources"
+            android:checked="true"
+            android:icon="@drawable/ic_local_drink_black_24dp"
+            android:title="@string/water_sources"/>
+        <item
+            android:id="@+id/nav_create_source_report"
+            android:icon="@drawable/ic_add_location_black_24dp"
+            android:title="@string/create_source_report"/>
+        <item
+            android:id="@+id/nav_view_source_list"
+            android:icon="@drawable/ic_view_list_black_24dp"
+            android:title="@string/view_source_list"/>
+    </group>
+
+    <group
+        android:id="@+id/grp2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_create_purity_report"
+            android:icon="@drawable/ic_add_circle_outline_black_24dp"
+            android:title="@string/create_purity_report"/>
+
+        <item
+            android:id="@+id/nav_view_purity_reports"
+            android:icon="@drawable/ic_opacity_black_24dp"
+            android:title="@string/view_purity_reports"/>
+    </group>
+
+    <group
+        android:id="@+id/grp3"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_view_historical_report"
+            android:icon="@drawable/ic_timeline_black_24dp"
+            android:title="@string/view_historical_report"/>
+    </group>
+
+    <group
+        android:id="@+id/grp4"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_edit_profile"
+            android:icon="@drawable/ic_account_circle_black_24dp"
+            android:title="@string/edit_profile"/>
+
+        <item
+            android:id="@+id/nav_exit"
+            android:icon="@drawable/ic_exit_to_app_black_24dp"
+            android:title="@string/logout"/>
+    </group>
+
+
+</menu>

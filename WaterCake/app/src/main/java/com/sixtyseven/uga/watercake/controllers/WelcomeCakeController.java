@@ -5,14 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
-import com.sixtyseven.uga.watercake.models.report.ReportManager;
 import com.sixtyseven.uga.watercake.models.user.UserType;
 
 /**
@@ -31,10 +29,12 @@ public class WelcomeCakeController extends Activity {
                 "Welcome, " + UserSession.currentSession(this.getApplicationContext())
                         .getCurrentUser().getUsername() + "!");
 
-        // Hide Purity Create Report Buttons unless Worker+
-        Button createPurityReportButton = (Button) findViewById(R.id.createPurityReportButton);
         UserType userType = UserSession.currentSession(this.getApplicationContext())
                 .getCurrentUser().getUserType();
+
+        // Hide Purity Create Report Buttons unless Worker+
+        Button createPurityReportButton = (Button) findViewById(R.id.createPurityReportButton);
+
         // Only show the button if above a Contributor
         if (userType != UserType.CONTRIBUTOR) {
             createPurityReportButton.setVisibility(View.VISIBLE); //SHOW the button
@@ -42,28 +42,26 @@ public class WelcomeCakeController extends Activity {
 
         // Hide Purity View Report Buttons unless Manager+
         Button viewPurityReportButton = (Button) findViewById(R.id.ViewPurityReportButton);
-        UserType userType2 = UserSession.currentSession(this.getApplicationContext())
-                .getCurrentUser().getUserType();
         // Only show the button if above a Worker
-        if ((userType2 != UserType.CONTRIBUTOR) && (userType2 != UserType.WORKER)) {
+        if ((userType != UserType.CONTRIBUTOR) && (userType != UserType.WORKER)) {
             viewPurityReportButton.setVisibility(View.VISIBLE); //SHOW the button
         }
 
         Log.d("WelcomecakeController", "welcomecake controller created");
-        ReportManager.getInstance(this.getApplicationContext()).fetchAllReports(
-                new FetchReportsCallback() {
-                    @Override
-                    public void onSuccess() {
-                        Log.d("WelcomecakeController", "reports fetched successfully");
-                    }
-
-                    @Override
-                    public void onFailure(String errorMessage) {
-                        Log.d("WelcomecakeController", "failed to fetch reports: " + errorMessage);
-                        Toast.makeText(WelcomeCakeController.this, "Failed to fetch reports!",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
+        //        ReportManager.getInstance(this.getApplicationContext()).fetchAllReports(
+        //                new FetchReportsCallback() {
+        //                    @Override
+        //                    public void onSuccess() {
+        //                        Log.d("WelcomecakeController", "reports fetched successfully");
+        //                    }
+        //
+        //                    @Override
+        //                    public void onFailure(String errorMessage) {
+        //                        Log.d("WelcomecakeController", "failed to fetch reports: " + errorMessage);
+        //                        Toast.makeText(WelcomeCakeController.this, "Failed to fetch reports!",
+        //                                Toast.LENGTH_SHORT).show();
+        //                    }
+        //                });
         // Hide Historical Report Button unless Manager+
         Button viewHistoricalReportButton = (Button) findViewById(R.id.viewHistoricalReportButton);
         // Only show the button if above a Worker
@@ -117,10 +115,9 @@ public class WelcomeCakeController extends Activity {
         startActivity(new Intent(WelcomeCakeController.this, GraphSettingsActivity.class));
     }
 
-    public interface FetchReportsCallback {
-        void onSuccess();
-
-        void onFailure(String errorMessage);
-    }
-
+    //    public interface FetchReportsCallback1 {
+    //        void onSuccess();
+    //
+    //        void onFailure(String errorMessage);
+    //    }
 }

@@ -9,7 +9,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sixtyseven.uga.watercake.controllers.WelcomeCakeController;
+import com.sixtyseven.uga.watercake.controllers.MainActivity;
 import com.sixtyseven.uga.watercake.models.UserSession;
 import com.sixtyseven.uga.watercake.models.dataManagement.RestManager;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
@@ -59,8 +59,7 @@ public class ReportManager {
      * Fetches all Water Source Reports and Water Purity Reports from the server.
      * @param fetchReportsCallback the callback for reports fetching
      */
-    public void fetchAllReports(
-            final WelcomeCakeController.FetchReportsCallback fetchReportsCallback) {
+    public void fetchAllReports(final MainActivity.FetchReportsCallback fetchReportsCallback) {
         getWaterSourceReportsFromServer(fetchReportsCallback);
         getWaterPurityReportsFromServer(fetchReportsCallback);
     }
@@ -70,7 +69,7 @@ public class ReportManager {
      * @param fetchReportsCallback the callback for the report fetching
      */
     public void getWaterSourceReportsFromServer(
-            final WelcomeCakeController.FetchReportsCallback fetchReportsCallback) {
+            final MainActivity.FetchReportsCallback fetchReportsCallback) {
         RestManager.getInstance(context).getAllWaterSourceReports(
                 new RestManager.Callback<List<WaterSourceReport>>() {
                     @Override
@@ -95,7 +94,7 @@ public class ReportManager {
      * @param fetchReportsCallback the callback for reports fetching
      */
     public void getWaterPurityReportsFromServer(
-            final WelcomeCakeController.FetchReportsCallback fetchReportsCallback) {
+            final MainActivity.FetchReportsCallback fetchReportsCallback) {
 
         RestManager.getInstance(context).getAllWaterPurityReports(
                 new RestManager.Callback<List<WaterPurityReport>>() {
@@ -222,11 +221,11 @@ public class ReportManager {
      */
     public List<WaterPurityReport> filterWaterPurityReportList(int year, double latitude,
             double longitude) {
-        List<WaterPurityReport> filteredWaterPurityReports = new ArrayList<>(waterPurityReports.size());
+        List<WaterPurityReport> filteredWaterPurityReports = new ArrayList<>(
+                waterPurityReports.size());
         for (WaterPurityReport wpr : waterPurityReports) {
-            if (wpr.getPostDate().getYear() + 1900 == year && Math.abs(
-                    wpr.getLatitude() - latitude) + Math.abs(wpr.getLongitude() - longitude)
-                    < 0.0001) {
+            if (wpr.getPostDate().getYear() + 1900 == year && Math.abs(wpr.getLatitude() - latitude)
+                    + Math.abs(wpr.getLongitude() - longitude) < 0.0001) {
                 filteredWaterPurityReports.add(wpr);
             }
         }

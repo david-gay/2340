@@ -82,7 +82,7 @@ public class LoginController extends Activity {
                     @Override
                     public void onSuccess() {
                         startActivity(
-                                new Intent(LoginController.this, WelcomeCakeController.class));
+                                new Intent(LoginController.this, MainActivity.class));
                         // TODO move ALL of these to onPause
                         beforeStart();
                         usernameEditText.getText().clear();

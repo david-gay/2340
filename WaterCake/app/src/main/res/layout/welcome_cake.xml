@@ -97,7 +97,7 @@
         android:layout_alignEnd="@+id/createPurityReportButton"
         android:layout_below="@+id/createPurityReportButton"
         android:onClick="viewPurityReports"
-        android:text="@string/view_quality_reports"
+        android:text="@string/view_purity_reports"
         android:visibility="invisible"/>
 
     <Button

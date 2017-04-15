@@ -44,6 +44,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".controllers.MainActivity"/>
         <activity android:name=".controllers.RegistrationController"/>
         <activity android:name=".controllers.WelcomeCakeController"/>
         <activity android:name=".controllers.EditProfileActivity"/>

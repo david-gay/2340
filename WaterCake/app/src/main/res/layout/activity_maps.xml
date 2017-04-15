@@ -4,16 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--
-    <Button
-        android:id="@+id/add_report"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:layout_marginTop="20dp"
-        android:onClick="addReportButton"
-        android:padding="10dp"
-        android:text="Add Report"/>
-        -->
+
+    <!--<Button-->
+    <!--android:id="@+id/add_report"-->
+    <!--style="@style/Widget.AppCompat.Button.Colored"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center|bottom"-->
+    <!--android:layout_marginTop="20dp"-->
+    <!--android:onClick="addReportButton"-->
+    <!--android:padding="10dp"-->
+    <!--android:text="Add Report"/>-->
+
     </fragment>
