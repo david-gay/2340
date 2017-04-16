@@ -63,8 +63,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/contaminant_ppm"
-        android:layout_alignBaseline="@+id/textView6"
-        android:layout_alignBottom="@+id/textView6"
+        android:layout_marginTop="8dp"
+        android:layout_below="@+id/latitudeTextView"
         android:layout_toEndOf="@+id/textView6"/>
 
     <TextView
@@ -112,8 +112,9 @@
         android:layout_height="wrap_content"
         android:text="Cont PPM: "
         android:textColor="@android:color/black"
-        android:layout_marginTop="12dp"
-        android:layout_below="@+id/latitudeTextView"
-        android:layout_centerHorizontal="true"/>
+        android:layout_alignBaseline="@+id/contaminantPpmTextView"
+        android:layout_alignBottom="@+id/contaminantPpmTextView"
+        android:layout_toEndOf="@+id/virusPpmTextView"
+        android:layout_marginStart="44dp"/>
 
 </RelativeLayout>
