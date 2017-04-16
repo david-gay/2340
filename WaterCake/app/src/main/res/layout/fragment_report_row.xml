@@ -56,7 +56,8 @@
         android:text="@string/water_condition"
         android:layout_alignBaseline="@+id/textView3"
         android:layout_alignBottom="@+id/textView3"
-        android:layout_alignEnd="@+id/textView2"/>
+        android:layout_alignStart="@+id/textView2"
+        android:layout_marginStart="18dp"/>
 
     <TextView
         android:id="@+id/textView2"

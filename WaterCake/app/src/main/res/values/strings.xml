@@ -57,6 +57,6 @@
     <string name="create_source_report">Create Source Report</string>
     <string name="view_source_list">View Source List</string>
     <string name="created_by">Created By:</string>
-    <string name="condition">Condition:</string>
-    <string name="location">Location:</string>
+    <string name="condition">Condition: </string>
+    <string name="location">Location: </string>
 </resources>
