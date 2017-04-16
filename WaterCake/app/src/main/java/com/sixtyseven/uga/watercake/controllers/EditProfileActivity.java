@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
@@ -15,6 +16,7 @@ import com.sixtyseven.uga.watercake.models.user.UserProfileError;
 import com.sixtyseven.uga.watercake.models.user.UserProfileField;
 
 import java.util.EnumSet;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -88,14 +90,31 @@ public class EditProfileActivity extends FragmentActivity {
             fieldsMap.remove(UserProfileField.PASSWORD);
         }
 
-        EnumSet<UserProfileError> results = UserSession.currentSession(this.getApplicationContext())
-                .updateUserFields(fieldsMap);
+        LinkedList<UserSession.UpdateUserCallback> callbacks =
+                new LinkedList<UserSession.UpdateUserCallback>();
 
-        if (results.isEmpty()) {
-            Log.d("EditProfileActivity", "Profile Updated");
-            finish();
-        } else {
-            Log.d("EditProfileActivity", "Profile Update failed");
+        callbacks.add(new UserSession.UpdateUserCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d("EditProfileActivity", "Profile Updated");
+                Toast.makeText(getApplicationContext(), "Update successful!", Toast.LENGTH_LONG)
+                        .show();
+                finish();
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.d("EditProfileActivity", "Profile Update failed");
+                Toast.makeText(getApplicationContext(), "Update failed: " + errorMessage,
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+        EnumSet<UserProfileError> results = UserSession.currentSession(getApplicationContext())
+                .updateUserFromFields(fieldsMap, callbacks);
+
+        // we had client side validation errors
+        if (!results.isEmpty()) {
             properties.setErrors(results, true);
         }
     }

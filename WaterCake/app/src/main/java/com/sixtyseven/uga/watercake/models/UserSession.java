@@ -9,6 +9,7 @@ import com.sixtyseven.uga.watercake.models.user.UserProfileError;
 import com.sixtyseven.uga.watercake.models.user.UserProfileField;
 
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -150,13 +151,29 @@ public class UserSession {
      * @param fieldMap a map of UserProfileFields to their associated data Strings
      * @return an EnumSet of every error encountered in updating. Empty if update was successful.
      */
-    public EnumSet<UserProfileError> updateUserFields(Map<UserProfileField, String> fieldMap) {
+    public EnumSet<UserProfileError> updateUserFromFields(final Map<UserProfileField, String> fieldMap, List<UpdateUserCallback> callbacks) {
         EnumSet<UserProfileError> results = validateUserFields(fieldMap);
 
-        if (results.isEmpty()) {
-            currentUser.setFieldsFromFieldsMap(fieldMap);
+        if (results.isEmpty()) { // no client side validation errors were found
+            callbacks.add(new UpdateUserCallback() {
+                @Override
+                public void onSuccess() {
+                    currentUser.setFieldsFromFieldsMap(fieldMap);
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    // do nothing
+                }
+            });
+            RestManager.getInstance(context).updateUser(currentUser, callbacks);
         }
+
         return results;
+    }
+
+    void setFieldsFromFieldsMap(Map<UserProfileField, String> fieldMap) {
+        currentUser.setFieldsFromFieldsMap(fieldMap);
     }
 
     public interface UserCallback {
@@ -182,6 +199,12 @@ public class UserSession {
      * A register callback interface
      */
     public interface RegisterCallback {
+        void onSuccess();
+
+        void onFailure(String errorMessage);
+    }
+
+    public interface UpdateUserCallback {
         void onSuccess();
 
         void onFailure(String errorMessage);

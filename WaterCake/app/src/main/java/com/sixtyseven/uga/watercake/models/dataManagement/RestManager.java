@@ -12,6 +12,7 @@ import com.sixtyseven.uga.watercake.models.user.User;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.List;
 
 public class RestManager implements IDataManager {
     private static RestManager instance;
@@ -157,6 +158,44 @@ public class RestManager implements IDataManager {
                             public void onUnexpectedStatusCode(Integer unexpectedStatusCode,
                                     String errorMessage) {
                                 registerCallback.onFailure(errorMessage);
+                            }
+                        })
+                .addToQueue(getRequestQueue());
+    }
+
+    public void updateUser(User user, final List<UserSession.UpdateUserCallback> updateUserCallbacks) {
+        final UserSession.UpdateUserCallback jointCallback = new UserSession.UpdateUserCallback() {
+            @Override
+            public void onSuccess() {
+                for(UserSession.UpdateUserCallback c : updateUserCallbacks) {
+                    c.onSuccess();
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                for(UserSession.UpdateUserCallback c : updateUserCallbacks) {
+                    c.onFailure(errorMessage);
+                }
+            }
+        };
+
+
+        new VolleyRequestBuilder()
+                .withUrl("http://10.0.2.2:8080/accounts/" + user.getUsername())
+                .withHttpMethod(VolleyRequestBuilder.HTTPMethod.PUT)
+                .withObjectBody(user)
+                .withStatusCodeCallback(Arrays.asList(204),
+                        new VolleyRequestBuilder.VolleyResponseStatusCodeCallback() {
+                            @Override
+                            public void onExpectedStatusCode(Integer expectedStatusCode) {
+                                jointCallback.onSuccess();
+                            }
+
+                            @Override
+                            public void onUnexpectedStatusCode(Integer unexpectedStatusCode,
+                                    String errorMessage) {
+                                jointCallback.onFailure(errorMessage);
                             }
                         })
                 .addToQueue(getRequestQueue());
