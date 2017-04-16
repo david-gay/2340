@@ -3,21 +3,15 @@ package com.sixtyseven.uga.watercake.models.report;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.sixtyseven.uga.watercake.controllers.CreatePurityReportActivity;
+import com.sixtyseven.uga.watercake.controllers.CreateWaterReportActivity;
 import com.sixtyseven.uga.watercake.controllers.MainActivity;
 import com.sixtyseven.uga.watercake.models.UserSession;
 import com.sixtyseven.uga.watercake.models.dataManagement.RestManager;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -119,40 +113,28 @@ public class ReportManager {
      * @param longitude the longitude for the report
      * @param waterType the type of water reported
      * @param condition the condition of that water
-     * @return true if the report is created and added
+     * @param callback the callback for the response
      */
-    public boolean createWaterReport(double latitude, double longitude, WaterType waterType,
-            WaterCondition condition) {
-        try {
-            String username = UserSession.currentSession(context).getCurrentUser().getUsername();
-            JSONObject sourceReportStub = new JSONObject(new Gson()
-                    .toJson(new WaterSourceReportImpl(0, username, null, latitude, longitude,
-                            waterType, condition)));
-            String url = "http://10.0.2.2:8080/" + username + "/water-reports";
-            JsonObjectRequest createWaterSourceReportRequest = new JsonObjectRequest(
-                    Request.Method.POST, url, sourceReportStub,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            waterSourceReports.add(new Gson()
-                                    .fromJson(response.toString(), WaterSourceReportImpl.class));
-                            // TODO add callback to show the user that the addition was successful -- i don't like this return true thing for async
-                        }
-                    }, new Response.ErrorListener() {
+    public void createWaterReport(double latitude, double longitude, WaterType waterType,
+            WaterCondition condition,
+            final CreateWaterReportActivity.CreateWaterSourceReportCallback callback) {
+        RestManager.getInstance(context).createWaterSourceReport(UserSession.currentSession(context)
+                        .getCurrentUser().getUsername(),
+                new WaterSourceReportImpl(0, "", null, latitude, longitude, waterType, condition),
+                new CreateSourceReportCallback() {
+                    @Override
+                    public void onSuccess(WaterSourceReport report) {
+                        waterSourceReports.add(report);
+                        MainActivity.placeNewMarker(report);
+                        callback.onSuccess();
+                    }
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    // TODO Auto-generated method stub
-                }
-            });
-
-            RestManager.getInstance(context).addToRequestQueue(createWaterSourceReportRequest);
-
-            return true;
-        } catch (JSONException ex) {
-            Log.d("sourceReportPOST", ex.getMessage());
-        }
-        return false;
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        Log.d("ReportManager", errorMessage);
+                        callback.onFailure(errorMessage);
+                    }
+                });
     }
 
     /**
@@ -162,40 +144,27 @@ public class ReportManager {
      * @param waterPurityCondition the purity condition of the water
      * @param virusPPM the virus parts per million in the water
      * @param contaminantPPM the contaminants parts per million in the water
-     * @return true if the report is created and added
+     * @param callback the callback for the response
      */
-    public boolean createPurityReport(double latitude, double longitude,
-            WaterPurityCondition waterPurityCondition, float virusPPM, float contaminantPPM) {
-        try {
-            String username = UserSession.currentSession(context).getCurrentUser().getUsername();
-            JSONObject purityReportStub = new JSONObject(new Gson()
-                    .toJson(new WaterPurityReportImpl(0, username, null, latitude, longitude,
-                            waterPurityCondition, virusPPM, contaminantPPM)));
-            String url = "http://10.0.2.2:8080/" + username + "/purity-reports";
-            JsonObjectRequest createWaterPurityReportRequest = new JsonObjectRequest(
-                    Request.Method.POST, url, purityReportStub,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            waterPurityReports.add(new Gson()
-                                    .fromJson(response.toString(), WaterPurityReportImpl.class));
-                            // TODO add callback to show the user that the addition was successful -- i don't like this return true thing for async
-                        }
-                    }, new Response.ErrorListener() {
+    public void createPurityReport(double latitude, double longitude,
+            WaterPurityCondition waterPurityCondition, float virusPPM, float contaminantPPM,
+            final CreatePurityReportActivity.CreateWaterPurityReportCallback callback) {
+        RestManager.getInstance(context).createWaterPurityReport(UserSession.currentSession(context)
+                        .getCurrentUser().getUsername(),
+                new WaterPurityReportImpl(0, "", null, latitude, longitude, waterPurityCondition,
+                        virusPPM, contaminantPPM), new CreatePurityReportCallback() {
+                    @Override
+                    public void onSuccess(WaterPurityReport report) {
+                        waterPurityReports.add(report);
+                        callback.onSuccess();
+                    }
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    // TODO Auto-generated method stub
-                }
-            });
-
-            RestManager.getInstance(context).addToRequestQueue(createWaterPurityReportRequest);
-
-            return true;
-        } catch (JSONException ex) {
-            Log.d("sourceReportPOST", ex.getMessage());
-        }
-        return false;
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        Log.d("ReportManager", errorMessage);
+                        callback.onFailure(errorMessage);
+                    }
+                });
     }
 
     /**
@@ -290,5 +259,17 @@ public class ReportManager {
         }
 
         return deleted;
+    }
+
+    public interface CreateSourceReportCallback {
+        void onSuccess(WaterSourceReport report);
+
+        void onFailure(String errorMessage);
+    }
+
+    public interface CreatePurityReportCallback {
+        void onSuccess(WaterPurityReport report);
+
+        void onFailure(String errorMessage);
     }
 }

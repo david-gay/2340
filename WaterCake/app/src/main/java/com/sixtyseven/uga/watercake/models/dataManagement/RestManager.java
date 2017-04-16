@@ -2,10 +2,12 @@ package com.sixtyseven.uga.watercake.models.dataManagement;
 
 import android.content.Context;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.sixtyseven.uga.watercake.models.UserSession;
+import com.sixtyseven.uga.watercake.models.report.ReportManager;
+import com.sixtyseven.uga.watercake.models.report.WaterPurityReport;
+import com.sixtyseven.uga.watercake.models.report.WaterSourceReport;
 import com.sixtyseven.uga.watercake.models.user.User;
 
 import java.lang.reflect.Type;
@@ -41,10 +43,6 @@ public class RestManager implements IDataManager {
         return requestQueue;
     }
 
-    public <T> void addToRequestQueue(Request<T> req) {
-        getRequestQueue().add(req);
-    }
-
     public <T> void getAllWaterSourceReports(final Callback<T> callback, Type type) {
         // TODO add ServerManager that takes care of generating urls for the server requests
         getReportByType(callback, type, url + "water-reports");
@@ -78,7 +76,7 @@ public class RestManager implements IDataManager {
     public void validateUser(String username, String password, final Callback<Integer> callback) {
         getRequestQueue().add(
                 new VolleyRequestBuilder()
-                        .withUrl("http://10.0.2.2:8080/login")
+                        .withUrl(url + "login")
                         .withHttpMethod(VolleyRequestBuilder.HTTPMethod.POST)
                         .withObjectBody(new Credentials(username, password))
                         .withStatusCodeCallback(Arrays.asList(204, 401, 404),
@@ -94,6 +92,52 @@ public class RestManager implements IDataManager {
                                         callback.onFailure(errorMessage);
                                     }
                                 })
+                        .build());
+    }
+
+    public void createWaterSourceReport(String username, WaterSourceReport report,
+            final ReportManager.CreateSourceReportCallback callback)
+    {
+        getRequestQueue().add(
+                new VolleyRequestBuilder<WaterSourceReport>()
+                        .withUrl(url + username + "/water-reports")
+                        .withHttpMethod(VolleyRequestBuilder.HTTPMethod.POST)
+                        .withObjectBody(report)
+                        .withResponseType(report.getClass())
+                        .withCallback(new VolleyRequestBuilder.VolleyRequestCallback<WaterSourceReport>() {
+                            @Override
+                            public void onSuccess(WaterSourceReport response) {
+                                callback.onSuccess(response);
+                            }
+
+                            @Override
+                            public void onFailure(Integer httpStatusCode, String errorMessage) {
+                                callback.onFailure(errorMessage);
+                            }
+                        })
+                        .build());
+    }
+
+    public void createWaterPurityReport(String username, WaterPurityReport report,
+            final ReportManager.CreatePurityReportCallback callback)
+    {
+        getRequestQueue().add(
+                new VolleyRequestBuilder<WaterPurityReport>()
+                        .withUrl(url + username + "/purity-reports")
+                        .withHttpMethod(VolleyRequestBuilder.HTTPMethod.POST)
+                        .withObjectBody(report)
+                        .withResponseType(report.getClass())
+                        .withCallback(new VolleyRequestBuilder.VolleyRequestCallback<WaterPurityReport>() {
+                            @Override
+                            public void onSuccess(WaterPurityReport response) {
+                                callback.onSuccess(response);
+                            }
+
+                            @Override
+                            public void onFailure(Integer httpStatusCode, String errorMessage) {
+                                callback.onFailure(errorMessage);
+                            }
+                        })
                         .build());
     }
 
@@ -121,7 +165,7 @@ public class RestManager implements IDataManager {
     public void getUser(final String username, final UserSession.UserCallback userCallback) {
         getRequestQueue().add(
                 new VolleyRequestBuilder<User>()
-                        .withUrl("http://10.0.2.2:8080/accounts/" + username)
+                        .withUrl(url + "accounts/" + username)
                         .withHttpMethod(VolleyRequestBuilder.HTTPMethod.GET)
                         .withResponseType(User.class)
                         .withCallback(new VolleyRequestBuilder.VolleyRequestCallback<User>() {
@@ -137,6 +181,4 @@ public class RestManager implements IDataManager {
                         })
                         .build());
     }
-
-
 }

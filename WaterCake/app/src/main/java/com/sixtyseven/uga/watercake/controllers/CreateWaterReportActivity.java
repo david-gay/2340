@@ -66,10 +66,21 @@ public class CreateWaterReportActivity extends AppCompatActivity {
                 WaterType type = (WaterType) waterTypeSpinner.getSelectedItem();
                 WaterCondition condition = (WaterCondition) waterConditionSpinner.getSelectedItem();
 
-                manager.createWaterReport(latitude, longitude, type, condition);
+                manager.createWaterReport(latitude, longitude, type, condition,
+                        new CreateWaterSourceReportCallback() {
+                            @Override
+                            public void onSuccess() {
+                                Toast.makeText(getBaseContext(), "Report successful!",
+                                        Toast.LENGTH_LONG).show();
+                                finish();
+                            }
 
-                Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG).show();
-                finish();
+                            @Override
+                            public void onFailure(String errorMessage) {
+                                Toast.makeText(getBaseContext(), "Report FAILED!",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        });
             }
         } catch (NumberFormatException e) {
             Toast.makeText(getBaseContext(), "Invalid field input!", Toast.LENGTH_SHORT).show();
@@ -82,5 +93,11 @@ public class CreateWaterReportActivity extends AppCompatActivity {
      */
     public void cancel(View view) {
         finish();
+    }
+
+    public interface CreateWaterSourceReportCallback {
+        void onSuccess();
+
+        void onFailure(String errorMessage);
     }
 }

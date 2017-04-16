@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private User currentUser;
-    private GoogleMap mMap;
+    private static GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onSuccess() {
                         Log.d("MainActivity", "reports fetched successfully");
-                        placeMarkers(mMap);
+                        placeMarkers();
                     }
 
                     @Override
@@ -327,21 +327,31 @@ public class MainActivity extends AppCompatActivity
         googleMap.setOnInfoWindowClickListener(this);
     }
 
-    private void placeMarkers(GoogleMap googleMap) {
+    private void placeMarkers() {
+        if (mMap == null) {
+            return;
+        }
+
+        mMap.clear();
         List<WaterSourceReport> reports = ReportManager.getInstance(this.getApplicationContext())
                 .getWaterSourceReportList();
-        //        Toast.makeText(getApplicationContext(), "Water Reports: " + reports.size(),
-        //                Toast.LENGTH_LONG).show();
         Log.d("reportsNUM", "" + reports.size());
         for (WaterSourceReport report : reports) {
-            Log.d("reportsNUM", "" + report.getReportNumber());
-            googleMap.addMarker(new MarkerOptions().position(new LatLng(report.
-                    getLatitude(), report.getLongitude()))
-                    .title("Report Number: " + report.getReportNumber()).snippet(
-                            "Created: " + report.getPostDate() + "\nAuthor: " + report
-                                    .getAuthorUsername() + "\nType: " + report.getWaterType()
-                                    + "\nCondition: " + report.getWaterCondition()));
+            placeNewMarker(report);
         }
+    }
+
+    public static void placeNewMarker(WaterSourceReport report) {
+        if (mMap == null || report == null) {
+            return;
+        }
+        Log.d("reportsNUM", "" + report.getReportNumber());
+        mMap.addMarker(new MarkerOptions().position(new LatLng(report.
+                getLatitude(), report.getLongitude()))
+                .title("Report Number: " + report.getReportNumber()).snippet(
+                        "Created: " + report.getPostDate() + "\nAuthor: " + report
+                                .getAuthorUsername() + "\nType: " + report.getWaterType()
+                                + "\nCondition: " + report.getWaterCondition()));
     }
 
     @Override

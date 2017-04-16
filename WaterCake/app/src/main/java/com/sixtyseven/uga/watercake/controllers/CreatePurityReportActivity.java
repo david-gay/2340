@@ -112,11 +112,20 @@ public class CreatePurityReportActivity extends AppCompatActivity {
                             (WaterPurityCondition) waterPurityConditionSpinner.getSelectedItem();
 
                     manager.createPurityReport(latitude, longitude, purityCondition, virusPpm,
-                            contaminantPpm);
+                            contaminantPpm, new CreateWaterPurityReportCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    Toast.makeText(getBaseContext(), "Report successful!",
+                                            Toast.LENGTH_LONG).show();
+                                    finish();
+                                }
 
-                    Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG)
-                            .show();
-                    finish();
+                                @Override
+                                public void onFailure(String errorMessage) {
+                                    Toast.makeText(getBaseContext(), "Report FAILED!",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            });
                 }
             } catch (NumberFormatException e) {
                 Toast.makeText(getBaseContext(), "Invalid field input!", Toast.LENGTH_SHORT).show();
@@ -130,5 +139,11 @@ public class CreatePurityReportActivity extends AppCompatActivity {
      */
     public void cancel(View view) {
         finish();
+    }
+
+    public interface CreateWaterPurityReportCallback {
+        void onSuccess();
+
+        void onFailure(String errorMessage);
     }
 }
