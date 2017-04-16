@@ -88,12 +88,12 @@ class PurityReportAdapter extends ArrayAdapter<WaterPurityReport> {
 
             TextView virusPpmText = (TextView) view.findViewById(R.id.virusPpmTextView);
             if (virusPpmText != null) {
-                virusPpmText.setText("Virus PPM: " + Float.toString(report.getVirusPpm()));
+                virusPpmText.setText(Float.toString(report.getVirusPpm()));
             }
 
             TextView contaminantPpmText = (TextView) view.findViewById(R.id.contaminantPpmTextView);
             if (contaminantPpmText != null) {
-                contaminantPpmText.setText("Cont PPM: " + Float.toString(report.getContaminantPpm()));
+                contaminantPpmText.setText(Float.toString(report.getContaminantPpm()));
             }
 
         }
