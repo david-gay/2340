@@ -1,6 +1,7 @@
 package com.sixtyseven.uga.watercake.controllers;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,6 @@ import android.widget.TextView;
 
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.report.WaterPurityReport;
-import com.sixtyseven.uga.watercake.models.report.WaterSourceReport;
 
 import java.util.List;
 import java.util.Locale;
@@ -17,8 +17,8 @@ import java.util.Locale;
 /**
  * Array Adapter for displaying Purity Reports in a List View
  */
-public class PurityReportAdapter extends ArrayAdapter<WaterPurityReport> {
-    List<WaterPurityReport> reports;
+class PurityReportAdapter extends ArrayAdapter<WaterPurityReport> {
+    private final List<WaterPurityReport> reports;
 
     /**
      * Constructor
@@ -31,9 +31,10 @@ public class PurityReportAdapter extends ArrayAdapter<WaterPurityReport> {
         this.reports = reports;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        WaterPurityReport dataModel = getItem(position);
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+
 
         View view = convertView;
 

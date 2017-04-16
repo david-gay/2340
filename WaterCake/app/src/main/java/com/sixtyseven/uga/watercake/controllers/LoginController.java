@@ -1,6 +1,7 @@
 package com.sixtyseven.uga.watercake.controllers;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -8,8 +9,11 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.R;
 import com.sixtyseven.uga.watercake.models.UserSession;
@@ -45,32 +49,103 @@ public class LoginController extends Activity {
      * @param view the button that initiated this event
      */
     public void attemptLogin(View view) {
+        // hide keyboard
+        this.getCurrentFocus();
+        if (view != null) {
+            final InputMethodManager imm = (InputMethodManager) getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
+        final TextInputLayout usernameInput = (TextInputLayout) findViewById(
+                R.id.usernameInputLayout);
+        final TextInputLayout passwordInput = (TextInputLayout) findViewById(
+                R.id.passwordInputLayout);
+
+        final EditText usernameEditText = usernameInput.getEditText();
+        final EditText passwordEditText = passwordInput.getEditText();
+
+        Log.d("login",
+                "login attempted." + " username: " + usernameEditText.getText() + " password: "
+                        + passwordEditText.getText());
+
+        final Button loginButton = (Button) findViewById(R.id.btnLogin);
+        loginButton.setText(R.string.CheckingYouUp);
+        loginButton.setEnabled(false);
+
+        final Button registerButton = (Button) findViewById(R.id.btnRegister);
+        registerButton.setEnabled(false);
+
+        UserSession.currentSession(this.getApplicationContext()).tryLogin(
+                usernameEditText.getText().toString(), passwordEditText.getText().toString(),
+                new UserSession.LoginCallback() {
+                    @Override
+                    public void onSuccess() {
+                        startActivity(new Intent(LoginController.this, MainActivity.class));
+                        Log.d("MainActivity", "go to MainActivity");
+                    }
+
+                    @Override
+                    public void onWrongPassword() {
+                        beforeStart();
+                        passwordInput.setError(LoginResult.WRONG_PASSWORD.getMessage());
+                        passwordEditText.requestFocus();
+                        passwordInput.getEditText().setText("");
+                        onFinish();
+                    }
+
+                    @Override
+                    public void onUserNotFound() {
+                        beforeStart();
+                        usernameInput.setError(LoginResult.USER_DOES_NOT_EXIST.getMessage());
+                        usernameEditText.requestFocus();
+                        onFinish();
+                    }
+
+                    @Override
+                    public void onError(String errorMessage) {
+                        beforeStart();
+                        Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT)
+                                .show();
+                        onFinish();
+                    }
+
+                    private void beforeStart() {
+                        usernameInput.setErrorEnabled(false);
+                        passwordInput.setErrorEnabled(false);
+                    }
+
+                    private void onFinish() {
+                        loginButton.setText(R.string.login);
+                        loginButton.setEnabled(true);
+                        registerButton.setEnabled(true);
+                    }
+                });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Button loginButton = (Button) findViewById(R.id.btnLogin);
+        Button registerButton = (Button) findViewById(R.id.btnRegister);
         TextInputLayout usernameInput = (TextInputLayout) findViewById(R.id.usernameInputLayout);
         TextInputLayout passwordInput = (TextInputLayout) findViewById(R.id.passwordInputLayout);
-
         EditText usernameEditText = usernameInput.getEditText();
         EditText passwordEditText = passwordInput.getEditText();
+        usernameEditText.requestFocus();
+        loginButton.setText(R.string.login);
+        loginButton.setEnabled(true);
 
-        Log.d("login", "login attempted." +
-                " username: " + usernameEditText.getText() +
-                " password: " + passwordEditText.getText());
+        registerButton.setEnabled(true);
+        usernameEditText.getText().clear();
+        passwordEditText.getText().clear();
+        usernameInput.setErrorEnabled(false);
+        passwordInput.setErrorEnabled(false);
+    }
 
-        LoginResult response = UserSession.currentSession().tryLogin(
-                usernameEditText.getText().toString(),
-                passwordEditText.getText().toString());
-
-        if (response.equals(LoginResult.SUCCESS)) {
-            startActivity(new Intent(LoginController.this, WelcomeCakeController.class));
-        } else {
-            if (response == LoginResult.USER_DOES_NOT_EXIST) {
-                usernameInput.setError(response.getMessage());
-                usernameEditText.requestFocus();
-            } else if (response == LoginResult.WRONG_PASSWORD) {
-                passwordInput.setError(response.getMessage());
-                passwordEditText.requestFocus();
-                passwordInput.getEditText().setText("");
-            }
-        }
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     public void goToRegistration(View view) {

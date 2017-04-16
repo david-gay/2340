@@ -11,12 +11,11 @@
         android:padding="20dp">
 
         <TextView
-            android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Create Purity Report"
+            android:text="@string/create_purity_report"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="@color/colorPrimary"/>
 
@@ -29,7 +28,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Latitude"
+                android:hint="@string/latitude"
                 android:inputType="numberSigned|numberDecimal"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -42,7 +41,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Longitude"
+                android:hint="@string/longitude"
                 android:inputType="numberSigned|numberDecimal"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -63,7 +62,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Virus PPM"
+                android:hint="@string/virus_ppm"
                 android:inputType="numberSigned|numberDecimal"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -76,12 +75,11 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Contaminant PPM"
+                android:hint="@string/contaminant_ppm"
                 android:inputType="numberSigned|numberDecimal"/>
         </android.support.design.widget.TextInputLayout>
 
         <Button
-            android:id="@+id/submitReportButton"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -91,7 +89,6 @@
             android:text="@string/submit"/>
 
         <Button
-            android:id="@+id/cancelReportButton"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

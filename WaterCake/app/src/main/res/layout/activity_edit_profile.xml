@@ -31,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/welcome"/>
+
         <fragment
             android:id="@+id/details_fragment"
             class="com.sixtyseven.uga.watercake.controllers.UserPropertiesFragment"
@@ -39,7 +40,6 @@
             tools:layout="@layout/fragment_user_properties"/>
 
         <Button
-            android:id="@+id/confirmEditProfileButton"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,7 +49,6 @@
 
 
         <Button
-            android:id="@+id/cancelEditProfileButton"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

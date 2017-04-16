@@ -26,7 +26,6 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/usernameBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/username"
@@ -50,7 +49,6 @@
             android:layout_height="wrap_content"/>
 
         <Button
-            android:id="@+id/registerButton"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,7 +58,6 @@
 
 
         <Button
-            android:id="@+id/cancelRegistrationButton"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

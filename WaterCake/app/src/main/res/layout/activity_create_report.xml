@@ -12,13 +12,13 @@
         android:padding="20dp">
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/create_water_report"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textColor="@color/colorPrimary"/>
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/create_water_report"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/colorPrimary"/>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/latitudeInput"
@@ -42,7 +42,6 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/longitudeInputBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/longitude"
@@ -67,7 +66,6 @@
             android:layout_marginTop="10dp"/>
 
         <Button
-            android:id="@+id/submitReportButton"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,7 +75,6 @@
 
 
         <Button
-            android:id="@+id/cancelRegistrationButton"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

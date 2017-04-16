@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:text="100"
+        android:text="@string/_100"
         android:textColor="@android:color/black"
         />
 
@@ -44,7 +44,7 @@
         android:id="@+id/waterPurityConditionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Purity Condition"
+        android:text="@string/purity_condition"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"/>
 
@@ -53,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:text="Virus PPM"
+        android:text="@string/virus_ppm"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"/>
 
@@ -61,7 +61,7 @@
         android:id="@+id/contaminantPpmTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Contaminant PPM"
+        android:text="@string/contaminant_ppm"
         android:layout_alignBaseline="@+id/latitudeTextView"
         android:layout_alignBottom="@+id/latitudeTextView"
         android:layout_alignEnd="@+id/virusPpmTextView"/>

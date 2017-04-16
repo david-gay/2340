@@ -9,7 +9,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.sixtyseven.uga.watercake.R;
-import com.sixtyseven.uga.watercake.models.UserSession;
 import com.sixtyseven.uga.watercake.models.report.ReportManager;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
@@ -19,10 +18,10 @@ import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
  */
 public class CreateWaterReportActivity extends AppCompatActivity {
 
-    TextInputLayout longitudeInput;
-    TextInputLayout latitudeInput;
-    Spinner waterTypeSpinner;
-    Spinner waterConditionSpinner;
+    private TextInputLayout longitudeInput;
+    private TextInputLayout latitudeInput;
+    private Spinner waterTypeSpinner;
+    private Spinner waterConditionSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,26 +52,39 @@ public class CreateWaterReportActivity extends AppCompatActivity {
      * @param view the button initiating this method
      */
     public void attemptSubmitReport(View view) {
-        ReportManager manager = ReportManager.getInstance();
+        ReportManager manager = ReportManager.getInstance(this.getApplicationContext());
 
-        double longitude = Double.parseDouble(longitudeInput.getEditText().getText().toString());
-        double latitude = Double.parseDouble(latitudeInput.getEditText().getText().toString());
+        try {
+            double longitude = Double.parseDouble(
+                    longitudeInput.getEditText().getText().toString());
+            double latitude = Double.parseDouble(latitudeInput.getEditText().getText().toString());
 
-        if ((longitude > 180 || longitude < -180) || (latitude > 90 || latitude < -90)) {
-            // we can literally only fail because the coords were invalid:
-            Toast.makeText(getBaseContext(), "Invalid coordinates!", Toast.LENGTH_SHORT).show();
-        } else {
-            WaterType type = (WaterType) waterTypeSpinner.getSelectedItem();
-            WaterCondition condition = (WaterCondition) waterConditionSpinner.getSelectedItem();
+            if ((longitude > 180 || longitude < -180) || (latitude > 90 || latitude < -90)) {
+                // we can literally only fail because the coords were invalid:
+                Toast.makeText(getBaseContext(), "Invalid coordinates!", Toast.LENGTH_SHORT).show();
+            } else {
+                WaterType type = (WaterType) waterTypeSpinner.getSelectedItem();
+                WaterCondition condition = (WaterCondition) waterConditionSpinner.getSelectedItem();
 
-            manager.createWaterReport(UserSession.currentSession().getCurrentUser().getUsername(),
-                    latitude, longitude, type, condition);
+                manager.createWaterReport(latitude, longitude, type, condition,
+                        new CreateWaterSourceReportCallback() {
+                            @Override
+                            public void onSuccess() {
+                                Toast.makeText(getBaseContext(), "Report successful!",
+                                        Toast.LENGTH_LONG).show();
+                                finish();
+                            }
 
-            Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG).show();
-            finish();
+                            @Override
+                            public void onFailure(String errorMessage) {
+                                Toast.makeText(getBaseContext(), "Report FAILED!",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        });
+            }
+        } catch (NumberFormatException e) {
+            Toast.makeText(getBaseContext(), "Invalid field input!", Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     /**
@@ -81,5 +93,11 @@ public class CreateWaterReportActivity extends AppCompatActivity {
      */
     public void cancel(View view) {
         finish();
+    }
+
+    public interface CreateWaterSourceReportCallback {
+        void onSuccess();
+
+        void onFailure(String errorMessage);
     }
 }

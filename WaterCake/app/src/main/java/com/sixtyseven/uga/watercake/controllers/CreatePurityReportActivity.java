@@ -1,34 +1,28 @@
 package com.sixtyseven.uga.watercake.controllers;
 
-import android.net.ParseException;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.util.Log;
 
 import com.sixtyseven.uga.watercake.R;
-import com.sixtyseven.uga.watercake.models.UserSession;
 import com.sixtyseven.uga.watercake.models.report.ReportManager;
-import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
-import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
 
 /**
  * Activity for creating Purity reports.
  */
 public class CreatePurityReportActivity extends AppCompatActivity {
 
-    TextInputLayout latitudeInput;
-    TextInputLayout longitudeInput;
-    Spinner waterPurityConditionSpinner;
-    TextInputLayout virusPpmInput;
-    TextInputLayout contaminantPpmInput;
-    Spinner waterTypeSpinner;
-    Spinner waterConditionSpinner;
+    private TextInputLayout latitudeInput;
+    private TextInputLayout longitudeInput;
+    private Spinner waterPurityConditionSpinner;
+    private TextInputLayout virusPpmInput;
+    private TextInputLayout contaminantPpmInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +41,6 @@ public class CreatePurityReportActivity extends AppCompatActivity {
 
         virusPpmInput = (TextInputLayout) findViewById(R.id.virusPpmInput);
         contaminantPpmInput = (TextInputLayout) findViewById(R.id.contaminantPpmInput);
-
-
     }
 
     /**
@@ -62,12 +54,12 @@ public class CreatePurityReportActivity extends AppCompatActivity {
         String sVirusPpm;
         String sContaminantPpm;
 
-        double longitude = 0;
-        double latitude = 0;
-        float virusPpm = 0;
-        float contaminantPpm = 0;
+        double longitude;
+        double latitude;
+        float virusPpm;
+        float contaminantPpm;
 
-        ReportManager manager = ReportManager.getInstance();
+        ReportManager manager = ReportManager.getInstance(this.getApplicationContext());
 
         // Get String Versions of Every Field, Empty fields are == ""
         sLongitude = longitudeInput.getEditText().getText().toString();
@@ -76,8 +68,8 @@ public class CreatePurityReportActivity extends AppCompatActivity {
         sContaminantPpm = contaminantPpmInput.getEditText().getText().toString();
 
         // Make sure all fields are inputted
-        if (sLongitude.equalsIgnoreCase("") || sLatitude.equalsIgnoreCase("")
-                || sVirusPpm.equalsIgnoreCase("") || sContaminantPpm.equalsIgnoreCase("")) {
+        if (sLongitude.equalsIgnoreCase("") || sLatitude.equalsIgnoreCase("") || sVirusPpm
+                .equalsIgnoreCase("") || sContaminantPpm.equalsIgnoreCase("")) {
             // At least one blank input! User must give input for all fields
             Toast.makeText(getBaseContext(), "Fields cannot be blank!", Toast.LENGTH_SHORT).show();
         } else {
@@ -104,35 +96,41 @@ public class CreatePurityReportActivity extends AppCompatActivity {
 
                 if ((longitude > 180 || longitude < -180) || (latitude > 90 || latitude < -90)) {
                     // Invalid coords
-                    Toast.makeText(getBaseContext(), "Invalid coordinates!", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(getBaseContext(), "Invalid coordinates!", Toast.LENGTH_SHORT)
+                            .show();
                 } else if (virusPpm < 0) {
                     // Negative Virus PPM
-                    Toast.makeText(getBaseContext(), "Invalid Virus PPM!", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(getBaseContext(), "Invalid Virus PPM!", Toast.LENGTH_SHORT)
+                            .show();
                 } else if (contaminantPpm < 0) {
                     // Negative Contaminant PPM
-                    Toast.makeText(getBaseContext(), "Invalid Contaminant PPM!", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(getBaseContext(), "Invalid Contaminant PPM!", Toast.LENGTH_SHORT)
+                            .show();
                 } else {
                     // Success!
-                    WaterPurityCondition purityCondition = (WaterPurityCondition) waterPurityConditionSpinner.getSelectedItem();
-                    WaterCondition condition = WaterCondition.WASTE; // Placeholder value, need to remove later
-                    WaterType waterType = WaterType.BOTTLED; // Placeholder value, need to remove later
+                    WaterPurityCondition purityCondition =
+                            (WaterPurityCondition) waterPurityConditionSpinner.getSelectedItem();
 
-                    manager.createPurityReport(UserSession.currentSession().getCurrentUser().getUsername(),
-                            latitude, longitude, waterType, condition, purityCondition, virusPpm, contaminantPpm);
+                    manager.createPurityReport(latitude, longitude, purityCondition, virusPpm,
+                            contaminantPpm, new CreateWaterPurityReportCallback() {
+                                @Override
+                                public void onSuccess() {
+                                    Toast.makeText(getBaseContext(), "Report successful!",
+                                            Toast.LENGTH_LONG).show();
+                                    finish();
+                                }
 
-                    Toast.makeText(getBaseContext(), "Report successful!", Toast.LENGTH_LONG).show();
-                    finish();
+                                @Override
+                                public void onFailure(String errorMessage) {
+                                    Toast.makeText(getBaseContext(), "Report FAILED!",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            });
                 }
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 Toast.makeText(getBaseContext(), "Invalid field input!", Toast.LENGTH_SHORT).show();
             }
-
         }
-
-
     }
 
     /**
@@ -141,5 +139,11 @@ public class CreatePurityReportActivity extends AppCompatActivity {
      */
     public void cancel(View view) {
         finish();
+    }
+
+    public interface CreateWaterPurityReportCallback {
+        void onSuccess();
+
+        void onFailure(String errorMessage);
     }
 }

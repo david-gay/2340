@@ -1,6 +1,7 @@
 package com.sixtyseven.uga.watercake.controllers;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,27 +17,26 @@ import java.util.Locale;
 /**
  * Report Adapter for displaying Water Source Reports
  */
-public class ReportAdapter extends ArrayAdapter<WaterSourceReport> {
-    List<WaterSourceReport> reports;
+class ReportAdapter extends ArrayAdapter<WaterSourceReport> {
+    private final List<WaterSourceReport> reports;
 
     /**
      * Constructor
      * @param context the Context using the adapter
      * @param reports the list of reports to display
      */
-    public ReportAdapter(Context context, List<WaterSourceReport> reports) {
+    ReportAdapter(Context context, List<WaterSourceReport> reports) {
         super(context, R.layout.fragment_report_row, reports);
 
         this.reports = reports;
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        WaterSourceReport dataModel = getItem(position);
-
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
 
-        //only inflate if we're not reusing a view
+        // only inflate if we're not reusing a view
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(
                     Context.LAYOUT_INFLATER_SERVICE);
@@ -49,7 +49,8 @@ public class ReportAdapter extends ArrayAdapter<WaterSourceReport> {
 
             TextView reportNumberText = (TextView) view.findViewById(R.id.reportNumberTextView);
             if (reportNumberText != null) {
-                reportNumberText.setText(String.format(Locale.US, "Report: %d",report.getReportNumber()));
+                reportNumberText.setText(
+                        String.format(Locale.US, "Report: %d", report.getReportNumber()));
             }
 
             TextView usernameText = (TextView) view.findViewById(R.id.usernameTextView);
@@ -59,7 +60,7 @@ public class ReportAdapter extends ArrayAdapter<WaterSourceReport> {
 
             TextView latitudeText = (TextView) view.findViewById(R.id.latitudeTextView);
             if (latitudeText != null) {
-                //NB, lat and long are never "negative"; they just have different direction
+                // NB, lat and long are never "negative"; they just have different direction
                 if (report.getLatitude() < 0) {
                     latitudeText.setText(
                             String.format(Locale.US, "%4fS", Math.abs(report.getLatitude())));
@@ -70,7 +71,7 @@ public class ReportAdapter extends ArrayAdapter<WaterSourceReport> {
 
             TextView longitudeText = (TextView) view.findViewById(R.id.longitudeTextView);
             if (longitudeText != null) {
-                //NB, lat and long are never "negative"; they just have different direction
+                // NB, lat and long are never "negative"; they just have different direction
                 if (report.getLongitude() < 0) {
                     longitudeText.setText(
                             String.format(Locale.US, "%4fW", Math.abs(report.getLongitude())));
@@ -85,8 +86,8 @@ public class ReportAdapter extends ArrayAdapter<WaterSourceReport> {
             }
 
             TextView waterConditionText = (TextView) view.findViewById(R.id.waterConditionTextView);
-            if (waterConditionText!=null) {
-                waterConditionText.setText(report.getCondition().toString());
+            if (waterConditionText != null) {
+                waterConditionText.setText(report.getWaterCondition().toString());
             }
         }
 

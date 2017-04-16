@@ -1,14 +1,14 @@
 package com.sixtyseven.uga.watercake.models;
 
+import android.content.Context;
 import android.util.Log;
 
-import com.sixtyseven.uga.watercake.models.response.LoginResult;
+import com.sixtyseven.uga.watercake.models.dataManagement.RestManager;
 import com.sixtyseven.uga.watercake.models.user.User;
 import com.sixtyseven.uga.watercake.models.user.UserProfileError;
 import com.sixtyseven.uga.watercake.models.user.UserProfileField;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,25 +16,26 @@ import java.util.Map;
  * user.
  */
 public class UserSession {
-    private static UserSession ourInstance = new UserSession();
-    private Map<String, User> users;
+    private static UserSession ourInstance;
+    private static Context context;
     private User currentUser;
 
     /**
      * Returns the current UserSession
      * @return the current UserSession
      */
-    public static UserSession currentSession() {
+    public static UserSession currentSession(Context context) {
+        if (ourInstance == null) {
+            ourInstance = new UserSession(context);
+        }
         return ourInstance;
     }
 
     /**
      * Default constructor; should normally only be called once at startup.
      */
-    private UserSession() {
-        users = new HashMap<>();
-        users.put("user", new User("user", "pass"));
-
+    private UserSession(Context context) {
+        UserSession.context = context;
         currentUser = null;
     }
 
@@ -50,22 +51,48 @@ public class UserSession {
      * Attempts to log the user in with the supplied username and password.
      * @param username the username to login with
      * @param password the plaintext password to log in with
-     * @return LoginResult.SUCCESS if successful; LoginResult corresponding with the problem
-     * otherwise.
      */
-    public LoginResult tryLogin(String username, String password) {
-        LoginResult result;
+    public void tryLogin(String username, String password, final LoginCallback loginCallback) {
         username = username.toLowerCase();
-        if (!users.containsKey(username)) {
-            result = LoginResult.USER_DOES_NOT_EXIST;
-        } else if (!users.get(username).hasPassword(password)) {
-            result = LoginResult.WRONG_PASSWORD;
-        } else {
-            currentUser = users.get(username);
-            result = LoginResult.SUCCESS;
-        }
-        Log.d("login", result.getMessage());
-        return result;
+        final String finalUsername = username;
+        RestManager.getInstance(context).validateUser(username, password,
+                new RestManager.Callback<Integer>() {
+                    @Override
+                    public void onSuccess(Integer response) {
+                        Log.d("UserSession", "response code: " + response);
+                        switch (response) {
+                            case 204:
+                                RestManager.getInstance(context).getUser(finalUsername,
+                                        new UserCallback() {
+                                            @Override
+                                            public void onSuccess(User user) {
+                                                currentUser = user;
+                                                loginCallback.onSuccess();
+                                            }
+
+                                            @Override
+                                            public void onFailure(String errorMessage) {
+                                                Log.d("UserSession",
+                                                        "get user error: " + errorMessage);
+                                                loginCallback.onError(errorMessage);
+                                            }
+                                        });
+                                break;
+                            case 401:
+                                loginCallback.onWrongPassword();
+                                break;
+                            case 404:
+                                loginCallback.onUserNotFound();
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        Log.d("UserSession", "login error: " + errorMessage);
+                        loginCallback.onError(errorMessage);
+                    }
+                });
     }
 
     /**
@@ -75,37 +102,15 @@ public class UserSession {
         currentUser = null;
     }
 
-
-
     /**
      * Attempts to register a user and returns an EnumSet of any registration errors present.
      * @param fieldMap a map of UserProfileFields to their associated data Strings to use for user
      * creation. Must have UserProfileField.USERNAME.
-     * @return an EnumSet of every error encountered in registration. Empty if registration was
-     * successful.
      */
-    public EnumSet<UserProfileError> registerUser(Map<UserProfileField, String> fieldMap) {
-        EnumSet<UserProfileError> results = validateUserFields(fieldMap);
-
-        String username = fieldMap.get(UserProfileField.USERNAME);
-
-        if (results.isEmpty()) { // if we had no problems, then go ahead and register
-            users.put(username.toLowerCase(), User.generateUserFromFieldsMap(fieldMap));
-        }
-
-        StringBuilder logOutput = new StringBuilder();
-        boolean first = true;
-        for (UserProfileError result : results) {
-            if (!first) {
-                logOutput.append(", ");
-            } else {
-                first = false;
-            }
-            logOutput.append(result.getMessage());
-        }
-
-        Log.d("register", logOutput.toString());
-        return results;
+    public void registerUser(Map<UserProfileField, String> fieldMap,
+            final RegisterCallback registerCallback) {
+        RestManager.getInstance(context).registerUser(User.generateUserFromFieldsMap(fieldMap),
+                registerCallback);
     }
 
     /**
@@ -121,9 +126,6 @@ public class UserSession {
             String username = fieldMap.get(UserProfileField.USERNAME);
             if (username.equals("")) {
                 results.add(UserProfileError.INVALID_USERNAME);
-            }
-            if (users.containsKey(username.toLowerCase())) {
-                results.add(UserProfileError.USERNAME_TAKEN);
             }
         }
 
@@ -155,5 +157,33 @@ public class UserSession {
             currentUser.setFieldsFromFieldsMap(fieldMap);
         }
         return results;
+    }
+
+    public interface UserCallback {
+        void onSuccess(User user);
+
+        void onFailure(String errorMessage);
+    }
+
+    /**
+     * A login callback interface
+     */
+    public interface LoginCallback {
+        void onSuccess();
+
+        void onWrongPassword();
+
+        void onUserNotFound();
+
+        void onError(String errorMessage);
+    }
+
+    /**
+     * A register callback interface
+     */
+    public interface RegisterCallback {
+        void onSuccess();
+
+        void onFailure(String errorMessage);
     }
 }

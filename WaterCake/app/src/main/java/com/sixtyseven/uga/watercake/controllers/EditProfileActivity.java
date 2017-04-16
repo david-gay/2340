@@ -21,7 +21,7 @@ import java.util.Map;
  * Activity for editing an existing User Profile
  */
 public class EditProfileActivity extends FragmentActivity {
-    UserPropertiesFragment properties;
+    private UserPropertiesFragment properties;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,13 +56,13 @@ public class EditProfileActivity extends FragmentActivity {
                     });
         }
 
-        Map<UserProfileField, String> fieldsMap =
-                UserSession.currentSession().getCurrentUser().getFieldsMap();
+        Map<UserProfileField, String> fieldsMap = UserSession.currentSession(
+                this.getApplicationContext()).getCurrentUser().getFieldsMap();
 
         ((TextView) findViewById(R.id.usernameTextView)).setText(
-                "Username: " + fieldsMap.get(UserProfileField.USERNAME));
+                getString(R.string.username_, fieldsMap.get(UserProfileField.USERNAME)));
         ((TextView) findViewById(R.id.userTypeTextView)).setText(
-                "User Type: " + fieldsMap.get(UserProfileField.USER_TYPE));
+                getString(R.string.user_type_, fieldsMap.get(UserProfileField.USER_TYPE)));
 
         //Do not populate the password field
         fieldsMap.remove(UserProfileField.PASSWORD);
@@ -88,8 +88,8 @@ public class EditProfileActivity extends FragmentActivity {
             fieldsMap.remove(UserProfileField.PASSWORD);
         }
 
-        EnumSet<UserProfileError> results = UserSession.currentSession().updateUserFields(
-                fieldsMap);
+        EnumSet<UserProfileError> results = UserSession.currentSession(this.getApplicationContext())
+                .updateUserFields(fieldsMap);
 
         if (results.isEmpty()) {
             Log.d("EditProfileActivity", "Profile Updated");

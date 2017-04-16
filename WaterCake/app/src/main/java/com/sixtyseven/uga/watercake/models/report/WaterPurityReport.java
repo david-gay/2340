@@ -1,8 +1,6 @@
 package com.sixtyseven.uga.watercake.models.report;
 
-import com.sixtyseven.uga.watercake.models.report.constants.WaterCondition;
 import com.sixtyseven.uga.watercake.models.report.constants.WaterPurityCondition;
-import com.sixtyseven.uga.watercake.models.report.constants.WaterType;
 
 import java.util.Date;
 
@@ -23,19 +21,7 @@ public interface WaterPurityReport {
      * Returns a DateTime object with the creation date and time
      * @return a DateTime object with the creation date and time
      */
-    Date getDataAndTime();
-
-    /**
-     * Returns the water type
-     * @return the water type
-     */
-    WaterType getWaterType();
-
-    /**
-     * Returns the water condition
-     * @return the water condition
-     */
-    WaterCondition getCondition();
+    Date getPostDate();
 
     /**
      * Returns the latitude
