@@ -17,42 +17,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/username"
-        android:layout_toEndOf="@+id/reportNumberTextView"
-        android:layout_marginStart="26dp"
-        android:layout_alignParentTop="true"/>
+        android:layout_marginStart="8dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/textView2"/>
 
     <TextView
         android:id="@+id/latitudeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/latitude"
-        android:layout_marginStart="31dp"
-        android:layout_alignBaseline="@+id/longitudeTextView"
         android:layout_alignBottom="@+id/longitudeTextView"
-        android:layout_toEndOf="@+id/longitudeTextView"/>
+        android:layout_toEndOf="@+id/longitudeTextView"
+        android:layout_marginStart="9dp"
+        android:layout_alignTop="@+id/longitudeTextView"/>
 
     <TextView
         android:id="@+id/longitudeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/longitude"
-        android:layout_marginTop="11dp"
-        android:layout_below="@+id/reportNumberTextView"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignBaseline="@+id/textView4"
+        android:layout_alignBottom="@+id/textView4"
+        android:layout_toEndOf="@+id/textView4"
+        android:layout_marginStart="6dp"/>
 
     <TextView
         android:id="@+id/waterPurityConditionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/purity_condition"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/latitudeTextView"
+        android:layout_alignStart="@+id/longitudeTextView"
+        android:layout_marginStart="6dp"/>
 
     <TextView
         android:id="@+id/virusPpmTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
         android:text="@string/virus_ppm"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"/>
@@ -65,5 +67,53 @@
         android:layout_alignBaseline="@+id/latitudeTextView"
         android:layout_alignBottom="@+id/latitudeTextView"
         android:layout_alignEnd="@+id/virusPpmTextView"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="24dp"
+        android:layout_toEndOf="@+id/reportNumberTextView"
+        android:text="@string/created_by"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/condition"
+        android:layout_alignBaseline="@+id/waterPurityConditionTextView"
+        android:layout_alignBottom="@+id/waterPurityConditionTextView"
+        android:layout_alignParentStart="true"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/location"
+        android:layout_below="@+id/reportNumberTextView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Virus PPM: "
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/virusPpmTextView"
+        android:textColor="@android:color/black"/>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/contaminantPpmTextView"
+        android:layout_toStartOf="@+id/contaminantPpmTextView"
+        android:text="Cont PPM: "
+        android:textColor="@android:color/black"/>
 
 </RelativeLayout>
