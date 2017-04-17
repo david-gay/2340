@@ -1,5 +1,6 @@
 package com.sixtyseven.uga.watercake.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentActivity;
@@ -101,12 +102,13 @@ public class RegistrationController extends FragmentActivity {
             properties.setErrors(errors, !focusSet);
         } else {
             UserSession.currentSession(this.getApplicationContext()).registerUser(fieldMap,
-                    new UserSession.RegisterCallback() {
+                    new RegistrationCallback() {
                         @Override
                         public void onSuccess() {
-                            // TODO explain to Dimitar what's the diff between baseContext and applicationContext
                             Toast.makeText(getBaseContext(), "Registration successful!",
                                     Toast.LENGTH_LONG).show();
+                            startActivity(
+                                    new Intent(RegistrationController.this, MainActivity.class));
                             finish();
                         }
 
@@ -137,5 +139,11 @@ public class RegistrationController extends FragmentActivity {
     public void cancelRegistration(View view) {
         finish();
         Log.d("registration", "registration canceled");
+    }
+
+    public interface RegistrationCallback {
+        void onSuccess();
+
+        void onFailure(String errorMessage);
     }
 }

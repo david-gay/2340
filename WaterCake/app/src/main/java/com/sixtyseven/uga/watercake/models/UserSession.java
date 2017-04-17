@@ -3,6 +3,7 @@ package com.sixtyseven.uga.watercake.models;
 import android.content.Context;
 import android.util.Log;
 
+import com.sixtyseven.uga.watercake.controllers.RegistrationController;
 import com.sixtyseven.uga.watercake.models.dataManagement.RestManager;
 import com.sixtyseven.uga.watercake.models.user.User;
 import com.sixtyseven.uga.watercake.models.user.UserProfileError;
@@ -108,10 +109,21 @@ public class UserSession {
      * @param fieldMap a map of UserProfileFields to their associated data Strings to use for user
      * creation. Must have UserProfileField.USERNAME.
      */
-    public void registerUser(Map<UserProfileField, String> fieldMap,
-            final RegisterCallback registerCallback) {
+    public void registerUser(final Map<UserProfileField, String> fieldMap,
+            final RegistrationController.RegistrationCallback registerCallback) {
         RestManager.getInstance(context).registerUser(User.generateUserFromFieldsMap(fieldMap),
-                registerCallback);
+                new RegisterCallback() {
+                    @Override
+                    public void onSuccess() {
+                        currentUser = User.generateUserFromFieldsMap(fieldMap);
+                        registerCallback.onSuccess();
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        registerCallback.onFailure(errorMessage);
+                    }
+                });
     }
 
     /**
@@ -151,7 +163,8 @@ public class UserSession {
      * @param fieldMap a map of UserProfileFields to their associated data Strings
      * @return an EnumSet of every error encountered in updating. Empty if update was successful.
      */
-    public EnumSet<UserProfileError> updateUserFromFields(final Map<UserProfileField, String> fieldMap, List<UpdateUserCallback> callbacks) {
+    public EnumSet<UserProfileError> updateUserFromFields(
+            final Map<UserProfileField, String> fieldMap, List<UpdateUserCallback> callbacks) {
         EnumSet<UserProfileError> results = validateUserFields(fieldMap);
 
         if (results.isEmpty()) { // no client side validation errors were found
